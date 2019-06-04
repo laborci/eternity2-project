@@ -1,0 +1,11 @@
+attachment:
+  attachment-path: /public/files/
+  attachment-url: /files/
+  thumbnail-path: /public/thumbnails/
+  thumbnail-secret: "0912539017253421"
+  thumbnail-url: /thumbnails/
+generator:
+  entity-path: /src/Entity/
+  databases:
+    default: \DefaultDBConnection
+  default-database-name: default

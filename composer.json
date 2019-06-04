@@ -1,0 +1,33 @@
+{
+    "name": "elvis/eternity2",
+    "authors": [
+        {
+            "name": "Gergely Laborci",
+            "email": "gergely@laborci.hu"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "^3.3",
+        "nabil1337/case-helper": "^0.1.0",
+        "twig/twig":"^2.0",
+        "minime/annotations": "~3.0",
+        "symfony/yaml": "^4.2",
+        "symfony/console": "^3.4.28",
+        "riimu/kit-phpencoder": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Application\\": "src/",
+            "Entity\\": "src/Entity",
+            "Eternity2\\System\\": "Eternity2/System/",
+            "Eternity2\\RemoteLog\\": "Eternity2/RemoteLog/",
+            "Eternity2\\WebApplication\\": "Eternity2/WebApplication/",
+            "Eternity2\\CliApplication\\": "Eternity2/CliApplication/",
+            "Eternity2\\RedFox\\": "Eternity2/RedFox/",
+            "Eternity2\\DBAccess\\": "Eternity2/DBAccess/",
+            "Eternity2\\Gmark\\": "Eternity2/Gmark/",
+            "Eternity2\\Codex\\": "Eternity2/Codex/",
+            "Eternity2\\Zuul\\": "Eternity2/Zuul/"
+        }
+    }
+}

@@ -1,0 +1,1 @@
+<?php return [\{{database}}::class, "{{table}}"];

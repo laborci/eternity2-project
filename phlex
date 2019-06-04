@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ $1 = "wp" ]
+then
+    cd build
+    npm run work
+elif [ $1 = "gulp" ]
+then
+    cd build
+    gulp
+else
+    php public/index.php $*
+fi
+

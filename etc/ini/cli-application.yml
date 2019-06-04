@@ -1,0 +1,4 @@
+commands:
+  - \Eternity2\System\VhostGenerator\CliCommandGenerateVhost
+  - \Eternity2\RedFox\Generator\CreateEntityCliCommand
+  - \Eternity2\RedFox\Generator\UpdateEntitiesCliCommand

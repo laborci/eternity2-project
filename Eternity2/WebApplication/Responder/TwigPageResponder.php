@@ -1,0 +1,53 @@
+<?php namespace Eternity2\WebApplication\Responder;
+
+use Eternity2\System\AnnotationReader\AnnotationReader;
+use Eternity2\System\ServiceManager\ServiceContainer;
+use Eternity2\WebApplication\Config;
+use Minime\Annotations\Interfaces\AnnotationsBagInterface;
+use Twig\Environment;
+use Twig\Extension\DebugExtension;
+use Twig\Loader\FilesystemLoader;
+
+abstract class TwigPageResponder extends PageResponder {
+
+	/** @var Environment */
+	private $twig;
+	/** @var AnnotationsBagInterface  */
+	protected $annotations;
+	/** @var Config  */
+	protected $config;
+
+	private $template;
+
+	protected function getTwig(): Environment { return $this->twig; }
+
+	public function __construct() {
+		$this->config = ServiceContainer::get(Config::class);
+		$this->twig = $this->getTwigEnvironment();
+		/** @var AnnotationReader $annotationReader */
+		$annotationReader = ServiceContainer::get(AnnotationReader::class);
+		$this->annotations = $annotationReader->getClassAnnotations(get_called_class());
+		$this->template = $this->annotations->get('template');
+	}
+	protected function respond(): string { return $this->twig->render($this->template, $this->createViewModel()); }
+	protected function createViewModel() { return $this->getDataBag()->all(); }
+
+	static protected $twigEnvironment = null;
+
+	function getTwigEnvironment() {
+		if (is_null(static::$twigEnvironment)) {
+			$loader = new FilesystemLoader();
+			foreach ($this->config->sources() as $namespace => $path) $loader->addPath($path, $namespace);
+			$twigEnvironment = new Environment($loader, ['cache' => $this->config->cache(), 'debug' =>$this->config->debug()]);
+			if ($this->config->debug()) $twigEnvironment->addExtension(new DebugExtension());
+			static::$twigEnvironment = $twigEnvironment;
+		}
+		return static::$twigEnvironment;
+	}
+
+}
+
+
+
+
+

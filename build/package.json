@@ -1,0 +1,51 @@
+{
+	"name": "zengular-skeleton",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "webpack --progress --colors --mode production",
+		"work": "webpack --progress --colors --watch  --mode development"
+	},
+	"author": "Gergely Laborci",
+	"license": "ISC",
+	"dependencies": {
+		"@babel/core": "^7.1.5",
+		"@babel/plugin-proposal-class-properties": "^7.1.0",
+		"@babel/plugin-proposal-decorators": "^7.1.2",
+		"@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+		"@babel/plugin-proposal-optional-chaining": "^7.0.0",
+		"@babel/preset-env": "^7.1.5",
+		"@fortawesome/fontawesome-pro": "^5.5.0",
+		"babel-loader": "^8.0.4",
+		"copy": "^0.3.0",
+		"css-loader": "^0.28.4",
+		"file-loader": "^0.11.2",
+		"glob": "^7.1.3",
+		"gulp": "^3.9.1",
+		"gulp-autoprefixer": "^3.1.0",
+		"gulp-browserify": "^0.5.1",
+		"gulp-concat": "^2.6.1",
+		"gulp-google-webfonts": "~1.1.0",
+		"gulp-less": "^3.0.5",
+		"gulp-sourcemaps": "^1.9.1",
+		"gulp-uglifycss": "^1.1.0",
+		"gulp-watch": "^4.3.5",
+		"html-loader": "^0.5.5",
+		"less": "^2.7.2",
+		"less-loader": "^4.0.5",
+		"load-css-file": "^1.0.0",
+		"load-js": "^1.2.0",
+		"style-loader": "^0.18.2",
+		"twig-loader": "^0.4.1",
+		"watchify": "^3.9.0",
+		"webpack": "^4.31.0",
+		"zengular-ajax": "^1.0.0",
+		"zengular-brick": "^1.0.3",
+		"zengular-router": "^1.0.0",
+		"webpack-version-bump": "^1.0.8"
+	},
+	"devDependencies": {
+		"webpack-cli": "^3.3.2"
+	}
+}

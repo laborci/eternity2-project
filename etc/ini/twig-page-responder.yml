@@ -1,0 +1,6 @@
+client-version: /build/build-version.json
+cache: /var/template-cache/
+debug: true
+sources:
+  web: /src/Module/Web/Page/@template/
+  admin: /src/Module/Admin/Page/@template/
