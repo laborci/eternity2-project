@@ -7,7 +7,8 @@ module.exports = new (require("./build-config-reader"))({
 	},
 	copy       : [
 		{src: "./node_modules/@fortawesome/fontawesome-pro/webfonts/", pattern: "*", dest: "../public/fonts/fontawesome/"},
-		{src: "../assets/", pattern: "index.php", dest: "../public/", watch: true}
+		{src: "../assets/", pattern: "**", dest: "../public/", watch: true},
+		{src: "../src/", pattern: "index.php", dest: "../public/", watch: true}
 	],
 	css        : [
 		{src: "../src/Module/Web/Page/@css/", dest: "../public/web/css/"}
