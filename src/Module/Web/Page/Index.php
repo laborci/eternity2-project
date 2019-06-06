@@ -12,15 +12,19 @@ use Eternity2\WebApplication\Responder\SmartPageResponder;
  */
 class Index extends SmartPageResponder {
 
+	protected $connection;
+
 	public function __construct(\DefaultDBConnection $connection) {
 		parent::__construct();
-		$connection = ServiceContainer::get(\DefaultDBConnection::class);
-		$users = $connection->query("SELECT * FROM user")->fetchAll();
-		print_r($users);
+		$this->connection = $connection;
 	}
 
 	protected function prepare() {
 		parent::prepare();
+
+		$connection = ServiceContainer::get(\DefaultDBConnection::class);
+		$users = $this->connection->query("SELECT * FROM user")->fetchAll();
+		$this->getDataBag()->set('users', $users);
 	}
 
 }

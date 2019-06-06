@@ -14,13 +14,12 @@ class StartupSequence {
 		putenv('ini-file=' . $ini_file);
 		putenv('context=' . (http_response_code() ? 'WEB' : 'CLI'));
 
-		//putenv('LOAD_ENV_CACHE=yes');
-
 		if (getenv('LOAD_ENV_CACHE') === 'yes') {
 			Env::Service()->store(include getenv('env-path') . getenv('env-build-file'));
 		} else {
 			Env::Service()->storeFile(getenv('ini-file'));
 		}
+
 		setenv('root', getenv('root'));
 		setenv('context', getenv('context'));
 
@@ -29,9 +28,7 @@ class StartupSequence {
 		date_default_timezone_set(env('timezone'));
 
 		foreach (env('boot-sequence') as $sequence) {
-			/** @var BootSequnece $service */
-			$service = ServiceContainer::get($sequence);
-			$service->run();
+			(function(BootSequnece $sequnece){$sequnece->run();})(ServiceContainer::get($sequence));
 		}
 	}
 }
