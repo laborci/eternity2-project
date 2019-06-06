@@ -1,4 +1,4 @@
-client-version: /build/build-version.json
+client-version: /build/build-version
 output-cache: /var/output-cache/
 twig:
   cache: /var/template-cache/

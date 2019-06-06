@@ -6,4 +6,4 @@ etc/vhost/virtualhost.*conf
 etc/ini/*.local.yml
 etc/ene/*
 public/*
-build/build-version.json
+build/build-version

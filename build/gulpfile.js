@@ -71,6 +71,6 @@ gulp.task('compile-less', () => {
 
 function bumpVersion(){
 	const path = require("path");
-	const VersionBump = require('webpack-version-bump');
-	(new VersionBump({file: path.resolve(__dirname, buildConfig.buildVersion)})).upBuildNumber();
+	const VB = require("./version-bump-plugin");
+	(new VB({file: path.resolve(__dirname, buildConfig.buildVersionFile)})).bump();
 }
