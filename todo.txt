@@ -2,6 +2,7 @@
 - clear cache
 - public cleanup
 - .keep
++ plain text build-version
 + env merge
 + env -> var
 + virtualhost dev/prod
