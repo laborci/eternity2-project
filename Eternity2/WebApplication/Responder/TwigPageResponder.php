@@ -37,9 +37,9 @@ abstract class TwigPageResponder extends PageResponder {
 	function getTwigEnvironment() {
 		if (is_null(static::$twigEnvironment)) {
 			$loader = new FilesystemLoader();
-			foreach ($this->config->sources() as $namespace => $path) $loader->addPath($path, $namespace);
-			$twigEnvironment = new Environment($loader, ['cache' => $this->config->cache(), 'debug' =>$this->config->debug()]);
-			if ($this->config->debug()) $twigEnvironment->addExtension(new DebugExtension());
+			foreach ($this->config->twigSources() as $namespace => $path) $loader->addPath($path, $namespace);
+			$twigEnvironment = new Environment($loader, ['cache' => $this->config->twigCache(), 'debug' =>$this->config->twigDebug()]);
+			if ($this->config->twigDebug()) $twigEnvironment->addExtension(new DebugExtension());
 			static::$twigEnvironment = $twigEnvironment;
 		}
 		return static::$twigEnvironment;

@@ -11,10 +11,13 @@ class VhostGenerator {
 	}
 
 	public function generate() {
-		$template = file_get_contents($this->config->template());
-		$template = str_replace('{{domain}}', $this->config->domain(), $template);
-		$template = str_replace('{{root}}',$this->config->root(), $template);
-		file_put_contents($this->config->vhost(), $template);
+		$templates = $this->config->templates();
+		foreach ($templates as $template => $vhost) {
+			$template = file_get_contents($this->config->root().$template);
+			$template = str_replace('{{domain}}', $this->config->domain(), $template);
+			$template = str_replace('{{root}}', $this->config->root(), $template);
+			file_put_contents($this->config->root().$vhost, $template);
+		}
 	}
 
 }

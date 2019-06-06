@@ -2,7 +2,7 @@
 vendor
 var/**
 build/node_modules
-etc/vhost/virtualhost.conf
+etc/vhost/virtualhost.*conf
 etc/ini/*.local.yml
 etc/ene/*
 public/*

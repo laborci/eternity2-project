@@ -125,4 +125,7 @@ class RemoteLog implements SharedService {
 		}
 		return "";
 	}
+
+	static function loadFacades(){ include "facades.php"; }
+
 }

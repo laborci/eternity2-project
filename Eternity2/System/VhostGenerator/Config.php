@@ -6,8 +6,7 @@ class Config extends ConfigBuilder {
 
 	protected $env = 'vhost-generator';
 
-	public function template() { return env('root').$this->config['template']; }
-	public function vhost() { return env('root').$this->config['vhost']; }
+	public function templates() { return $this->config['templates']; }
 	public function domain() { return env('domain'); }
 	public function root() { return env('root'); }
 

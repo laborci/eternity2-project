@@ -1,6 +1,5 @@
 <?php namespace Eternity2\WebApplication\Pipeline;
 
-use Eternity2\WebApplication\Responder\Redirect;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
