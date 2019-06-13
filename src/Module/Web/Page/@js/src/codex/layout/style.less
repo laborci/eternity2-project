@@ -1,0 +1,22 @@
+html, body{ height:100%; }
+body{margin:0;}
+*{
+	outline: none;
+	box-sizing: border-box;
+	font-family: "Open Sans",Roboto,Arial,"Droid Sans",sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+[is=codex-layout] {
+	height:100%;
+	display: grid;
+	grid-template-areas:'menu cont';
+	grid-template-columns: 230px auto;
+}
+
+[is=codex-layout-menu]{
+	grid-area:menu;
+}
+[is=codex-layout-content]{
+	grid-area:cont;
+}

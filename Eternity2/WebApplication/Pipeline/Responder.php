@@ -1,5 +1,5 @@
 <?php namespace Eternity2\WebApplication\Pipeline;
 
 abstract class Responder extends Segment {
-	abstract protected function respond():string;
+	abstract protected function respond();
 }

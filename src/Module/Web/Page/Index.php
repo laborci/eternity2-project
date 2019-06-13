@@ -7,8 +7,8 @@ use Eternity2\WebApplication\Responder\SmartPageResponder;
  * @template "@web/Index.twig"
  * @title "Index"
  * @bodyclass "mypage"
- * @js "/js/www/app.js"
- * @css "/css/www/app.css"
+ * @js "/web/js/app.js"
+ * @css "/web/css/style.css"
  */
 class Index extends SmartPageResponder {
 

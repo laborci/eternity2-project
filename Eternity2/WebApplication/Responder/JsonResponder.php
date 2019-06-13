@@ -1,4 +1,4 @@
-<?php namespace Eternity2\WebApplication\Response\Responder;
+<?php namespace Eternity2\WebApplication\Responder;
 
 use Eternity2\WebApplication\Pipeline\Responder;
 use Symfony\Component\HttpFoundation\ParameterBag;
