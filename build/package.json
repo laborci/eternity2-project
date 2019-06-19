@@ -36,6 +36,7 @@
 		"less-loader": "^4.0.5",
 		"load-css-file": "^1.0.0",
 		"load-js": "^1.2.0",
+		"phlex-codex": "^1.2.8",
 		"style-loader": "^0.18.2",
 		"twig-loader": "^0.4.1",
 		"watchify": "^3.9.0",

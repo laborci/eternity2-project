@@ -1,0 +1,26 @@
+<div class="attachments">
+	{% if conflicts.length == 0 %}
+		Minden rendben!
+	{% else %}
+		<table class="conflicts">
+			<tr>
+				<th>Dátum</th>
+				<th>Időpont</th>
+				<th>Terem</th>
+				<th>Felhasználó</th>
+				<th>E-mail</th>
+				<th></th>
+			</tr>
+		{% for conflict in conflicts %}
+			<tr>
+				<td>{{ conflict.date }}</td>
+				<td>{{ conflict.from }} - {{ conflict.to }}</td>
+				<td>{{ conflict.classroom }}</td>
+				<td>{{ conflict.user.name }} ({{ conflict.user.login }})</td>
+				<td>{{ conflict.user.email }}</td>
+				<td class="right"><i role="delete" data-id="{{ conflict.id }}" class="fa fa-times"></i></td>
+			</tr>
+		{% endfor %}
+		</table>
+	{% endif %}
+</div>
