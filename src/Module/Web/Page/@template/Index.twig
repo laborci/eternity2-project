@@ -1,5 +1,6 @@
 {% extends('@smartpage/smartpage.twig') %}
-
 {% block content %}
-<div is="codex-layout" data-title="MIK-WIKI" data-icon="fas fa-chart-line" data-icon-bg="fas fa-circle"></div>
+	<div is="codex-layout">
+		{% include("@web/header.twig") %}
+	</div>
 {% endblock %}

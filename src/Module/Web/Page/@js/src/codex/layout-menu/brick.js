@@ -25,4 +25,8 @@ export default class CodexLayoutMenuBrick extends Brick {
 		this.find('ul').appendChild(li);
 	}
 
+	setHeader(html){
+		this.find('header').innerHTML = html;
+	}
+
 }

@@ -8,9 +8,15 @@ import CodexLayoutContentBrick from "../layout-content/brick";
 @Brick.registerSubBricksOnRender()
 @Brick.useAppEventManager()
 export default class CodexLayoutBrick extends Brick{
+
+	onInitialize(){
+		this.menuHeader = this.root.innerHTML;
+	}
+
 	onRender(){
 		this.appEventManager.fire('rendered');
 		this.menu = this.$(CodexLayoutMenuBrick.selector).get().controller;
 		this.content = this.$(CodexLayoutContentBrick.selector).get().controller;
+		this.menu.setHeader(this.menuHeader);
 	}
 }
