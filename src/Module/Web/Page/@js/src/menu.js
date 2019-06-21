@@ -1,12 +1,103 @@
-let menu = {
-	users:{
-		label: 'Felhasználók',
-		icon: 'fas fa-user',
-		content: 'codex-eternity-form-frame',
-		data: {
-			name: 'users'
+export default [
+	{
+		label  : 'Felhasználó1k',
+		icon   : 'fas fa-user',
+		submenu: [
+			{
+				option: 'users',
+				label : 'Felhasználók',
+				icon  : 'fas fa-user',
+				data  : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			},
+			{
+				label: 'Felhasználók',
+				icon : 'fas fa-user',
+				data : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			},
+			{
+				label: 'Felhasználók',
+				icon : 'fas fa-user',
+				data : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			}
+		]
+	},	{
+		label  : 'Felhasználó1k',
+		icon   : 'fas fa-user',
+		submenu: [
+			{
+				option: 'users',
+				label : 'Felhasználók',
+				icon  : 'fas fa-user',
+				data  : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			},
+			{
+				label: 'Felhasználók',
+				icon : 'fas fa-user',
+				data : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			},
+			{
+				label: 'Felhasználók',
+				icon : 'fas fa-user',
+				data : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			}
+		]
+	},	{
+		label  : 'Felhasználó1k',
+		icon   : 'fas fa-user',
+		submenu: [
+			{
+				option: 'users',
+				label : 'Felhasználók',
+				icon  : 'fas fa-user',
+				data  : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			},
+			{
+				label: 'Felhasználók',
+				icon : 'fas fa-user',
+				data : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			},
+			{
+				label: 'Felhasználók',
+				icon : 'fas fa-user',
+				data : {
+					content: 'codex-eternity-form-frame',
+					name   : 'users'
+				}
+			}
+		]
+	},
+	{
+		option: 'articles',
+		label : 'Cikkek',
+		icon  : 'fas fa-user',
+		data  : {
+			content: 'codex-eternity-form-frame',
+			name   : 'articles'
 		}
 	}
-};
+];
 
-export default menu;

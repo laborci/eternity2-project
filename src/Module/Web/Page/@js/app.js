@@ -11,7 +11,8 @@ new (class{
 		this.appEventManager = new AppEventManager(document.body);
 		Brick.registry.initialize();
 		this.layout = document.querySelector(CodexLayoutBrick.selector).controller;
-		this.addMenus(menu);
+		this.layout.menu.addMenu(menu);
+		this.appEventManager.listen('codex-menu-click', (event) => this.menuEventHandler(event));
 	}
 
 	addMenus(menu){
@@ -20,11 +21,10 @@ new (class{
 			menuItem.option = option;
 			this.layout.menu.addMenuItem(menuItem.label, option, menuItem.icon);
 		}
-		this.appEventManager.listen('menu-click', (event) => this.menuEventHandler(menu[event.data.option]));
 	}
 
-	menuEventHandler(menuItem){
-		this.layout.content.show(menuItem.content, menuItem.data);
+	menuEventHandler(event){
+		this.layout.content.show(event.data.data.content, event.data.data);
 	}
 
 })();
