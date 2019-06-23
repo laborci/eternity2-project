@@ -14,17 +14,17 @@ class Index extends SmartPageResponder {
 
 	protected $connection;
 
-	public function __construct(\DefaultDBConnection $connection) {
-		parent::__construct();
-		$this->connection = $connection;
-	}
+//	public function __construct(\DefaultDBConnection $connection) {
+//		parent::__construct();
+//		$this->connection = $connection;
+//	}
 
 	protected function prepare() {
 		parent::prepare();
 
-		$connection = ServiceContainer::get(\DefaultDBConnection::class);
-		$users = $this->connection->query("SELECT * FROM user")->fetchAll();
-		$this->getDataBag()->set('users', $users);
+//		$connection = ServiceContainer::get(\DefaultDBConnection::class);
+//		$users = $this->connection->query("SELECT * FROM user")->fetchAll();
+//		$this->getDataBag()->set('users', $users);
 	}
 
 }

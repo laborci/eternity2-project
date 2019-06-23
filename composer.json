@@ -27,7 +27,8 @@
             "Eternity2\\DBAccess\\": "Eternity2/DBAccess/",
             "Eternity2\\Gmark\\": "Eternity2/Gmark/",
             "Eternity2\\Codex\\": "Eternity2/Codex/",
-            "Eternity2\\Zuul\\": "Eternity2/Zuul/"
+            "Eternity2\\Zuul\\": "Eternity2/Zuul/",
+            "Eternity2\\Ghost\\": "Eternity2/Ghost/"
         }
     }
 }
