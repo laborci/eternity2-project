@@ -1,19 +1,25 @@
 <?php namespace Application\Ghost;
 
+use Application\Ghost\Helper\UserGhost;
 use Eternity2\Ghost\Ghost;
+use Eternity2\Ghost\GhostDesigner;
 
-class User extends Ghost{
+/**
+ * @ghost-table user
+ * @ghost-database DefaultDBConnection
+ */
+class User extends UserGhost{
 
-	protected $id;
-	public $name;
 	public $email;
-
+	public $name;
 
 
 }
 
-User::initialize();
+User::initialize(\DefaultDBConnection::class, 'user',
+	GhostDesigner::belongsTo('boss', User::class, 'bossId'),
+	GhostDesigner::hasMany('workers', User::class, 'bossId'),
+	GhostDesigner::protectField('email', 'setEmail', 'getEmail'),
+);
 
-$user = new User();
 
-$user->email;

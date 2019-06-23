@@ -26,7 +26,6 @@ class Env implements SharedService {
 	public function unset($key) { unset ($this->env[$key]); }
 
 	public function load($file): array {
-
 		$env = $this->config->iniPath() . $file . '.yml';
 		$env_local = $this->config->iniPath() . $file . '.local.yml';
 		$cache_file = $this->config->envPath() . '/' . $file . '.php';
