@@ -4,8 +4,34 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "259f9cd1c3a69c15b64e727b47a65c54",
+    "content-hash": "fff062b27583067f00d1abcee6fb19d8",
     "packages": [
+        {
+            "name": "laborci/valentine-date",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laborci/valentine-date.git",
+                "reference": "e4627cb861e438bfab761892c5fa071980823990"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laborci/valentine-date/zipball/e4627cb861e438bfab761892c5fa071980823990",
+                "reference": "e4627cb861e438bfab761892c5fa071980823990",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Valentine\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "time": "2019-02-14T15:45:26+00:00"
+        },
         {
             "name": "minime/annotations",
             "version": "3.1.0",

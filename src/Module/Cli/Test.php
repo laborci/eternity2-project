@@ -9,19 +9,20 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class Test extends Command{
 
 	protected function configure(){
-		$this
-			->setName('test');
+		$this->setName('test');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$style = new SymfonyStyle($input, $output);
 
-		$user = new User();
+//		$u = User::$model->connection->createSmartAccess()->getRows('SELECT * FROM user limit 1');
 
-		$u = User::$connection->createSmartAccess()->getRows('SELECT * FROM user limit 1');
+		$user = User::pick(1);
 
-		print_r($u);
+		var_export($user);
+		var_export($user->record());
 
+		//var_export(User::$model);
 
 		$style->success('Done');
 	}
