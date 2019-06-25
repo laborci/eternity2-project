@@ -17,7 +17,7 @@ class Relation {
 		$this->descriptor = $descriptor;
 	}
 
-	public function get(Ghost $object, $order=null, $limit=null, $offset = 0){
+	public function get(Ghost $object, $order=null, $limit=null, $offset = null){
 		switch ($this->type){
 			case self::TYPE_BELONGSTO:
 				$targetGhost = $this->descriptor['ghost'];
@@ -29,7 +29,7 @@ class Relation {
 				$field = $this->descriptor['field'];
 				/** @var \Eternity2\Ghost\Repository $repository */
 				$repository = $targetGhost::$model->repository;
-				return $repository->search(Filter::where($field.'=$1', $object->id))->orderIf(!is_null($order), $order)->collect($limit, $offset);
+				return $repository->search(Filter::where($field.'=$1', $object->id))->orderIf(!is_null($order), $order)->collect($limit, intval($offset));
 				break;
 		}
 		return null;

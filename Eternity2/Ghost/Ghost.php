@@ -50,9 +50,10 @@ abstract class Ghost implements \JsonSerializable{
 	public function __call(string $name, $arguments){
 		$relation = array_key_exists($name, static::$model->relations) ? static::$model->relations[$name] : null;
 		if ($relation && $relation->type === Relation::TYPE_HASMANY){
-			list($order, $limit, $offset) = $arguments;
+			list($order, $limit, $offset) = array_pad($arguments,3, null);
 			return $relation->get($this, $order, $limit, $offset);
 		}
+		return null;
 	}
 
 	final public function compose($record){
