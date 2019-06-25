@@ -31,7 +31,7 @@ class Repository {
 			if($record){
 				/** @var Ghost $object */
 				$object = new $this->ghost();
-				$object->record($record);
+				$object->compose($record);
 				$this->addToCache($object);
 			}else return null;
 		}
@@ -56,7 +56,7 @@ class Repository {
 			foreach ($records as $record) {
 				/** @var Ghost $object */
 				$object = new $this->ghost();
-				$object->record($record);
+				$object->compose($record);
 				$this->addToCache($object);
 				$objects[] = $object;
 			}
@@ -67,12 +67,12 @@ class Repository {
 	protected function count(Filter $filter = null) { return $this->dbRepository->count($filter); }
 
 	public function insert(Ghost $object) {
-		$record = $object->record();
+		$record = $object->decompose();
 		return $this->dbRepository->insert($record);
 	}
 
 	public function update(Ghost $object) {
-		$record = $object->record();
+		$record = $object->decompose();
 		return $this->dbRepository->update($record);
 	}
 
@@ -86,7 +86,7 @@ class Repository {
 		$finder->setConverter(function ($record) {
 			/** @var Ghost $object */
 			$object = new $this->ghost();
-			$object->record($record);
+			$object->compose($record);
 			$this->addToCache($object);
 			return $object;
 		});

@@ -6,15 +6,18 @@ use Eternity2\DBAccess\Finder\AbstractFinder;
  * @mixin Ghost
  */
 trait GhostRepositoryFacadeTrait{
-	static public function pick($id): ?self{
-		if($id instanceof AbstractFinder) return $id->pick();
-		else return static::$model->repository->pick($id);
-	}
-	/** @return self[] */
-	static public function collect($ids): array{
-		if($ids instanceof AbstractFinder) return $ids->collect();
-		else return static::$model->repository->collect($ids);
+
+	/** @return self */
+	static final public function pick($id): ?self{
+		return static::$model->repository->pick($id);
 	}
 
-	static public function search(Filter $filter = null): AbstractFinder{ return static::$model->repository->search($filter); }
+	/** @return self[] */
+	static final public function collect($ids): array{
+		return static::$model->repository->collect($ids);
+	}
+
+	static final public function search(Filter $filter = null): AbstractFinder{
+		return static::$model->repository->search($filter);
+	}
 }

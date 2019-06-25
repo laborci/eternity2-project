@@ -32,7 +32,7 @@ class Test extends Command{
 //		User::create(User::search(Filter::where('1=1')))->name;
 
 
-		echo User::search(Filter::where('id=5'))->pick()->name;
+		echo User::search(Filter::where('id=5'))->pick()->workers()[0]->name;
 
 //		$query = User::$model->connection->query('SELECT * FROM user join article as art on art.authorId = user.id');
 //		$record = $query->fetchAll(\PDO::FETCH_NUM);

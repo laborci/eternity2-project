@@ -1,4 +1,9 @@
 :Eternity2
+
+- GHOST
+    - attachments
+
+
 - clear cache
 - public cleanup
 - .keep
@@ -8,3 +13,4 @@
 + virtualhost dev/prod
 + measure and cache middlewares
 + remotelog config
+

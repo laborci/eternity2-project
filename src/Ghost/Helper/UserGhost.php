@@ -8,10 +8,11 @@ use Eternity2\System\ServiceManager\ServiceContainer;
 use Ghost\User;
 
 /**
+ * @method static UserFinder search(Filter $filter = null)
  * @property-read int    id
  * @property-read User   boss
  * @property-read User[] workers
- * @method static UserFinder search(Filter $filter = null)
+ * @method User[] workers($order=null, $limit=null, $offset=null)
  */
 class UserGhost extends Ghost{
 	protected $id;
@@ -22,7 +23,7 @@ class UserGhost extends Ghost{
 	public $data;
 	public $bossId;
 
-	static protected function createModel(string $connection, string $table): Model{
+	final static protected function createModel(string $connection, string $table): Model{
 		$model = new Model(ServiceContainer::get($connection), $table, get_called_class());
 		$model->addField('id', Field::TYPE_ID);
 		$model->addField('name', Field::TYPE_STRING);
