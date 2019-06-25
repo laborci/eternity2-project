@@ -88,7 +88,7 @@ abstract class Ghost implements \JsonSerializable {
 	public function delete() {
 		if ($this->isExists()) {
 			if ($this->on(self::EVENT___BEFORE_DELETE) === false) return false;
-//			$this->repository->delete($this);
+			static::$model->repository->delete($this);
 			$this->deleted = true;
 			$this->on(self::EVENT___AFTER_DELETE);
 		}
@@ -106,15 +106,14 @@ abstract class Ghost implements \JsonSerializable {
 
 	private function update() {
 		if ($this->on(self::EVENT___BEFORE_UPDATE) === false) return false;
-//		$this->repository->update($this);
+		static::$model->repository->update($this);
 		$this->on(self::EVENT___AFTER_UPDATE);
 		return true;
 	}
 
 	private function insert() {
 		if ($this->on(self::EVENT___BEFORE_INSERT) === false) return false;
-//		$id = $this->repository->insert($this);
-//		$this->record->set('id', $id);
+		$this->id = static::$model->repository->insert($this);
 		$this->on(self::EVENT___AFTER_INSERT);
 		return $this->id;
 	}

@@ -2,6 +2,7 @@
 
 
 use Eternity2\DBAccess\Filter\Filter;
+use Eternity2\DBAccess\Finder\AbstractFinder;
 use Eternity2\System\Cache\MemoryCache;
 
 class Repository {
@@ -11,11 +12,14 @@ class Repository {
 	protected $ghost;
 	/** @var MemoryCache  */
 	protected $cache;
+	/** @var  */
+	protected $dbRepository;
 
-	public function __construct($ghost, $model) {
+	public function __construct($ghost, Model $model) {
 		$this->ghost = $ghost;
 		$this->model = $model;
 		$this->cache = new MemoryCache();
+		$this->dbRepository = $model->connection->createRepository($model->table);
 	}
 	private function addToCache(Ghost $object) { $this->cache->add($object, $object->id); }
 
@@ -23,7 +27,7 @@ class Repository {
 		if($id === null) return null;
 		$object = $this->cache->get($id);
 		if (is_null($object)){
-			$record = $this->model->connection->createRepository($this->model->table)->pick($id);
+			$record = $this->dbRepository->pick($id);
 			if($record){
 				/** @var Ghost $object */
 				$object = new $this->ghost();
@@ -48,7 +52,7 @@ class Repository {
 			}
 		}
 		if (count($ids)) {
-			$records = $this->model->connection->createRepository($this->model->table)->collect($ids);
+			$records = $this->dbRepository->collect($ids);
 			foreach ($records as $record) {
 				/** @var Ghost $object */
 				$object = new $this->ghost();
@@ -60,32 +64,32 @@ class Repository {
 		return $objects;
 	}
 
-	protected function count(Filter $filter = null) { return $this->repository->count($filter); }
+	protected function count(Filter $filter = null) { return $this->dbRepository->count($filter); }
 
-	public function insert(Entity $object) {
-		$dto = $object->getDTO();
-		$record = $this->PDODTOConverter->convertToPDO($dto);
-		return $this->repository->insert($record);
+	public function insert(Ghost $object) {
+		$record = $object->record();
+		return $this->dbRepository->insert($record);
 	}
 
-	public function update(Entity $object) {
-		$dto = $object->getDTO();
-		$record = $this->PDODTOConverter->convertToPDO($dto);
-		return $this->repository->update($record);
+	public function update(Ghost $object) {
+		$record = $object->record();
+		return $this->dbRepository->update($record);
 	}
 
-	public function delete(Entity $object) {
+	public function delete(Ghost $object) {
 		$this->cache->delete($object->id);
-		return $this->repository->delete($object->id);
+		return $this->dbRepository->delete($object->id);
 	}
 
-	public function search(Filter $filter = null) {
-		$finder = $this->repository->search($filter);
-		return $finder->setConverter(function ($record) {
-			$dto = $this->PDODTOConverter->convertToDTO($record);
-			$object = $this->createEntity($dto, $this);
+	public function search(Filter $filter = null):AbstractFinder {
+		$finder = $this->dbRepository->search($filter);
+		$finder->setConverter(function ($record) {
+			/** @var Ghost $object */
+			$object = new $this->ghost();
+			$object->record($record);
 			$this->addToCache($object);
 			return $object;
 		});
+		return $finder;
 	}
 }
