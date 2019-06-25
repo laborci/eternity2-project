@@ -27,42 +27,95 @@ class Field {
 		$this->type = $type;
 	}
 
-	public function protect($getter, $setter){
+	public function protect($getter, $setter) {
 		$this->protected = true;
 		$this->getter = $getter;
 		$this->setter = $setter;
 	}
 
-	public function readRecord($value){
-		if($value === null) return null;
-		switch ($this->type){
+	public function compose($value) {
+		if ($value === null) return null;
+		switch ($this->type) {
 			case self::TYPE_DATE:
 				return new Date($value);
+
 			case self::TYPE_DATETIME:
 				return new \DateTime($value);
+
+			case self::TYPE_INT:
+				return intval($value);
+
+			case self::TYPE_ID:
+				return intval($value)>0 ? intval($value) : null;
+
+			case self::TYPE_FLOAT:
+				return floatval($value);
+
 			case self::TYPE_BOOl:
 				return (bool)$value;
+
 			case self::TYPE_SET:
 				return !$value ? [] : explode(',', $value);
+
 			case self::TYPE_JSON:
 				return json_decode($value, true);
 		}
 		return $value;
 	}
 
-	public function writeRecord($value){
-		if($value === null) return null;
-		switch ($this->type){
+	public function decompose($value) {
+		if ($value === null) return null;
+		switch ($this->type) {
 			case self::TYPE_DATE:
-				return (function(Date $date){return $date->format('Y-m-d');})($value);
+				return (function (Date $date) { return $date->format('Y-m-d'); })($value);
+
 			case self::TYPE_DATETIME:
-				return (function(\DateTime $date){return $date->format('Y-m-d H:i:s');})($value);
+				return (function (\DateTime $date) { return $date->format('Y-m-d H:i:s'); })($value);
+
+			case self::TYPE_INT:
+				return intval($value);
+
+			case self::TYPE_ID:
+				return intval($value)>0 ? intval($value) : null;
+
+			case self::TYPE_FLOAT:
+				return floatval($value);
+
 			case self::TYPE_BOOl:
 				return (int)((bool)$value);
+
 			case self::TYPE_SET:
 				return join(',', $value);
+
 			case self::TYPE_JSON:
 				return json_encode($value);
+		}
+		return $value;
+	}
+
+	public function export($value) {
+		if ($value === null) return null;
+		switch ($this->type) {
+			case self::TYPE_DATE:
+				return (function (Date $date) { return $date->format('c'); })($value);
+
+			case self::TYPE_DATETIME:
+				return (function (\DateTime $date) { return $date->format('c'); })($value);
+
+			case self::TYPE_BOOl:
+				return (bool)$value;
+
+			case self::TYPE_INT:
+				return intval($value);
+
+			case self::TYPE_FLOAT:
+				return floatval($value);
+
+			case self::TYPE_SET:
+				return join(',', $value);
+
+			case self::TYPE_JSON:
+				return $value;
 		}
 		return $value;
 	}

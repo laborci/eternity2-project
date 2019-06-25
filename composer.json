@@ -20,6 +20,7 @@
         "psr-4": {
             "Application\\": "src/",
             "Entity\\": "src/Entity",
+            "Ghost\\": "src/Ghost",
             "Eternity2\\System\\": "Eternity2/System/",
             "Eternity2\\RemoteLog\\": "Eternity2/RemoteLog/",
             "Eternity2\\WebApplication\\": "Eternity2/WebApplication/",

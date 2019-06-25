@@ -1,11 +1,12 @@
-<?php namespace Application\Ghost;
+<?php namespace Ghost;
 
-use Application\Ghost\Helper\UserGhost;
+use Ghost\Helper\UserGhost;
 
 class User extends UserGhost {
 
 
 }
 
-User::initialize(\DefaultDBConnection::class, 'user');
-
+User::model(\DefaultDBConnection::class, 'user');
+User::$model->belongsTo('boss', User::class);
+User::$model->hasMany('workers', User::class, 'bossId');
