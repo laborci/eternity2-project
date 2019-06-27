@@ -2,8 +2,7 @@
 
 interface AttachmentOwnerInterface {
 
-	public function getStoragePath();
-	public static function wakeup($params);
-	public function getWakeupParams();
+	public function getStoragePath():string;
+	public function getAttachmentDescriptor():AttachmentDescriptor;
 
 }
