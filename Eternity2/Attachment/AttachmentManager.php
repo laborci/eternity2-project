@@ -27,38 +27,27 @@ class AttachmentManager {
 //	public function getUrlBase(): string { return $this->urlBase; }
 //	public function getOwner(): string { return $this->owner; }
 //
+	/** @var string */
+	protected $metafile;
 
 	/** @var AttachmentOwnerInterface */
 	protected $owner;
 	/** @var AttachmentDescriptor */
 	protected $descriptor;
-	/** @var AttachmentSystem */
-	protected $system;
+
 	protected $path;
 	protected $url;
 
-	public function __construct(AttachmentOwnerInterface $owner, AttachmentSystem $system) {
+	public function __construct(AttachmentOwnerInterface $owner, $basePath, $baseUrl, $metaFilePath) {
 		$this->owner = $owner;
 		$this->descriptor = $owner->getAttachmentDescriptor();
 		$path = $this->owner->getStoragePath();
-		$this->system = $system;
 
-		$this->path = $system->getBasePath() . $path;
-		$this->url = $system->getBaseUrl() . $path;
+		$this->path = $basePath . $path;
+		$this->url = $baseUrl . $path;
+		$this->metafile = $metaFilePath . $owner->getMetaFileName();
 
-		if (!is_dir($this->path)) {
-			mkdir($this->path, 0777, true);
-		}
-
-
-		//$this->config = ServiceContainer::get(Config::class);
-		//$this->descriptor = $descriptor;
-		//$ownerId = $owner->id ? $owner->id : '0';
-
-
-		//$this->path = $this->config->attachmentPath() . $descriptor->getEntityShortName() . '/' . $ownerId . '/' . $descriptor->getName() . '/';
-		//$this->pathId = $descriptor->getEntityShortName() . '-' . $ownerId . '-' . $descriptor->getName();
-		//$this->urlBase = $this->config->attachmentUrl() . $descriptor->getEntityShortName() . '/' . $ownerId . '/' . $descriptor->getName() . '/';
+		if (!is_dir($this->path)) {mkdir($this->path, 0777, true);}
 	}
 
 

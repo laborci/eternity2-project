@@ -3,7 +3,6 @@
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-
 class AttachmentDescriptor{
 
 	protected $name;
@@ -12,13 +11,13 @@ class AttachmentDescriptor{
 	protected $maxFileCount = INF;
 	protected $entityShortName;
 
-	function __construct($name, $entityShortName) {
+	function __construct($name, $entityShortName){
 		$this->name = $name;
 		$this->entityShortName = $entityShortName;
 	}
 
 	public function acceptExtensions(...$extensions){
-		$this->acceptedExtensions = array_map(function($ext){return strtolower($ext);}, $extensions);
+		$this->acceptedExtensions = array_map(function ($ext){ return strtolower($ext); }, $extensions);
 		return $this;
 	}
 
@@ -30,16 +29,12 @@ class AttachmentDescriptor{
 	/**
 	 * @return null
 	 */
-	public function getAcceptedExtensions() {
-		return $this->acceptedExtensions;
-	}
+	public function getAcceptedExtensions(){return $this->acceptedExtensions; }
 
 	/**
 	 * @return mixed
 	 */
-	public function getMaxFileSize() {
-		return $this->maxFileSize;
-	}
+	public function getMaxFileSize(){ return $this->maxFileSize; }
 
 	public function maxFileCount(int $maxFileCount){
 		$this->maxFileCount = $maxFileCount;
@@ -49,28 +44,27 @@ class AttachmentDescriptor{
 	/**
 	 * @return string
 	 */
-	public function getName() {
+	public function getName(){
 		return $this->name;
 	}
 
 	/**
 	 * @param \Symfony\Component\HttpFoundation\File\File $upload
-	 *
 	 * @return bool
 	 */
 	public function isValidUpload(File $upload){
 
-		if($upload->getSize() > $this->maxFileSize) {
+		if ($upload->getSize() > $this->maxFileSize){
 			return false;
 		}
 
-		if($upload instanceof UploadedFile){
+		if ($upload instanceof UploadedFile){
 			$ext = $upload->getClientOriginalExtension();
 		}else{
 			$ext = $upload->getExtension();
 		}
 
-		if(!is_null($this->acceptedExtensions) && !in_array($ext, $this->acceptedExtensions)){
+		if (!is_null($this->acceptedExtensions) && !in_array($ext, $this->acceptedExtensions)){
 			return false;
 		}
 		return true;
@@ -79,16 +73,15 @@ class AttachmentDescriptor{
 	/**
 	 * @return int
 	 */
-	public function getMaxFileCount() {
+	public function getMaxFileCount(){
 		return $this->maxFileCount;
 	}
 
 	/**
 	 * @return mixed
 	 */
-	public function getEntityShortName() {
+	public function getEntityShortName(){
 		return $this->entityShortName;
 	}
-
 
 }

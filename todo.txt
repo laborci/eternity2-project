@@ -2,6 +2,7 @@
 
 - GHOST
     - attachments
+    - throw exception on insufficient fields at ghost creation
 
 
 - clear cache
