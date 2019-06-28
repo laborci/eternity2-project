@@ -21,6 +21,7 @@
             "Application\\": "src/",
             "Entity\\": "src/Entity",
             "Ghost\\": "src/Ghost",
+            "Eternity2\\Attachment\\": "Eternity2/Attachment/",
             "Eternity2\\System\\": "Eternity2/System/",
             "Eternity2\\RemoteLog\\": "Eternity2/RemoteLog/",
             "Eternity2\\WebApplication\\": "Eternity2/WebApplication/",

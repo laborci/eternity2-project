@@ -6,6 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\HttpFoundation\File\File;
 
 class Test extends Command{
 
@@ -15,22 +16,30 @@ class Test extends Command{
 
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$style = new SymfonyStyle($input, $output);
-
-		$connection = new \SQLite3(env('root').'var/attachment-metadata/User.sqlite');
-
-		$statement = $connection->prepare('INSERT INTO file (path, file) VALUES (:path, :file)');
-
 		$time = microtime(true);
 
-		$result = $connection->query("select * from file where path = '00/cc/14'");
-		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
+		$user = User::pick(1);
+		//var_export($user->getAttachmentManager());
+		$user->getAttachmentManager()->addFile(new File(env('root').'/todo.txt'), 'avatar');
+		var_export($user->getAttachmentManager());
+		echo $user->name;
 
-		$result = $connection->query("select * from file where path = '00/ac/14'");
-		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
 
-		$result = $connection->query("select * from file where path = '00/bc/14'");
-		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
-
+//		$connection = new \SQLite3(env('root').'var/attachment-metadata/User.sqlite');
+//
+//		$statement = $connection->prepare('INSERT INTO file (path, file) VALUES (:path, :file)');
+//
+//
+//
+//		$result = $connection->query("select * from file where path = '00/cc/14'");
+//		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
+//
+//		$result = $connection->query("select * from file where path = '00/ac/14'");
+//		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
+//
+//		$result = $connection->query("select * from file where path = '00/bc/14'");
+//		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
+//
 
 //
 //		$start = 1;
@@ -54,7 +63,6 @@ class Test extends Command{
 //		$connection->exec('commit');
 
 
-		$style->success(microtime(true) - $time);
 		/*
 				$user = User::pick(1);
 
@@ -82,6 +90,7 @@ class Test extends Command{
 //			print_r($meta);
 //		}
 //		print_r($record);
+		$style->success(microtime(true) - $time);
 
 	}
 

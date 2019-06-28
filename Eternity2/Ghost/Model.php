@@ -2,7 +2,10 @@
 
 namespace Eternity2\Ghost;
 
+use Eternity2\Attachment\AttachmentCategory;
+use Eternity2\Attachment\AttachmentDescriptor;
 use Eternity2\DBAccess\PDOConnection\AbstractPDOConnection;
+use Eternity2\System\ServiceManager\ServiceContainer;
 
 class Model {
 
@@ -16,6 +19,8 @@ class Model {
 	public $ghost;
 	/** @var Repository */
 	public $repository;
+	/** @var AttachmentDescriptor */
+	protected $attachmentDescriptor;
 
 	public function __construct($connection, $table, $ghost) {
 		$this->connection = $connection;
@@ -39,15 +44,31 @@ class Model {
 		return $this->relations[$target] = new Relation($target, Relation::TYPE_HASMANY, ['ghost' => $ghost, 'field' => $field]);
 	}
 
-	public function belongsTo($target, $ghost, $field=null): Relation {
-		if($field === null) $field = $target.'Id';
+	public function belongsTo($target, $ghost, $field = null): Relation {
+		if ($field === null) $field = $target . 'Id';
 		return $this->relations[$target] = new Relation($target, Relation::TYPE_BELONGSTO, ['ghost' => $ghost, 'field' => $field]);
 	}
-
-	public function hasAttachment() { return null; }
 
 	public function addField($name, $type): Field {
 		return $this->fields[$name] = new Field($name, $type);
 	}
 
+	public function hasAttachment($name): AttachmentCategory {
+		$category = new AttachmentCategory($name);
+		$this->getAttachmentDescriptor()->addCategory($category);
+		return $category;
+	}
+
+	public function getAttachmentDescriptor() {
+		if ($this->attachmentDescriptor === null) {
+			/** @var Config $config */
+			$config = ServiceContainer::get(Config::class);
+			$this->attachmentDescriptor = new AttachmentDescriptor(
+				$config->attachmentPath().'/'.$this->table,
+				$config->attachmentUrl().'/'.$this->table,
+				$config->attachmentMetaDBPath() . '/' . $this->table . '.sqlite'
+			);
+		}
+		return $this->attachmentDescriptor;
+	}
 }

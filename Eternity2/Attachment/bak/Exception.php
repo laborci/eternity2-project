@@ -1,4 +1,4 @@
-<?php namespace Eternity2\Attachment;
+<?php namespace Eternity2\z;
 
 class Exception extends \Exception{
 	const FILE_SIZE_ERROR = 1;

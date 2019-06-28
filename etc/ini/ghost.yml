@@ -1,0 +1,11 @@
+default-database: DefaultDBConnection
+
+generator:
+    ghost-path: /src/Ghost
+    ghost-namespace: Ghost
+
+attachment:
+    path: public/attachments
+    url: attachments
+    meta-db-path: var/attachment-meta
+

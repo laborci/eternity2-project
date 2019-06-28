@@ -1,8 +1,8 @@
-<?php namespace Eternity2\Attachment;
+<?php namespace Eternity2\z;
 
-use Eternity2\System\Config\ConfigBuilder;
+use Eternity2\System\Config\ConfigBridge;
 
-class Config extends ConfigBuilder {
+class Config extends ConfigBridge {
 
 	protected $env = 'redfox';
 

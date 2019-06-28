@@ -1,9 +1,9 @@
 <?php namespace Eternity2\RemoteLog;
 
 
-use Eternity2\System\Config\ConfigBuilder;
+use Eternity2\System\Config\ConfigBridge;
 
-class Config  extends ConfigBuilder {
+class Config  extends ConfigBridge {
 
 	protected $env = 'remote-log';
 	protected $host;

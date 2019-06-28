@@ -2,9 +2,7 @@
 
 interface AttachmentOwnerInterface {
 
-	public function getStoragePath():string;
-	public function getAttachmentDescriptor():AttachmentDescriptor;
-	public function getMetaFileName():string;
-	public function createAttachmentManager():AttachmentManager;
+	public function getAttachmentManager():AttachmentManager;
+	public function attachmentAdded($filename);
 
 }

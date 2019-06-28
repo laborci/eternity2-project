@@ -7,6 +7,7 @@ class User extends UserGhost {
 
 }
 
-User::model(\DefaultDBConnection::class, 'user');
+User::model('user');
 User::$model->belongsTo('boss', User::class);
 User::$model->hasMany('workers', User::class, 'bossId');
+User::$model->hasAttachment('avatar');

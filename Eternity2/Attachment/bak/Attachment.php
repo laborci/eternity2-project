@@ -1,4 +1,4 @@
-<?php namespace Eternity2\Attachment;
+<?php namespace Eternity2\z;
 
 use Symfony\Component\HttpFoundation\File\File;
 

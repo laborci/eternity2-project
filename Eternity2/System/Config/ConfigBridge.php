@@ -5,7 +5,7 @@ use Eternity2\System\Env\Env;
 use Eternity2\System\ServiceManager\Service;
 use Eternity2\System\ServiceManager\SharedService;
 
-abstract class ConfigBuilder implements SharedService {
+abstract class ConfigBridge implements SharedService {
 
 	use Service;
 

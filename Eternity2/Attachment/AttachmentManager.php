@@ -1,10 +1,6 @@
 <?php namespace Eternity2\Attachment;
 
-use Eternity2\System\ServiceManager\ServiceContainer;
-use Eternity2\RedFox\Entity;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 
 
 class AttachmentManager {
@@ -28,41 +24,72 @@ class AttachmentManager {
 //	public function getOwner(): string { return $this->owner; }
 //
 	/** @var string */
-	protected $metafile;
+	protected $metaFile;
 
 	/** @var AttachmentOwnerInterface */
 	protected $owner;
-	/** @var AttachmentDescriptor */
-	protected $descriptor;
+	protected $ownerPath;
 
 	protected $path;
 	protected $url;
 
-	public function __construct(AttachmentOwnerInterface $owner, $basePath, $baseUrl, $metaFilePath) {
+	/** @var Attachment[] */
+	protected $attachments;
+	/** @var AttachmentDescriptor */
+	private $descriptor;
+
+	/**
+	 * AttachmentManager constructor.
+	 * @param AttachmentOwnerInterface $owner
+	 * @param $path
+	 * @param $url
+	 * @param $metaFile
+	 * @param AttachmentCategory[] $categories
+	 */
+	public function __construct(AttachmentOwnerInterface $owner, AttachmentDescriptor $descriptor, $ownerPath) {
 		$this->owner = $owner;
-		$this->descriptor = $owner->getAttachmentDescriptor();
-		$path = $this->owner->getStoragePath();
-
-		$this->path = $basePath . $path;
-		$this->url = $baseUrl . $path;
-		$this->metafile = $metaFilePath . $owner->getMetaFileName();
-
-		if (!is_dir($this->path)) {mkdir($this->path, 0777, true);}
+		$this->ownerPath = $ownerPath;
+		$this->path = $descriptor->getPath() . $ownerPath;
+		$this->url = $descriptor->getUrl() . $ownerPath;
+		$this->descriptor = $descriptor;
 	}
 
 
-	public function getFiles(): array {
-		$files = glob($this->path . '/*');
-		$attachments = [];
-		foreach ($files as $file) {
-			$attachment = new Attachment($file);
-			$attachments[$attachment->getFilename()] = $attachment;
-		}
-		return $attachments;
-	}
+//	public function getFiles(): array {
+//		$files = glob($this->path . '/*');
+//		$attachments = [];
+//		foreach ($files as $file) {
+//			$attachment = new Attachment($file);
+//			$attachments[$attachment->getFilename()] = $attachment;
+//		}
+//		return $attachments;
+//	}
 
-	public function getAttachments($category){
+	public function addFile(File $file, $category) {
+		$category = $this->descriptor->getCategory($category);
 
+//		if ($category->getAttachmentCount() >= $this->descriptor->getMaxFileCount() && !$replace) {
+//			throw new Exception("Too many files", Exception::FILE_COUNT_ERROR);
+//		} else if ($file->getSize() > $this->descriptor->getMaxFileSize()) {
+//			throw new Exception("Too big file", Exception::FILE_SIZE_ERROR);
+//		} else if (is_array($this->descriptor->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->descriptor->getAcceptedExtensions())) {
+//			throw new Exception("File type is not accepted", Exception::FILE_TYPE_ERROR);
+//		} else {
+//		if ($this->descriptor->getMaxFileCount() == 1 && $this->getAttachmentCount() == 1 && $replace) {
+//			$this->first->delete();
+//		}
+
+
+		if (!is_dir($this->path)) mkdir($this->path, 0777, true);
+		copy($file->getPath() . '/' . $file->getFilename(), $this->path . $file->getFilename());
+		$this->attachments = null;
+
+		$attachment = new Attachment($file->getFilename(), $this->ownerPath, $this->descriptor, [$category->getName()], $file->getSize());
+		$attachment->storeMeta();
+
+		$this->owner->attachmentAdded($file->getFilename());
+		return true;
+//		}
 	}
 
 //
