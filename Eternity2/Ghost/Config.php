@@ -4,16 +4,13 @@ use Eternity2\System\Config\ConfigBridge;
 
 class Config extends ConfigBridge{
 
-	protected $env = 'ghost';
-
 	protected $attachmentPath;
 	protected $attachmentMetaFilePath;
 	protected $attachmentMetaDBPath;
 	protected $ghostPath;
 	protected $ghostNamespace;
 
-	public function __construct(){
-		parent::__construct();
+	protected function onConstruct(){
 		$this->config['attachment']['path'] = env('root') . $this->config['attachment']['path'];
 		$this->config['attachment']['meta-db-path'] = env('root') . $this->config['attachment']['meta-db-path'];
 

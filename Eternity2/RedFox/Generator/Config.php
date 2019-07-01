@@ -4,12 +4,9 @@ use Eternity2\System\Config\ConfigBridge;
 
 class Config extends ConfigBridge {
 
-	protected $env = 'redfox';
-
 	protected $entityPath;
 
-	public function __construct() {
-		parent::__construct();
+	protected function onConstruct(){
 		$this->entityPath = env('root').$this->config['generator']['entity-path'];
 	}
 

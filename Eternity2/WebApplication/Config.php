@@ -4,14 +4,11 @@ use Eternity2\System\Config\ConfigBridge;
 
 class Config extends ConfigBridge {
 
-	protected $env = 'web-appication';
-
 	protected $twigSources = [];
 	protected $outputCache;
 	protected $clientVersion;
 
-	public function __construct() {
-		parent::__construct();
+	protected function onConstruct(){
 		$sources = $this->config['twig']['sources'];
 		if (is_array($sources)) $this->twigSources = array_map(function ($source) { return env('root') . $source; }, $sources);
 		dump($this->twigSources);

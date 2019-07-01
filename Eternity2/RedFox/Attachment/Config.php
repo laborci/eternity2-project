@@ -4,13 +4,10 @@ use Eternity2\System\Config\ConfigBridge;
 
 class Config extends ConfigBridge {
 
-	protected $env = 'redfox';
-
 	protected $attachmentPath;
 	protected $thumbnailPath;
 
-	public function __construct() {
-		parent::__construct();
+	protected function onConstruct(){
 		$this->attachmentPath = env('root').$this->config['attachment']['attachment-path'];
 		$this->thumbnailPath = env('root').$this->config['attachment']['thumbnail-path'];
 	}

@@ -58,7 +58,9 @@ class ServiceFactory{
 			$service = ServiceContainer::get($this->factory[0])->$method($this->name);
 		}else{
 			$class = $this->service;
+			echo 'create: '.$class."\n";
 			$reflect = new \ReflectionClass($class);
+			echo 'done.'."\n";
 			$constructor = $reflect->getConstructor();
 			$arguments = [];
 
