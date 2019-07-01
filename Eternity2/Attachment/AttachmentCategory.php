@@ -3,49 +3,65 @@
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class AttachmentCategory {
+class AttachmentCategory{
 
 	protected $name;
 	protected $acceptedExtensions = [];
 	protected $maxFileSize = INF;
 	protected $maxFileCount = INF;
+	/** @var \Eternity2\Attachment\AttachmentDescriptor */
+	private $descriptor;
+	/** @var \Eternity2\Attachment\AttachmentCategoryManager */
+	private $attachmentCategoryManager;
 
-	function __construct($name) {
+	function __construct($name, AttachmentDescriptor $descriptor){
 		$this->name = $name;
+		$this->descriptor = $descriptor;
 	}
 
-	public function acceptExtensions(...$extensions): self {
-		$this->acceptedExtensions = array_map(function ($ext) { return strtolower($ext); }, $extensions);
+	public function acceptExtensions(...$extensions): self{
+		$this->acceptedExtensions = array_map(function ($ext){ return strtolower($ext); }, $extensions);
 		return $this;
 	}
 
-	public function maxFileSize(int $maxFileSizeInBytes): self {
+	public function maxFileSize(int $maxFileSizeInBytes): self{
 		$this->maxFileSize = $maxFileSizeInBytes;
 		return $this;
 	}
 
-	public function maxFileCount(int $maxFileCount): self {
+	public function maxFileCount(int $maxFileCount): self{
 		$this->maxFileCount = $maxFileCount;
 		return $this;
 	}
 
-	/** @return string[] */
-	public function getAcceptedExtensions() { return $this->acceptedExtensions; }
-
-	/** @return int */
-	public function getMaxFileSize() { return $this->maxFileSize; }
-
-	/** @return string */
-	public function getName(): string { return $this->name; }
-
-	public function isValidUpload(File $upload) {
-		if ($upload->getSize() > $this->maxFileSize) return false;
-		$ext = $upload instanceof UploadedFile ? $upload->getClientOriginalExtension() : $upload->getExtension();
-		if (!is_null($this->acceptedExtensions) && !in_array($ext, $this->acceptedExtensions)) return false;
-		return true;
+	public function getCategoryManager($ownerPath):AttachmentCategoryManager{
+		if(is_null($this->attachmentCategoryManager)){
+			$this->attachmentCategoryManager = new AttachmentCategoryManager($this, $ownerPath);
+		}
+		return $this->attachmentCategoryManager;
 	}
 
+	/** @return string[] */
+	public function getAcceptedExtensions(){ return $this->acceptedExtensions; }
+
 	/** @return int */
-	public function getMaxFileCount() { return $this->maxFileCount; }
+	public function getMaxFileSize(){ return $this->maxFileSize; }
+
+	/** @return string */
+	public function getName(): string{ return $this->name; }
+
+	/** @return int */
+	public function getMaxFileCount(){ return $this->maxFileCount; }
+
+	public function getDescriptor(): \Eternity2\Attachment\AttachmentDescriptor{ return $this->descriptor; }
+
+	public function isValidUpload(File $upload){
+		if ($upload->getSize() > $this->maxFileSize)
+			return false;
+		$ext = $upload instanceof UploadedFile ? $upload->getClientOriginalExtension() : $upload->getExtension();
+		if (!is_null($this->acceptedExtensions) && !in_array($ext, $this->acceptedExtensions))
+			return false;
+		return true;
+	}
 
 }

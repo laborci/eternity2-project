@@ -3,7 +3,7 @@
 use Symfony\Component\HttpFoundation\File\File;
 
 
-class AttachmentManager {
+class AttachmentCategoryManager {
 
 //	/** @var  Attachment[] */
 //	protected $attachments = null;
@@ -23,37 +23,38 @@ class AttachmentManager {
 //	public function getUrlBase(): string { return $this->urlBase; }
 //	public function getOwner(): string { return $this->owner; }
 //
-	/** @var string */
-	protected $metaFile;
 
-	/** @var AttachmentOwnerInterface */
-	protected $owner;
 	protected $ownerPath;
-
 	protected $path;
 	protected $url;
 
 	/** @var Attachment[] */
-	protected $attachments;
+	protected $attachments = null;
 	/** @var AttachmentDescriptor */
 	private $descriptor;
+	/** @var \Eternity2\Attachment\AttachmentCategory */
+	private $category;
 
-	/**
-	 * AttachmentManager constructor.
-	 * @param AttachmentOwnerInterface $owner
-	 * @param $path
-	 * @param $url
-	 * @param $metaFile
-	 * @param AttachmentCategory[] $categories
-	 */
-	public function __construct(AttachmentOwnerInterface $owner, AttachmentDescriptor $descriptor, $ownerPath) {
-		$this->owner = $owner;
+	public function __construct(AttachmentCategory $category, $ownerPath){
+		$this->category = $category;
 		$this->ownerPath = $ownerPath;
-		$this->path = $descriptor->getPath() . $ownerPath;
-		$this->url = $descriptor->getUrl() . $ownerPath;
-		$this->descriptor = $descriptor;
+		$this->descriptor = $category->getDescriptor();
+		$this->category = $category;
+		$this->path = $this->descriptor->getPath() . $ownerPath;
+		$this->url = $this->descriptor->getUrl() . $ownerPath;
 	}
 
+	public function addFile(File $file){
+
+	}
+
+	public function removeFile($filename){
+
+	}
+
+	public function collect(){
+
+	}
 
 //	public function getFiles(): array {
 //		$files = glob($this->path . '/*');
@@ -87,9 +88,22 @@ class AttachmentManager {
 		$attachment = new Attachment($file->getFilename(), $this->ownerPath, $this->descriptor, [$category->getName()], $file->getSize());
 		$attachment->storeMeta();
 
-		$this->owner->attachmentAdded($file->getFilename());
+//		$this->owner->attachmentAdded($file->getFilename());
 		return true;
-//		}
+	}
+
+	/**
+	 * @return \Eternity2\Attachment\Attachment[]
+	 */
+	public function getAttachments(): array{
+		if(is_null($this->attachments)){
+			$records = $this->descriptor->getMetaManager()->collect($this->ownerPath);
+			$this->attachments = [];
+			foreach ($records as $record){
+
+			}
+		}
+		return $this->attachments;
 	}
 
 //
@@ -205,6 +219,28 @@ class AttachmentManager {
 //		return in_array($name, ['files', 'first']);
 //	}
 
+
+
+	public function DBstore($ownerPath, $file, $size, $meta, $description, $category){
+		$statement = $this->descriptor->getMetaDBConnection()->prepare(
+			"INSERT OR REPLACE INTO file (path, file, size, meta, description, category) 
+						VALUES (:path, :file, :size, :meta, :description, :category)");
+		$statement->bindParam(':path', $ownerPath);
+		$statement->bindParam(':file', $file);
+		$statement->bindParam(':size', $size, SQLITE3_INTEGER);
+		$statement->bindParam(':description', $description);
+		$statement->bindParam(':meta', json_encode($meta));
+		$statement->bindParam(':category', json_encode($category));
+		$statement->execute();
+	}
+
+	public function DBcollect($ownerPath, $category = null){
+
+	}
+
+	public function DBremove($ownerPath, $file, $category){
+
+	}
 
 }
 

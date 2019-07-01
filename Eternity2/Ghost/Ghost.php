@@ -56,6 +56,11 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 		if ($relation) {
 			return $relation->get($this);
 		}
+
+		if(static::$model->getAttachmentDescriptor()->hasCategory($name)){
+			return $this->getAttachmentCategoryManager($name);
+		}
+
 		return null;
 	}
 
@@ -158,4 +163,5 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 
 	protected function on($event, $data = null) { return true; }
 #endregion
+
 }

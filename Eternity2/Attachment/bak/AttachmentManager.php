@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
 /**
- * Class AttachmentManager
+ * Class AttachmentCategoryManager
  * @package RedFox\Entity\Attachment
  * @property-read Attachment[] $files
  * @property-read Attachment $first

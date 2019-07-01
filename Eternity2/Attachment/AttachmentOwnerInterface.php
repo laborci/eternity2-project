@@ -2,7 +2,7 @@
 
 interface AttachmentOwnerInterface {
 
-	public function getAttachmentManager():AttachmentManager;
-	public function attachmentAdded($filename);
+//	public function getAttachmentCategoryManager():AttachmentCategoryManager;
+//	public function attachmentAdded($filename);
 
 }

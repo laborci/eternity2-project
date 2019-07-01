@@ -27,6 +27,7 @@ class AttachmentMetaManager {
 							size int,
 							meta text,
 							description text,
+							category text,
 							constraint file_pk
 								primary key (path, file)
 						);
@@ -53,4 +54,13 @@ class AttachmentMetaManager {
 		$statement->bindParam(':category', json_encode($category));
 		$statement->execute();
 	}
+
+	public function collect($ownerPath, $category = null){
+
+	}
+
+	public function remove($ownerPath, $file, $category){
+
+	}
+
 }

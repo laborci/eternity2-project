@@ -18,7 +18,7 @@ class Test extends Command{
 		$style = new SymfonyStyle($input, $output);
 		$time = microtime(true);
 
-		$user = User::pick(1);
+		$user = User::pick(5);
 		//var_export($user->getAttachmentManager());
 		$user->getAttachmentManager()->addFile(new File(env('root').'/todo.txt'), 'avatar');
 		var_export($user->getAttachmentManager());

@@ -133,7 +133,7 @@ class Creator {
 
 		$attahcmentGroups = $model->getAttachmentGroups();
 		foreach ($attahcmentGroups as $attahcmentGroup) {
-			$generatedLines[] = ' * @property-read \\RedFox\\Entity\\Attachment\\AttachmentManager $' . $attahcmentGroup;
+			$generatedLines[] = ' * @property-read \\RedFox\\Entity\\Attachment\\AttachmentCategoryManager $' . $attahcmentGroup;
 		}
 
 		$fields = join("\n", $generatedLines);

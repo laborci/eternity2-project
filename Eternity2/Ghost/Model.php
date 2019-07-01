@@ -54,9 +54,7 @@ class Model {
 	}
 
 	public function hasAttachment($name): AttachmentCategory {
-		$category = new AttachmentCategory($name);
-		$this->getAttachmentDescriptor()->addCategory($category);
-		return $category;
+		return $this->getAttachmentDescriptor()->addCategory($name);
 	}
 
 	public function getAttachmentDescriptor() {
