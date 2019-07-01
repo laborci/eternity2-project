@@ -1,4 +1,4 @@
-<?php namespace Eternity2\z;
+<?php namespace Eternity2\Attachment\Thumbnail;
 
 use Eternity2\WebApplication\Responder\PageResponder;
 use Eternity2\System\ServiceManager\ServiceContainer;

@@ -18,18 +18,18 @@ class AttachmentCategoryManager {
 
 	/** @var Attachment[] */
 	protected $attachments = null;
-	/** @var AttachmentDescriptor */
-	private $descriptor;
+	/** @var AttachmentStorage */
+	private $attachmentStorage;
 	/** @var \Eternity2\Attachment\AttachmentCategory */
 	private $category;
 
 	public function __construct(AttachmentCategory $category, AttachmentOwnerInterface $owner) {
 		$this->category = $category;
 		$this->owner = $owner;
-		$this->descriptor = $category->getDescriptor();
+		$this->attachmentStorage = $category->getAttachmentStorage();
 		$this->category = $category;
-		$this->path = $this->descriptor->getPath() . $owner->getPath();
-		$this->url = $this->descriptor->getUrl() . $owner->getPath();
+		$this->path = $this->attachmentStorage->getPath() . $owner->getPath();
+		$this->url = $this->attachmentStorage->getUrl() . $owner->getPath();
 	}
 
 	public function getOwner(): AttachmentOwnerInterface { return $this->owner; }
@@ -96,8 +96,8 @@ class AttachmentCategoryManager {
 
 	public function store(Attachment $attachment) {
 		$record = $attachment->getRecord();
-		$statement = $this->descriptor->getMetaDBConnection()
-			->prepare("INSERT OR REPLACE INTO file (path, file, size, meta, description, category, ordinal) 
+		$statement = $this->attachmentStorage->getMetaDBConnection()
+		                                     ->prepare("INSERT OR REPLACE INTO file (path, file, size, meta, description, category, ordinal) 
 						VALUES (:path, :file, :size, :meta, :description, :category, :ordinal)");
 		$statement->bindValue(':path', $record['path']);
 		$statement->bindValue(':file', $record['file']);
@@ -112,8 +112,8 @@ class AttachmentCategoryManager {
 
 	protected function collect() {
 		echo 'collect ' . $this->category->getName() . "\n";
-		$statement = $this->descriptor->getMetaDBConnection()
-			->prepare("SELECT * FROM file WHERE path = :path AND category = :category ORDER BY ordinal, file");
+		$statement = $this->attachmentStorage->getMetaDBConnection()
+		                                     ->prepare("SELECT * FROM file WHERE path = :path AND category = :category ORDER BY ordinal, file");
 		$statement->bindValue(':path', $this->owner->getPath());
 		$statement->bindValue(':category', $this->category->getName());
 		$result = $statement->execute();
@@ -125,15 +125,15 @@ class AttachmentCategoryManager {
 	}
 
 	public function remove(Attachment $attachment) {
-		$statement = $this->descriptor->getMetaDBConnection()
-			->prepare("DELETE FROM file WHERE path = :path AND file = :file AND category = :category");
+		$statement = $this->attachmentStorage->getMetaDBConnection()
+		                                     ->prepare("DELETE FROM file WHERE path = :path AND file = :file AND category = :category");
 		$statement->bindValue(':path', $this->owner->getPath());
 		$statement->bindValue(':category', $this->category->getName());
 		$statement->bindValue(':file', $attachment->getFilename());
 		$statement->execute();
 
-		$statement = $this->descriptor->getMetaDBConnection()
-			->prepare("SELECT count(*) as `count` FROM file WHERE path = :path AND file = :file ORDER BY ordinal, file");
+		$statement = $this->attachmentStorage->getMetaDBConnection()
+		                                     ->prepare("SELECT count(*) as `count` FROM file WHERE path = :path AND file = :file ORDER BY ordinal, file");
 		$statement->bindValue(':path', $this->owner->getPath());
 		$statement->bindValue(':file', $attachment->getFilename());
 

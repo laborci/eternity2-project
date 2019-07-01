@@ -1,7 +1,7 @@
 <?php namespace Eternity2\Attachment\Thumbnail;
 
 use Eternity2\Attachment\Attachment;
-use Eternity2\System\ServiceManager\ServiceContainer;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * @property string $png
@@ -16,26 +16,27 @@ class Thumbnail {
 	protected $file;
 	protected $operation;
 	protected $jpegQuality;
-	protected $path;
+	protected $pathId;
 
 	const CROP_MIDDLE = 0;
 	const CROP_START = -1;
 	const CROP_END = 1;
+	/** @var \Eternity2\Attachment\Thumbnail\Config */
+	private $config;
 
-	public function __construct(Attachment $file) {
+	public function __construct(File $file, Config $config) {
 		$this->file = $file;
-		$this->path = str_replace('/', '-',
-			trim(
-				$file->getCategory()->getDescriptor()->getCollectionName().$file->getCategory()->getCategoryManager()->getOwner()->getPath(),
-				'/'
-			)
-		);
+		$this->config = $config;
+		if(strpos($file->getPath(), $config->getSourcePath()) !== 0){
+			throw new \Exception('File location error');
+		}
+		$this->pathId = str_replace('/','-', substr(trim($file->getPath(),'/'), strlen($config->getSourcePath())));
 	}
 
-//	public function purge(){
-//		$files = glob($this->config->thumbnailPath().$this->file->getFilename().'.*.'.$this->file->pathId.'.*');
-//		foreach ($files as $file) unlink($file);
-//	}
+	public function purge(){
+		$files = glob($this->config->getPath().$this->file->getFilename().'.*.'.$this->pathId.'.*');
+		foreach ($files as $file) unlink($file);
+	}
 
 	public function scale(int $width, int $height) {
 		$padding = 1;
@@ -153,8 +154,8 @@ class Thumbnail {
 			$op .= '.' . base_convert(floor($this->jpegQuality / 4), 10, 32);
 		}
 
-		$url = $this->file->getFilename() . '.' . $op . '.' . $this->path;
-		$url = '/THUMBNAILS/'.$url.'.' . base_convert(crc32($url . '.' . $ext . 'SECRET'), 10, 32) . '.' . $ext;
+		$url = $this->file->getFilename() . '.' . $op . '.' . $this->pathId;
+		$url = $this->config->getUrl().'/'.$url.'.' . base_convert(crc32($url . '.' . $ext . $this->config->getSecret()), 10, 32) . '.' . $ext;
 
 		return $url;
 	}

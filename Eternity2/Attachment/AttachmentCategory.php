@@ -9,14 +9,14 @@ class AttachmentCategory{
 	protected $acceptedExtensions = [];
 	protected $maxFileSize = INF;
 	protected $maxFileCount = INF;
-	/** @var \Eternity2\Attachment\AttachmentDescriptor */
-	private $descriptor;
+	/** @var \Eternity2\Attachment\AttachmentStorage */
+	private $attachmentStorage;
 	/** @var \Eternity2\Attachment\AttachmentCategoryManager */
 	private $attachmentCategoryManager;
 
-	function __construct($name, AttachmentDescriptor $descriptor){
+	function __construct($name, AttachmentStorage $attachmentStorage){
 		$this->name = $name;
-		$this->descriptor = $descriptor;
+		$this->attachmentStorage = $attachmentStorage;
 	}
 
 	public function acceptExtensions(...$extensions): self{
@@ -53,7 +53,7 @@ class AttachmentCategory{
 	/** @return int */
 	public function getMaxFileCount(){ return $this->maxFileCount; }
 
-	public function getDescriptor(): \Eternity2\Attachment\AttachmentDescriptor{ return $this->descriptor; }
+	public function getAttachmentStorage(): \Eternity2\Attachment\AttachmentStorage{ return $this->attachmentStorage; }
 
 	public function isValidUpload(File $upload){
 		if ($upload->getSize() > $this->maxFileSize)

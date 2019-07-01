@@ -18,7 +18,9 @@ class Test extends Command{
 		$style = new SymfonyStyle($input, $output);
 		$time = microtime(true);
 
-		$user = User::pick(1);
+		echo realpath('/etc/');
+
+		$user = User::pick(5);
 		$user->avatar->addFile(new File(env('root').'/todo.txt'));
 		$user->gallery->addFile($user->avatar->first);
 
@@ -37,72 +39,7 @@ class Test extends Command{
 		echo $user->name;
 
 
-//		$connection = new \SQLite3(env('root').'var/attachment-metadata/User.sqlite');
-//
-//		$statement = $connection->prepare('INSERT INTO file (path, file) VALUES (:path, :file)');
-//
-//
-//
-//		$result = $connection->query("select * from file where path = '00/cc/14'");
-//		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
-//
-//		$result = $connection->query("select * from file where path = '00/ac/14'");
-//		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
-//
-//		$result = $connection->query("select * from file where path = '00/bc/14'");
-//		while ($row = $result->fetchArray(SQLITE3_ASSOC)) var_dump($row);
-//
-
-//
-//		$start = 1;
-//		$step = 820000;
-//
-//		$connection->exec('begin');
-//		for($i=$start;$i<$start + $step; $i++){
-//			$path = str_pad(base_convert($i, 10, 36), 6, '0', STR_PAD_LEFT);
-//			$path = substr($path, 0, 2).'/'.substr($path, 2, 2).'/'.substr($path, 4, 2);
-//			$file = uniqid().'.txt';
-//			$statement->bindValue(':path', $path);
-//			$statement->bindValue(':file', $file);
-//			$statement->execute();
-//			//			$connection->query("INSERT INTO file (path, file) VALUES ('".$path."','file.txt')");
-//			if($i % 1000 === 0){
-//				$connection->exec('commit');
-//				$connection->exec('begin');
-//				echo $i.' ';
-//			}
-//		}
-//		$connection->exec('commit');
-
-
-		/*
-				$user = User::pick(1);
-
-				var_export($user);
-				var_export($user->record());
-				echo json_encode($user);
-
-
-				$style->success( $user->boss->name);
-
-				$style->success('Done');*/
-//
-//		User::createBulk(User::search(Filter::where('id=5')))[0]->boss;
-//		User::create(User::search(Filter::where('1=1')))->name;
-
-
-//		echo User::search(Filter::where('id=5'))->pick()->workers()[0]->name;
-
-//		$query = User::$model->connection->query('SELECT * FROM user join article as art on art.authorId = user.id');
-//		$record = $query->fetchAll(\PDO::FETCH_NUM);
-//		$cc = $query->columnCount();
-//		print_r($cc);
-//		for($i = 0; $i<$cc; $i++){
-//			$meta = $query->getColumnMeta($i);
-//			print_r($meta);
-//		}
-//		print_r($record);
-		$style->success(microtime(true) - $time);
+		$style->warning('runtime: '. (microtime(true) - $time));
 
 	}
 

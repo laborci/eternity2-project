@@ -22,7 +22,7 @@ trait GhostAttachmentTrait {
 
 	public function getAttachmentCategoryManager($categoryName): AttachmentCategoryManager {
 		if (!$this->isExists()) throw new Exception('Ghost not exists yet!');
-		return static::$model->getAttachmentDescriptor()->getCategory($categoryName)->getCategoryManager($this);
+		return static::$model->getAttachmentStorage()->getCategory($categoryName)->getCategoryManager($this);
 	}
 
 }

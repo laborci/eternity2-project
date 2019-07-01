@@ -43,7 +43,7 @@ class Attachment extends File {
 			case 'category':
 				return $this->getCategory()->getName();
 			case 'thumbnail':
-				return new Thumbnail($this);
+				return new Thumbnail($this, $this->getCategory()->getAttachmentStorage()->getThumbnailConfig());
 		}
 		return null;
 	}

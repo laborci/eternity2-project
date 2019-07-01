@@ -3,7 +3,7 @@
 namespace Eternity2\Ghost;
 
 use Eternity2\Attachment\AttachmentCategory;
-use Eternity2\Attachment\AttachmentDescriptor;
+use Eternity2\Attachment\AttachmentStorage;
 use Eternity2\DBAccess\PDOConnection\AbstractPDOConnection;
 use Eternity2\System\ServiceManager\ServiceContainer;
 
@@ -19,8 +19,8 @@ class Model {
 	public $ghost;
 	/** @var Repository */
 	public $repository;
-	/** @var AttachmentDescriptor */
-	protected $attachmentDescriptor;
+	/** @var AttachmentStorage */
+	protected $attachmentStorage;
 
 	public function __construct($connection, $table, $ghost) {
 		$this->connection = $connection;
@@ -54,20 +54,19 @@ class Model {
 	}
 
 	public function hasAttachment($name): AttachmentCategory {
-		return $this->getAttachmentDescriptor()->addCategory($name);
+		return $this->getAttachmentStorage()->addCategory($name);
 	}
 
-	public function getAttachmentDescriptor() {
-		if ($this->attachmentDescriptor === null) {
+	public function getAttachmentStorage() {
+		if ($this->attachmentStorage === null) {
 			/** @var Config $config */
 			$config = ServiceContainer::get(Config::class);
-			$this->attachmentDescriptor = new AttachmentDescriptor(
-				$config->attachmentPath().'/'.$this->table,
-				$config->attachmentUrl().'/'.$this->table,
-				$config->attachmentMetaDBPath() . '/' . $this->table . '.sqlite',
-				$this->table
+			$this->attachmentStorage = new AttachmentStorage(
+				$this->table,
+				new \Eternity2\Attachment\Config($config->attachment()),
+				new \Eternity2\Attachment\Thumbnail\Config($config->thumbnail())
 			);
 		}
-		return $this->attachmentDescriptor;
+		return $this->attachmentStorage;
 	}
 }
