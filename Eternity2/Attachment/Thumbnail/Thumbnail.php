@@ -1,5 +1,6 @@
-<?php namespace Eternity2\z;
+<?php namespace Eternity2\Attachment\Thumbnail;
 
+use Eternity2\Attachment\Attachment;
 use Eternity2\System\ServiceManager\ServiceContainer;
 
 /**
@@ -15,23 +16,26 @@ class Thumbnail {
 	protected $file;
 	protected $operation;
 	protected $jpegQuality;
-
-	/** @var Config */
-	protected $config;
+	protected $path;
 
 	const CROP_MIDDLE = 0;
 	const CROP_START = -1;
 	const CROP_END = 1;
 
 	public function __construct(Attachment $file) {
-		$this->config = ServiceContainer::get(Config::class);
 		$this->file = $file;
+		$this->path = str_replace('/', '-',
+			trim(
+				$file->getCategory()->getDescriptor()->getCollectionName().$file->getCategory()->getCategoryManager()->getOwner()->getPath(),
+				'/'
+			)
+		);
 	}
 
-	public function purge(){
-		$files = glob($this->config->thumbnailPath().$this->file->getFilename().'.*.'.$this->file->pathId.'.*');
-		foreach ($files as $file) unlink($file);
-	}
+//	public function purge(){
+//		$files = glob($this->config->thumbnailPath().$this->file->getFilename().'.*.'.$this->file->pathId.'.*');
+//		foreach ($files as $file) unlink($file);
+//	}
 
 	public function scale(int $width, int $height) {
 		$padding = 1;
@@ -149,8 +153,8 @@ class Thumbnail {
 			$op .= '.' . base_convert(floor($this->jpegQuality / 4), 10, 32);
 		}
 
-		$url = $this->file->getFilename() . '.' . $op . '.' . $this->file->pathId;
-		$url = $this->config->attachmentUrl().$url.'.' . base_convert(crc32($url . '.' . $ext . $this->config->thumbnailSecret()), 10, 32) . '.' . $ext;
+		$url = $this->file->getFilename() . '.' . $op . '.' . $this->path;
+		$url = '/THUMBNAILS/'.$url.'.' . base_convert(crc32($url . '.' . $ext . 'SECRET'), 10, 32) . '.' . $ext;
 
 		return $url;
 	}
@@ -162,6 +166,7 @@ class Thumbnail {
 			case 'jpg': return $this->exportJpg(); break;
 			case 'url': return $this->export(); break;
 		}
+		return null;
 	}
 
 	public function __isset($name) {

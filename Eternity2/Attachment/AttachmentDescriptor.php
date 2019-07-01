@@ -13,29 +13,25 @@ class AttachmentDescriptor {
 	private $path;
 	private $url;
 	private $metaFile;
+	private $collection;
 
-	/** @var AttachmentMetaManager */
-	private $metaManager;
-
-	public function __construct($path, $url, $metaFile) {
+	public function __construct($path, $url, $metaFile, $collection) {
 		$this->path = $path;
 		$this->url = $url;
 		$this->metaFile = $metaFile;
+		$this->collection = $collection;
 	}
 
 	public function addCategory($name) {
 		$category = new AttachmentCategory($name, $this);
 		$this->categories[$category->getName()] = $category;
+		return $category;
 	}
 
 	public function getPath() { return $this->path; }
 	public function getUrl() { return $this->url; }
 	public function getCategories() { return $this->categories; }
-
-	public function getMetaManager() {
-		if (is_null($this->metaManager))$this->metaManager = new AttachmentMetaManager($this->metaFile);
-		return $this->metaManager;
-	}
+	public function getCollectionName() { return $this->collection; }
 
 	public function getCategory($category):AttachmentCategory {
 		if (array_key_exists($category, $this->categories)) return $this->categories[$category];
@@ -57,15 +53,14 @@ class AttachmentDescriptor {
 							path text,
 							file text,
 							size int,
-							meta text,
-							description text,
 							category text,
+							description text,
+							ordinal int,
+							meta text,
 							constraint file_pk
-								primary key (path, file)
+								primary key (path, file, category)
 						);
-						
-						create index path_index
-							on file (path);
+						create index path_index on file (path);
 						commit;");
 				$connection->close();
 			}

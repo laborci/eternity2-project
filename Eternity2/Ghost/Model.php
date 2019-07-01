@@ -64,7 +64,8 @@ class Model {
 			$this->attachmentDescriptor = new AttachmentDescriptor(
 				$config->attachmentPath().'/'.$this->table,
 				$config->attachmentUrl().'/'.$this->table,
-				$config->attachmentMetaDBPath() . '/' . $this->table . '.sqlite'
+				$config->attachmentMetaDBPath() . '/' . $this->table . '.sqlite',
+				$this->table
 			);
 		}
 		return $this->attachmentDescriptor;

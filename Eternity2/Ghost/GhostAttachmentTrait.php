@@ -1,9 +1,6 @@
 <?php namespace Eternity2\Ghost;
 
-use Eternity2\Attachment\Attachment;
-use Eternity2\Attachment\AttachmentCategory;
 use Eternity2\Attachment\AttachmentCategoryManager;
-use Eternity2\System\ServiceManager\ServiceContainer;
 use mysql_xdevapi\Exception;
 
 /**
@@ -13,8 +10,8 @@ trait GhostAttachmentTrait {
 
 	private $path;
 
-	private function getPath(){
-		if(is_null($this->path)){
+	public function getPath() {
+		if (is_null($this->path)) {
 			$id36 = str_pad(base_convert($this->id, 10, 36), 6, '0', STR_PAD_LEFT);
 			$this->path = '/' . substr($id36, 0, 2) .
 				'/' . substr($id36, 2, 2) .
@@ -25,12 +22,7 @@ trait GhostAttachmentTrait {
 
 	public function getAttachmentCategoryManager($categoryName): AttachmentCategoryManager {
 		if (!$this->isExists()) throw new Exception('Ghost not exists yet!');
-		return static::$model->getAttachmentDescriptor()->getCategory($categoryName)->getCategoryManager($this->getPath());
+		return static::$model->getAttachmentDescriptor()->getCategory($categoryName)->getCategoryManager($this);
 	}
-
-	public function attachmentAdded($filename) {
-		$this->on(static::EVENT___ATTACHMENT_ADDED, $filename);
-	}
-
 
 }

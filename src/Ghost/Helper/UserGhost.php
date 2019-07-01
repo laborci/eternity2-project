@@ -1,6 +1,6 @@
 <?php namespace Ghost\Helper;
 
-use Eternity2\Attachment\Attachment;
+use Eternity2\Attachment\AttachmentCategoryManager;
 use Eternity2\DBAccess\Filter\Filter;
 use Eternity2\Ghost\Field;
 use Eternity2\Ghost\Ghost;
@@ -14,7 +14,8 @@ use Ghost\User;
  * @property-read User   boss
  * @property-read User[] workers
  * @method User[] workers($order=null, $limit=null, $offset=null)
- * @property-read Attachment[] $avatar
+ * @property-read AttachmentCategoryManager $avatar
+ * @property-read AttachmentCategoryManager $gallery
  */
 class UserGhost extends Ghost{
 	protected $id;

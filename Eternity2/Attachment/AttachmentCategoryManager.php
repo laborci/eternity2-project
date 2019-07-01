@@ -1,30 +1,18 @@
 <?php namespace Eternity2\Attachment;
 
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 
+/**
+ * @property-read Attachment[] $all
+ * @property-read Attachment $first
+ * @property-read int $count
+ */
 class AttachmentCategoryManager {
 
-//	/** @var  Attachment[] */
-//	protected $attachments = null;
-//
-//	/** @var Config */
-//	protected $config;
-//
-//	protected $path;
-//	protected $pathId;
-//	protected $urlBase;
-//	protected $owner;
-//	protected $descriptor;
-//
-//	public function getPath(): string { return $this->path; }
-//	public function getDescriptor(): string { return $this->descriptor; }
-//	public function getPathId(): string { return $this->pathId; }
-//	public function getUrlBase(): string { return $this->urlBase; }
-//	public function getOwner(): string { return $this->owner; }
-//
-
-	protected $ownerPath;
+	/** @var AttachmentOwnerInterface */
+	protected $owner;
 	protected $path;
 	protected $url;
 
@@ -35,211 +23,127 @@ class AttachmentCategoryManager {
 	/** @var \Eternity2\Attachment\AttachmentCategory */
 	private $category;
 
-	public function __construct(AttachmentCategory $category, $ownerPath){
+	public function __construct(AttachmentCategory $category, AttachmentOwnerInterface $owner) {
 		$this->category = $category;
-		$this->ownerPath = $ownerPath;
+		$this->owner = $owner;
 		$this->descriptor = $category->getDescriptor();
 		$this->category = $category;
-		$this->path = $this->descriptor->getPath() . $ownerPath;
-		$this->url = $this->descriptor->getUrl() . $ownerPath;
+		$this->path = $this->descriptor->getPath() . $owner->getPath();
+		$this->url = $this->descriptor->getUrl() . $owner->getPath();
 	}
 
-	public function addFile(File $file){
+	public function getOwner(): AttachmentOwnerInterface { return $this->owner; }
+	public function getCategory(): AttachmentCategory { return $this->category; }
+	public function getPath(): string { return $this->path; }
+	public function getUrl(): string { return $this->url; }
 
-	}
+	public function addFile(File $file, $description = '', $ordinal = 0, $meta = []) {
 
-	public function removeFile($filename){
-
-	}
-
-	public function collect(){
-
-	}
-
-//	public function getFiles(): array {
-//		$files = glob($this->path . '/*');
-//		$attachments = [];
-//		foreach ($files as $file) {
-//			$attachment = new Attachment($file);
-//			$attachments[$attachment->getFilename()] = $attachment;
-//		}
-//		return $attachments;
-//	}
-
-	public function addFile(File $file, $category) {
-		$category = $this->descriptor->getCategory($category);
-
-//		if ($category->getAttachmentCount() >= $this->descriptor->getMaxFileCount() && !$replace) {
-//			throw new Exception("Too many files", Exception::FILE_COUNT_ERROR);
-//		} else if ($file->getSize() > $this->descriptor->getMaxFileSize()) {
-//			throw new Exception("Too big file", Exception::FILE_SIZE_ERROR);
-//		} else if (is_array($this->descriptor->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->descriptor->getAcceptedExtensions())) {
-//			throw new Exception("File type is not accepted", Exception::FILE_TYPE_ERROR);
-//		} else {
-//		if ($this->descriptor->getMaxFileCount() == 1 && $this->getAttachmentCount() == 1 && $replace) {
-//			$this->first->delete();
-//		}
-
+		if ($this->count >= $this->category->getMaxFileCount()) {
+			throw new \Exception("Too many files");
+		} else if ($file->getSize() > $this->category->getMaxFileSize()) {
+			throw new \Exception("Too big file");
+		} else if (count($this->category->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->category->getAcceptedExtensions())) {
+			throw new \Exception("File type is not accepted");
+		}
 
 		if (!is_dir($this->path)) mkdir($this->path, 0777, true);
-		copy($file->getPath() . '/' . $file->getFilename(), $this->path . $file->getFilename());
-		$this->attachments = null;
 
-		$attachment = new Attachment($file->getFilename(), $this->ownerPath, $this->descriptor, [$category->getName()], $file->getSize());
-		$attachment->storeMeta();
+		if ($file instanceof UploadedFile) {
+			$file = $file->move($this->path, $file->getClientOriginalName());
+		} else {
+			copy($file->getPath() . '/' . $file->getFilename(), $this->path . $file->getFilename());
+		}
 
-//		$this->owner->attachmentAdded($file->getFilename());
-		return true;
+		$attachment = new Attachment($file->getFilename(), $this, $description, $ordinal, $meta);
+
+		$this->owner->on(AttachmentOwnerInterface::EVENT__ATTACHMENT_ADDED, [
+			'category'   => $this->category,
+			'attachment' => $attachment,
+		]);
+
+		$this->store($attachment);
 	}
 
-	/**
-	 * @return \Eternity2\Attachment\Attachment[]
-	 */
-	public function getAttachments(): array{
-		if(is_null($this->attachments)){
-			$records = $this->descriptor->getMetaManager()->collect($this->ownerPath);
-			$this->attachments = [];
-			foreach ($records as $record){
+	/** @return Attachment[] */
+	public function getAttachments(): array {
+		if (is_null($this->attachments)) $this->collect();
+		return $this->attachments;
+	}
 
-			}
+	public function hasAttachments(): bool { return (bool)count($this->getAttachments()); }
+
+	public function get($filename) {
+		$attachments = $this->getAttachments();
+		foreach ($attachments as $attachment) if ($filename === $attachment->getFilename()) return $attachment;
+		return null;
+	}
+
+	public function __get($name) {
+		$attachments = $this->getAttachments();
+		switch ($name) {
+			case 'all':
+				return $attachments;
+				break;
+			case 'first':
+				return count($attachments) ? reset($attachments) : null;
+				break;
+			case 'count':
+				return count($attachments);
+		}
+		return null;
+	}
+
+	public function store(Attachment $attachment) {
+		$record = $attachment->getRecord();
+		$statement = $this->descriptor->getMetaDBConnection()
+			->prepare("INSERT OR REPLACE INTO file (path, file, size, meta, description, category, ordinal) 
+						VALUES (:path, :file, :size, :meta, :description, :category, :ordinal)");
+		$statement->bindValue(':path', $record['path']);
+		$statement->bindValue(':file', $record['file']);
+		$statement->bindValue(':size', $record['size'], SQLITE3_INTEGER);
+		$statement->bindValue(':description', $record['description']);
+		$statement->bindValue(':meta', json_encode($record['meta']));
+		$statement->bindValue(':category', $record['category']);
+		$statement->bindValue(':ordinal', $record['ordinal'], SQLITE3_INTEGER);
+		$statement->execute();
+		$this->attachments = null;
+	}
+
+	protected function collect() {
+		echo 'collect ' . $this->category->getName() . "\n";
+		$statement = $this->descriptor->getMetaDBConnection()
+			->prepare("SELECT * FROM file WHERE path = :path AND category = :category ORDER BY ordinal, file");
+		$statement->bindValue(':path', $this->owner->getPath());
+		$statement->bindValue(':category', $this->category->getName());
+		$result = $statement->execute();
+		$this->attachments = [];
+		while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
+			$this->attachments[] = new Attachment($row['file'], $this, $row['description'], $row['ordinal'], json_decode($row['meta'], true));
 		}
 		return $this->attachments;
 	}
 
-//
-//
-//	/**
-//	 * @return Attachment[]
-//	 */
-//	public function getAttachments() {
-//		if (is_null($this->attachments)) $this->collect();
-//		return $this->attachments;
-//	}
-//
-//	/**
-//	 * @param $filename
-//	 * @return null|Attachment
-//	 */
-//	public function getAttachment($filename) {
-//		$attachments = $this->getAttachments();
-//		foreach ($attachments as $attachment) {
-//			if ($attachment->getFilename() === $filename) return $attachment;
-//		}
-//		return null;
-//	}
-//
-//	public function getAttachmentCount() {
-//		return count($this->getAttachments());
-//	}
-//
-//	public function hasAttachments() {
-//		return (bool)count($this->getAttachments());
-//	}
-//
-//
-//	public function uploadFile(UploadedFile $file, $replace = false) {
-//		if ($this->getAttachmentCount() >= $this->descriptor->getMaxFileCount() && !$replace) {
-//			throw new Exception("Max number of files: " . $this->descriptor->getMaxFileCount(), Exception::FILE_COUNT_ERROR);
-//		} else if ($file->getClientSize() > $this->descriptor->getMaxFileSize()) {
-//			throw new Exception("Max size of files: " . $this->descriptor->getMaxFileSize() . 'bytes', Exception::FILE_SIZE_ERROR);
-//		} else if (is_array($this->descriptor->getAcceptedExtensions()) && !in_array($file->getClientOriginalExtension(), $this->descriptor->getAcceptedExtensions())) {
-//			throw new Exception("Acceptable filetypes are: " . join(', ', $this->descriptor->getAcceptedExtensions()), Exception::FILE_TYPE_ERROR);
-//		} else {
-//			if ($this->descriptor->getMaxFileCount() == 1 && $this->getAttachmentCount() == 1 && $replace) {
-//				$this->first->delete();
-//			}
-//			$file->move($this->path, $file->getClientOriginalName());
-//			$this->owner->attachmentAdded($this, $file->getClientOriginalName());
-//			$this->attachments = null;
-//			return true;
-//		}
-//	}
-//
-//	public function addFile(File $file, $replace = false) {
-//		if ($this->getAttachmentCount() >= $this->descriptor->getMaxFileCount() && !$replace) {
-//			throw new Exception("Too many files", Exception::FILE_COUNT_ERROR);
-//		} else if ($file->getSize() > $this->descriptor->getMaxFileSize()) {
-//			throw new Exception("Too big file", Exception::FILE_SIZE_ERROR);
-//		} else if (is_array($this->descriptor->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->descriptor->getAcceptedExtensions())) {
-//			throw new Exception("File type is not accepted", Exception::FILE_TYPE_ERROR);
-//		} else {
-//			if ($this->descriptor->getMaxFileCount() == 1 && $this->getAttachmentCount() == 1 && $replace) {
-//				$this->first->delete();
-//			}
-//			copy($file->getPath() . '/' . $file->getFilename(), $this->path . $file->getFilename());
-//			$this->owner->attachmentAdded($this, $file->getFilename());
-//			$this->attachments = null;
-//			return true;
-//		}
-//	}
-//
-//	//public function copyAttachment(Attachment $attachment) {
-//	//	//TODO: should check like upload
-//	//	copy($attachment->getFile(), $this->path.$attachment->getFilename());
-//	//	$this->attachments = null;
-//	//}
-//
-//
-//	public function deleteFile($filename) {
-//		$attachments = $this->getAttachments();
-//		if (array_key_exists($filename, $attachments)) {
-//			$attachments[$filename]->delete();
-//			unset($attachments[$filename]);
-//		}
-//	}
-//
-//	protected function collect() {
-//		$files = glob($this->getPath() . '/*');
-//		$attachments = [];
-//		foreach ($files as $file) {
-//			$attachment = new Attachment($file, $this);
-//			$attachments[$attachment->getFilename()] = $attachment;
-//		}
-//		$this->attachments = $attachments;
-//		return $attachments;
-//	}
-//
-//	public function __get($name) {
-//		$attachments = $this->getAttachments();
-//		switch ($name) {
-//			case 'name':
-//				return $this->descriptor->getName();
-//				break;
-//			case 'files':
-//				return $attachments;
-//				break;
-//			case 'first':
-//				if ($this->hasAttachments()) return reset($attachments);
-//				else return null;
-//				break;
-//		}
-//	}
-//
-//	public function __isset($name) {
-//		return in_array($name, ['files', 'first']);
-//	}
-
-
-
-	public function DBstore($ownerPath, $file, $size, $meta, $description, $category){
-		$statement = $this->descriptor->getMetaDBConnection()->prepare(
-			"INSERT OR REPLACE INTO file (path, file, size, meta, description, category) 
-						VALUES (:path, :file, :size, :meta, :description, :category)");
-		$statement->bindParam(':path', $ownerPath);
-		$statement->bindParam(':file', $file);
-		$statement->bindParam(':size', $size, SQLITE3_INTEGER);
-		$statement->bindParam(':description', $description);
-		$statement->bindParam(':meta', json_encode($meta));
-		$statement->bindParam(':category', json_encode($category));
+	public function remove(Attachment $attachment) {
+		$statement = $this->descriptor->getMetaDBConnection()
+			->prepare("DELETE FROM file WHERE path = :path AND file = :file AND category = :category");
+		$statement->bindValue(':path', $this->owner->getPath());
+		$statement->bindValue(':category', $this->category->getName());
+		$statement->bindValue(':file', $attachment->getFilename());
 		$statement->execute();
-	}
 
-	public function DBcollect($ownerPath, $category = null){
+		$statement = $this->descriptor->getMetaDBConnection()
+			->prepare("SELECT count(*) as `count` FROM file WHERE path = :path AND file = :file ORDER BY ordinal, file");
+		$statement->bindValue(':path', $this->owner->getPath());
+		$statement->bindValue(':file', $attachment->getFilename());
 
-	}
+		$hasFile = (bool)intval($statement->execute()->fetchArray(SQLITE3_ASSOC)['count']);
 
-	public function DBremove($ownerPath, $file, $category){
+		if (!$hasFile) unlink($attachment->getRealPath());
 
+		$this->owner->on(AttachmentOwnerInterface::EVENT__ATTACHMENT_REMOVED, ['category' => $this->category]);
+
+		$this->attachments = null;
 	}
 
 }

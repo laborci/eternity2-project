@@ -18,10 +18,22 @@ class Test extends Command{
 		$style = new SymfonyStyle($input, $output);
 		$time = microtime(true);
 
-		$user = User::pick(5);
-		//var_export($user->getAttachmentManager());
-		$user->getAttachmentManager()->addFile(new File(env('root').'/todo.txt'), 'avatar');
-		var_export($user->getAttachmentManager());
+		$user = User::pick(1);
+		$user->avatar->addFile(new File(env('root').'/todo.txt'));
+		$user->gallery->addFile($user->avatar->first);
+
+		$user->avatar->first->description = "FASZA";
+		$user->avatar->first->store();
+
+//		$user->avatar->first->remove();
+//		$user->gallery->first->remove();
+
+		echo "\n";
+		print_r($user->avatar->first->url);
+		echo "\n";
+		print_r($user->avatar->first->thumbnail->box(10,1020)->gif);
+		echo "\n";
+
 		echo $user->name;
 
 

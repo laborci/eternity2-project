@@ -161,7 +161,7 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 	const EVENT___AFTER_INSERT = 'after_insert';
 	const EVENT___ATTACHMENT_ADDED = 'attachment_added';
 
-	protected function on($event, $data = null) { return true; }
+	public function on($event, $data = null) { return true; }
 #endregion
 
 }

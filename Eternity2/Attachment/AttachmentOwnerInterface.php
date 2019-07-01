@@ -2,7 +2,10 @@
 
 interface AttachmentOwnerInterface {
 
-//	public function getAttachmentCategoryManager():AttachmentCategoryManager;
-//	public function attachmentAdded($filename);
+	const EVENT__ATTACHMENT_ADDED = 'attachment_added';
+	const EVENT__ATTACHMENT_REMOVED = 'attachment_removed';
+
+	public function getPath();
+	public function on($event, $data);
 
 }
