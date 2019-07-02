@@ -24,7 +24,7 @@ new (class{
 	}
 
 	menuEventHandler(event){
-		this.layout.content.show(event.data.data.content, event.data.data);
+		this.layout.content.show(event.data.action.content, event.data.action);
 	}
 
 })();

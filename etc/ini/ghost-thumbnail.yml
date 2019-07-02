@@ -1,4 +1,4 @@
 path: public/thumbnail
 secret: ferengi
 url: /thumbnail
-source-path: public/attachments
+source-path: var/attachments

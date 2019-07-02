@@ -1,7 +1,7 @@
 :Eternity2
 
 - GHOST
-    - attachments
+    - attachment exceptions
     - throw exception on insufficient fields at ghost creation
 
 

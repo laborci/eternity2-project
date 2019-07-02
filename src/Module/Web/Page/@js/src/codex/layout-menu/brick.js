@@ -13,7 +13,7 @@ export default class CodexLayoutMenuBrick extends Brick{
 				if(li.classList.contains('has-submenu')){
 					li.classList.toggle('open');
 				}else{
-					this.appEventManager.fire('codex-menu-click', {option: li.dataset.option, data: li['menu-data']});
+					this.appEventManager.fire('codex-menu-click', {option: li.dataset.option, action: li['menu-data']});
 				}
 			});
 		});
@@ -31,7 +31,7 @@ export default class CodexLayoutMenuBrick extends Brick{
 			}
 			li.appendChild(label);
 			if(typeof menuItem.option !== 'undefined') li.dataset.option = menuItem.option;
-			if(typeof menuItem.data !== 'undefined') li['menu-data'] = menuItem.data;
+			if(typeof menuItem.action !== 'undefined') li['menu-data'] = menuItem.action;
 
 			if(typeof menuItem.submenu !== 'undefined' && parent === null){
 				let ul = document.createElement('ul');

@@ -7,12 +7,10 @@ use Eternity2\WebApplication\Routing\Router;
 class Module extends Application {
 
 	protected function route(Router $router) {
-//		$router->get('/thumbnail/*', ThumbnailResponder::class)();
-
 		$router->get('/thumbnail/*', \GhostThumbnailResponder::class)();
-		$router->get('/', Page\Index::class)();
 		$router->get('/users/codexinfo', Action\UsersCodexinfo::class)();
 		$router->get('/articles/codexinfo', Action\ArticlesCodexInfo::class)();
+		$router->get('/', Page\Index::class)();
 	}
 
 }
