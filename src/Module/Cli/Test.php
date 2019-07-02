@@ -18,13 +18,12 @@ class Test extends Command{
 		$style = new SymfonyStyle($input, $output);
 		$time = microtime(true);
 
-		echo realpath('/etc/');
+		$user = User::pick(1);
 
-		$user = User::pick(5);
-		$user->avatar->addFile(new File(env('root').'/todo.txt'));
+		$user->avatar->addFile(new File(env('root').'assets/0.jpg'));
 		$user->gallery->addFile($user->avatar->first);
 
-		$user->avatar->first->description = "FASZA";
+		$user->avatar->get('0.jpg');
 		$user->avatar->first->store();
 
 //		$user->avatar->first->remove();
@@ -33,13 +32,15 @@ class Test extends Command{
 		echo "\n";
 		print_r($user->avatar->first->url);
 		echo "\n";
-		print_r($user->avatar->first->thumbnail->box(10,1020)->gif);
+		print_r($user->avatar->get('0.jpg')->thumbnail->box(320,320)->jpg);
 		echo "\n";
+
+		$user->avatar->get('0.jpg')->thumbnail->purge();
 
 		echo $user->name;
 
 
-		$style->warning('runtime: '. (microtime(true) - $time));
+		$style->success('runtime: '. (microtime(true) - $time));
 
 	}
 

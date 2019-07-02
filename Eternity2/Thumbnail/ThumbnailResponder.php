@@ -2,7 +2,7 @@
 
 use Eternity2\WebApplication\Responder\PageResponder;
 
-class ThumbnailResponder extends PageResponder{
+class ThumbnailResponder extends PageResponder {
 
 	protected $target;
 	protected $source;
@@ -14,43 +14,42 @@ class ThumbnailResponder extends PageResponder{
 	/** @var Config */
 	protected $config;
 
-	public function __construct(Config $config){
+	public function __construct(Config $config) {
 		$this->config = $config;
 	}
 
-	protected function prepare(): bool{
+	protected function prepare(): bool {
 		$uri = explode('/', $this->getRequest()->getRequestUri());
 		$uri = urldecode(array_pop($uri));
 		$parts = explode('.', $uri);
 		$ext = array_pop($parts);
 		$hash = array_pop($parts);
 		$pathId = array_pop($parts);
-		if ($ext == 'jpg'){
+		if ($ext == 'jpg') {
 			$jpegquality = array_pop($parts);
-		}else{
+		} else {
 			$jpegquality = null;
 		}
 		$op = array_pop($parts);
 		$file = join('.', $parts);
-		$path = $this->config->sourcePath() . preg_replace("/-/", '/', $pathId, 2) . '/' . $file;
+		$path = $this->config->sourcePath() . '/' . preg_replace("/-/", '/', $pathId) . '/' . $file;
 
 		$url = $file . '.' . $op . (($jpegquality) ? ('.' . $jpegquality) : ('')) . '.' . $pathId . '.' . $ext;
 		$newHash = base_convert(crc32($url . $this->config->secret()), 10, 32);
 
-		if (!is_dir($this->config->path()))
-			mkdir($this->config->path());
-		$this->target = $this->config->path() . $uri;
+		if (!is_dir($this->config->path())) mkdir($this->config->path());
+		$this->target = $this->config->path() . '/' . $uri;
 		$this->source = $path;
 		$this->ext = $ext;
 
-		if ($newHash != $hash || !file_exists($path)){
+		if ($newHash != $hash || !file_exists($path)) {
 			// TODO: 404
 			die('404');
 		}
 
 		$imgInfo = getimagesize($this->source);
 		$oType = $imgInfo['2'];
-		switch ($oType){
+		switch ($oType) {
 			case 1:
 				$this->img = imageCreateFromGif($this->source);
 				break;
@@ -66,7 +65,7 @@ class ThumbnailResponder extends PageResponder{
 		$this->originalWidth = $imgInfo[0];
 		$this->originalHeight = $imgInfo[1];
 
-		switch (substr($op, 0, 1)){
+		switch (substr($op, 0, 1)) {
 			case 'h':
 				$this->height(substr($op, 1));
 				break;
@@ -86,7 +85,7 @@ class ThumbnailResponder extends PageResponder{
 				die('404');
 		}
 
-		switch ($ext){
+		switch ($ext) {
 			case 'gif':
 				ImageGIF($this->img, $this->target);
 				break;
@@ -103,7 +102,7 @@ class ThumbnailResponder extends PageResponder{
 		return true;
 	}
 
-	protected function height($op){
+	protected function height($op) {
 		$cropmode = $this->getCropMode($op);
 		$arglen = strlen($op) / 2;
 		$height = base_convert(substr($op, 0, $arglen), 32, 10);
@@ -116,7 +115,7 @@ class ThumbnailResponder extends PageResponder{
 			$this->doCrop($maxWidth, $height, $cropmode);
 	}
 
-	protected function width($op){
+	protected function width($op) {
 		$cropmode = $this->getCropMode($op);
 		$arglen = strlen($op) / 2;
 		$width = base_convert(substr($op, 0, $arglen), 32, 10);
@@ -129,7 +128,7 @@ class ThumbnailResponder extends PageResponder{
 			$this->doCrop($width, $maxHeight, $cropmode);
 	}
 
-	protected function crop($op){
+	protected function crop($op) {
 		$cropmode = $this->getCropMode($op);
 		$arglen = strlen($op) / 2;
 		$width = base_convert(substr($op, 0, $arglen), 32, 10);
@@ -147,7 +146,7 @@ class ThumbnailResponder extends PageResponder{
 		$this->doCrop($width, $height, $cropmode);
 	}
 
-	protected function box($op){
+	protected function box($op) {
 		$arglen = strlen($op) / 2;
 		$width = base_convert(substr($op, 0, $arglen), 32, 10);
 		$height = base_convert(substr($op, $arglen), 32, 10);
@@ -160,14 +159,14 @@ class ThumbnailResponder extends PageResponder{
 		$this->doResize($width, $height);
 	}
 
-	protected function scale($op){
+	protected function scale($op) {
 		$arglen = strlen($op) / 2;
 		$width = base_convert(substr($op, 0, $arglen), 32, 10);
 		$height = base_convert(substr($op, $arglen), 32, 10);
 		$this->doResize($width, $height);
 	}
 
-	protected function doResize($width, $height){
+	protected function doResize($width, $height) {
 		$newImg = imagecreatetruecolor($width, $height);
 		$oWidth = imagesx($this->img);
 		$oHeight = imagesy($this->img);
@@ -177,7 +176,7 @@ class ThumbnailResponder extends PageResponder{
 		$this->img = $newImg;
 	}
 
-	protected function doCrop($width, $height, $mode){
+	protected function doCrop($width, $height, $mode) {
 		$newImg = imageCreateTrueColor($width, $height);
 		imagefill($newImg, 0, 0, imagecolorallocatealpha($newImg, 0, 0, 0, 127));
 		$sx = $sy = 0;
@@ -185,13 +184,13 @@ class ThumbnailResponder extends PageResponder{
 		$oWidth = imagesx($this->img);
 		$oHeight = imagesy($this->img);
 
-		if ($mode == -1){
+		if ($mode == -1) {
 			// do nothing
-		}else if ($mode == 1){
+		} else if ($mode == 1) {
 			if ($oWidth == $width)
 				$sy = $oHeight - $height;
 			else $sx = $oWidth - $width;
-		}else{
+		} else {
 			if ($oWidth == $width)
 				$sy = $oHeight / 2 - $height / 2;
 			else $sx = $oWidth / 2 - $width / 2;
@@ -202,19 +201,19 @@ class ThumbnailResponder extends PageResponder{
 		$this->img = $newImg;
 	}
 
-	protected function getCropMode(&$op){
-		if (substr($op, 0, 1) == '-'){
+	protected function getCropMode(&$op) {
+		if (substr($op, 0, 1) == '-') {
 			$op = substr($op, 1);
 			return 1;
 		}
-		if (substr($op, 0, 1) == '_'){
+		if (substr($op, 0, 1) == '_') {
 			$op = substr($op, 1);
 			return -1;
 		}
 		return 0;
 	}
 
-	protected function respond(): string{
+	protected function respond(): string {
 		header('HTTP/1.0 200 OK');
 		header('Content-type: image/' . strtolower($this->ext));
 		$fd = fopen($this->target, 'rb');

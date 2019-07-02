@@ -1,5 +1,6 @@
 <?php namespace Eternity2\System\StartupSequence;
 
+use Eternity2\RemoteLog\RemoteLog;
 use Eternity2\System\Env\Env;
 use Eternity2\System\ServiceManager\ServiceContainer;
 
@@ -24,6 +25,10 @@ class StartupSequence {
 		setenv('context', getenv('context'));
 
 		if (env('output-buffering')) ob_start();
+
+		//dump(env('remote-log-errors'));
+
+
 
 		date_default_timezone_set(env('timezone'));
 

@@ -5,10 +5,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @property-read Attachment[] $all
- * @property-read Attachment   $first
- * @property-read int          $count
+ * @property-read Attachment $first
+ * @property-read int $count
  */
-class AttachmentCategoryManager{
+class AttachmentCategoryManager {
 
 	/** @var AttachmentOwnerInterface */
 	protected $owner;
@@ -22,7 +22,7 @@ class AttachmentCategoryManager{
 	/** @var \Eternity2\Attachment\AttachmentCategory */
 	private $category;
 
-	public function __construct(AttachmentCategory $category, AttachmentOwnerInterface $owner){
+	public function __construct(AttachmentCategory $category, AttachmentOwnerInterface $owner) {
 		$this->category = $category;
 		$this->owner = $owner;
 		$this->attachmentStorage = $category->getAttachmentStorage();
@@ -31,27 +31,27 @@ class AttachmentCategoryManager{
 		$this->url = $this->attachmentStorage->getUrl() . $owner->getPath();
 	}
 
-	public function getOwner(): AttachmentOwnerInterface{ return $this->owner; }
-	public function getCategory(): AttachmentCategory{ return $this->category; }
-	public function getPath(): string{ return $this->path; }
-	public function getUrl(): string{ return $this->url; }
+	public function getOwner(): AttachmentOwnerInterface { return $this->owner; }
+	public function getCategory(): AttachmentCategory { return $this->category; }
+	public function getPath(): string { return $this->path; }
+	public function getUrl(): string { return $this->url; }
 
-	public function addFile(File $file, $description = '', $ordinal = 0, $meta = []){
+	public function addFile(File $file, $description = '', $ordinal = 0, $meta = []) {
 
-		if ($this->count >= $this->category->getMaxFileCount()){
+		if ($this->count >= $this->category->getMaxFileCount()) {
 			throw new \Exception("Too many files");
-		}else if ($file->getSize() > $this->category->getMaxFileSize()){
+		} else if ($file->getSize() > $this->category->getMaxFileSize()) {
 			throw new \Exception("Too big file");
-		}else if (count($this->category->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->category->getAcceptedExtensions())){
+		} else if (count($this->category->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->category->getAcceptedExtensions())) {
 			throw new \Exception("File type is not accepted");
 		}
 
 		if (!is_dir($this->path))
 			mkdir($this->path, 0777, true);
 
-		if ($file instanceof UploadedFile){
+		if ($file instanceof UploadedFile) {
 			$file = $file->move($this->path, $file->getClientOriginalName());
-		}else{
+		} else {
 			copy($file->getPath() . '/' . $file->getFilename(), $this->path . $file->getFilename());
 		}
 
@@ -66,15 +66,15 @@ class AttachmentCategoryManager{
 	}
 
 	/** @return Attachment[] */
-	public function getAttachments(): array{
+	public function getAttachments(): array {
 		if (is_null($this->attachments))
 			$this->collect();
 		return $this->attachments;
 	}
 
-	public function hasAttachments(): bool{ return (bool)count($this->getAttachments()); }
+	public function hasAttachments(): bool { return (bool)count($this->getAttachments()); }
 
-	public function get($filename){
+	public function get($filename) {
 		$attachments = $this->getAttachments();
 		foreach ($attachments as $attachment)
 			if ($filename === $attachment->getFilename())
@@ -82,9 +82,9 @@ class AttachmentCategoryManager{
 		return null;
 	}
 
-	public function __get($name){
+	public function __get($name) {
 		$attachments = $this->getAttachments();
-		switch ($name){
+		switch ($name) {
 			case 'all':
 				return $attachments;
 				break;
@@ -97,12 +97,11 @@ class AttachmentCategoryManager{
 		return null;
 	}
 
-	public function store(Attachment $attachment){
+	public function store(Attachment $attachment) {
 		$record = $attachment->getRecord();
 		$statement = $this->attachmentStorage->getMetaDBConnection()
-		                                     ->prepare("INSERT OR REPLACE INTO file (path, file, size, meta, description, category, ordinal) 
-						VALUES (:path, :file, :size, :meta, :description, :category, :ordinal)")
-		;
+			->prepare("INSERT OR REPLACE INTO file (path, file, size, meta, description, category, ordinal) 
+						VALUES (:path, :file, :size, :meta, :description, :category, :ordinal)");
 		$statement->bindValue(':path', $record['path']);
 		$statement->bindValue(':file', $record['file']);
 		$statement->bindValue(':size', $record['size'], SQLITE3_INTEGER);
@@ -114,33 +113,29 @@ class AttachmentCategoryManager{
 		$this->attachments = null;
 	}
 
-	protected function collect(){
-		echo 'collect ' . $this->category->getName() . "\n";
+	protected function collect() {
 		$statement = $this->attachmentStorage->getMetaDBConnection()
-		                                     ->prepare("SELECT * FROM file WHERE path = :path AND category = :category ORDER BY ordinal, file")
-		;
+			->prepare("SELECT * FROM file WHERE path = :path AND category = :category ORDER BY ordinal, file");
 		$statement->bindValue(':path', $this->owner->getPath());
 		$statement->bindValue(':category', $this->category->getName());
 		$result = $statement->execute();
 		$this->attachments = [];
-		while ($row = $result->fetchArray(SQLITE3_ASSOC)){
+		while ($row = $result->fetchArray(SQLITE3_ASSOC)) {
 			$this->attachments[] = new Attachment($row['file'], $this, $row['description'], $row['ordinal'], json_decode($row['meta'], true));
 		}
 		return $this->attachments;
 	}
 
-	public function remove(Attachment $attachment){
+	public function remove(Attachment $attachment) {
 		$statement = $this->attachmentStorage->getMetaDBConnection()
-		                                     ->prepare("DELETE FROM file WHERE path = :path AND file = :file AND category = :category")
-		;
+			->prepare("DELETE FROM file WHERE path = :path AND file = :file AND category = :category");
 		$statement->bindValue(':path', $this->owner->getPath());
 		$statement->bindValue(':category', $this->category->getName());
 		$statement->bindValue(':file', $attachment->getFilename());
 		$statement->execute();
 
 		$statement = $this->attachmentStorage->getMetaDBConnection()
-		                                     ->prepare("SELECT count(*) as `count` FROM file WHERE path = :path AND file = :file ORDER BY ordinal, file")
-		;
+			->prepare("SELECT count(*) as `count` FROM file WHERE path = :path AND file = :file ORDER BY ordinal, file");
 		$statement->bindValue(':path', $this->owner->getPath());
 		$statement->bindValue(':file', $attachment->getFilename());
 

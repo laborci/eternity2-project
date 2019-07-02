@@ -32,7 +32,7 @@ class Thumbnail{
 	}
 
 	public function purge(){
-		$files = glob($this->config->path() . $this->file->getFilename() . '.*.' . $this->pathId . '.*');
+		$files = glob($this->config->path().'/'. $this->file->getFilename() . '.*.' . $this->pathId . '.*');
 		foreach ($files as $file)
 			unlink($file);
 	}

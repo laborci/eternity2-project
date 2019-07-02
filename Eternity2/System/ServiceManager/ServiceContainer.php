@@ -21,8 +21,6 @@ class ServiceContainer {
 	}
 
 	protected function getService($name) {
-		echo 'get: '.$name."\n";
-
 		if (array_key_exists($name, $this->services)) {
 			$serviceFactory = $this->services[$name];
 		} else {
