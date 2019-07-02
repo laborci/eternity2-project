@@ -1,6 +1,5 @@
-<?php namespace Eternity2\Attachment\Thumbnail;
+<?php namespace Eternity2\Thumbnail;
 
-use Eternity2\Attachment\Attachment;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -9,10 +8,9 @@ use Symfony\Component\HttpFoundation\File\File;
  * @property string $gif
  * @property string $url
  */
+class Thumbnail{
 
-class Thumbnail {
-
-	/** @var Attachment */
+	/** @var File */
 	protected $file;
 	protected $operation;
 	protected $jpegQuality;
@@ -21,29 +19,30 @@ class Thumbnail {
 	const CROP_MIDDLE = 0;
 	const CROP_START = -1;
 	const CROP_END = 1;
-	/** @var \Eternity2\Attachment\Thumbnail\Config */
+	/** @var \Eternity2\Thumbnail\Config */
 	private $config;
 
-	public function __construct(File $file, Config $config) {
+	public function __construct(File $file, Config $config){
 		$this->file = $file;
 		$this->config = $config;
-		if(strpos($file->getPath(), $config->getSourcePath()) !== 0){
+		if (strpos($file->getPath(), $config->sourcePath()) !== 0){
 			throw new \Exception('File location error');
 		}
-		$this->pathId = str_replace('/','-', substr(trim($file->getPath(),'/'), strlen($config->getSourcePath())));
+		$this->pathId = str_replace('/', '-', substr(trim($file->getPath(), '/'), strlen($config->sourcePath())));
 	}
 
 	public function purge(){
-		$files = glob($this->config->getPath().$this->file->getFilename().'.*.'.$this->pathId.'.*');
-		foreach ($files as $file) unlink($file);
+		$files = glob($this->config->path() . $this->file->getFilename() . '.*.' . $this->pathId . '.*');
+		foreach ($files as $file)
+			unlink($file);
 	}
 
-	public function scale(int $width, int $height) {
+	public function scale(int $width, int $height){
 		$padding = 1;
-		if ($width > 31 || $height > 31) {
+		if ($width > 31 || $height > 31){
 			$padding = 2;
 		}
-		if ($width > 1023 || $height > 1023) {
+		if ($width > 1023 || $height > 1023){
 			$padding = 3;
 		}
 		$width = str_pad(base_convert($width, 10, 32), $padding, '0', STR_PAD_LEFT);
@@ -52,12 +51,12 @@ class Thumbnail {
 		return $this;
 	}
 
-	public function crop(int $width, int $height, int $crop = 0) {
+	public function crop(int $width, int $height, int $crop = 0){
 		$padding = 1;
-		if ($width > 31 || $height > 31) {
+		if ($width > 31 || $height > 31){
 			$padding = 2;
 		}
-		if ($width > 1023 || $height > 1023) {
+		if ($width > 1023 || $height > 1023){
 			$padding = 3;
 		}
 		$width = str_pad(base_convert($width, 10, 32), $padding, '0', STR_PAD_LEFT);
@@ -72,12 +71,12 @@ class Thumbnail {
 		return $this;
 	}
 
-	public function box(int $width, int $height) {
+	public function box(int $width, int $height){
 		$padding = 1;
-		if ($width > 31 || $height > 31) {
+		if ($width > 31 || $height > 31){
 			$padding = 2;
 		}
-		if ($width > 1023 || $height > 1023) {
+		if ($width > 1023 || $height > 1023){
 			$padding = 3;
 		}
 		$width = str_pad(base_convert($width, 10, 32), $padding, '0', STR_PAD_LEFT);
@@ -87,12 +86,12 @@ class Thumbnail {
 		return $this;
 	}
 
-	public function width(int $width, int $maxHeight = 0, int $crop = 0) {
+	public function width(int $width, int $maxHeight = 0, int $crop = 0){
 		$padding = 1;
-		if ($width > 31 || $maxHeight > 31) {
+		if ($width > 31 || $maxHeight > 31){
 			$padding = 2;
 		}
-		if ($width > 1023 || $maxHeight > 1023) {
+		if ($width > 1023 || $maxHeight > 1023){
 			$padding = 3;
 		}
 		$width = str_pad(base_convert($width, 10, 32), $padding, '0', STR_PAD_LEFT);
@@ -107,12 +106,12 @@ class Thumbnail {
 		return $this;
 	}
 
-	public function height(int $height, int $maxWidth = 0, int $crop = 0) {
+	public function height(int $height, int $maxWidth = 0, int $crop = 0){
 		$padding = 1;
-		if ($height > 31 || $maxWidth > 31) {
+		if ($height > 31 || $maxWidth > 31){
 			$padding = 2;
 		}
-		if ($height > 1023 || $maxWidth > 1023) {
+		if ($height > 1023 || $maxWidth > 1023){
 			$padding = 3;
 		}
 		$height = str_pad(base_convert($height, 10, 32), $padding, '0', STR_PAD_LEFT);
@@ -127,26 +126,27 @@ class Thumbnail {
 		return $this;
 	}
 
-	public function exportGif() { return $this->thumbnail('gif'); }
+	public function exportGif(){ return $this->thumbnail('gif'); }
 
-	public function exportPng() { return $this->thumbnail('png'); }
+	public function exportPng(){ return $this->thumbnail('png'); }
 
-	public function exportJpg(int $quality = 66) {
+	public function exportJpg(int $quality = 66){
 		$this->jpegQuality = $quality;
 		return $this->thumbnail('jpg');
 	}
 
-	public function export(int $quality = 66) {
+	public function export(int $quality = 66){
 		$this->jpegQuality = $quality;
 		$fileinfo = pathinfo($this->file);
 		$ext = strtolower($fileinfo['extension']);
-		if($ext == 'jpeg') $ext = 'jpg';
+		if ($ext == 'jpeg')
+			$ext = 'jpg';
 		return $this->thumbnail($ext);
 	}
 
-	protected function thumbnail($ext): string {
+	protected function thumbnail($ext): string{
 		$op = $this->operation;
-		if ($ext == 'jpg') {
+		if ($ext == 'jpg'){
 			if ($this->jpegQuality < 0)
 				$this->jpegQuality = 0;
 			if ($this->jpegQuality > 100)
@@ -155,22 +155,30 @@ class Thumbnail {
 		}
 
 		$url = $this->file->getFilename() . '.' . $op . '.' . $this->pathId;
-		$url = $this->config->getUrl().'/'.$url.'.' . base_convert(crc32($url . '.' . $ext . $this->config->getSecret()), 10, 32) . '.' . $ext;
+		$url = $this->config->url() . '/' . $url . '.' . base_convert(crc32($url . '.' . $ext . $this->config->secret()), 10, 32) . '.' . $ext;
 
 		return $url;
 	}
 
-	public function __get($name) {
+	public function __get($name){
 		switch ($name){
-			case 'png': return $this->exportPng(); break;
-			case 'gif': return $this->exportGif(); break;
-			case 'jpg': return $this->exportJpg(); break;
-			case 'url': return $this->export(); break;
+			case 'png':
+				return $this->exportPng();
+				break;
+			case 'gif':
+				return $this->exportGif();
+				break;
+			case 'jpg':
+				return $this->exportJpg();
+				break;
+			case 'url':
+				return $this->export();
+				break;
 		}
 		return null;
 	}
 
-	public function __isset($name) {
+	public function __isset($name){
 		return in_array($name, ['png', 'gif', 'jpg', 'url']);
 	}
 }

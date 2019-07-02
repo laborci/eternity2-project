@@ -4,13 +4,4 @@ generator:
     ghost-path: /src/Ghost
     ghost-namespace: Ghost
 
-attachment:
-    path: public/attachments
-    url: /attachments
-    meta-db-path: var/attachment-meta
-
-thumbnail:
-    path: public/thumbnails
-    secret: ferengi
-    url: /thumbnail
-    source-path: public/attachments
+attachment-config: GhostAttachmentConfig

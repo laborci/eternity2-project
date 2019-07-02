@@ -1,13 +1,17 @@
 <?php namespace Eternity2\Attachment;
 
-class Config{
+use Eternity2\System\Config\ConfigBridge;
 
-	protected $config;
+class Config extends ConfigBridge{
 
-	public function __construct($config){ $this->config = $config; }
+	protected function onConstruct(){
+		$this->config['path'] = env('root') . $this->config['path'];
+		$this->config['meta-db-path'] = env('root') . $this->config['meta-db-path'];
+	}
 
-	public function getPath(){ return $this->config['path']; }
-	public function getUrl(){ return $this->config['url']; }
-	public function getMetaDBPath(){ return $this->config['meta-db-path']; }
+	public function path(){ return $this->config['path']; }
+	public function url(){ return $this->config['url']; }
+	public function metaDBPath(){ return $this->config['meta-db-path']; }
+	public function thumbnailConfig(){ return $this->config['thumbnail-config']; }
 
 }

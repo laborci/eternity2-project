@@ -1,6 +1,6 @@
 <?php namespace Eternity2\Attachment;
 
-use Eternity2\Attachment\Thumbnail\Config as ThumbnailConfig;
+use Eternity2\System\ServiceManager\ServiceContainer;
 use SQLite3;
 
 class AttachmentStorage{
@@ -19,14 +19,14 @@ class AttachmentStorage{
 	/** @var \Eternity2\Attachment\Thumbnail\Config */
 	private $thumbnailConfig;
 
-	public function __construct($storage, Config $attachmentConfig, ThumbnailConfig $thumbnailConfig){
-		$this->basePath = $attachmentConfig->getPath();
-		$this->baseUrl = $attachmentConfig->getUrl();
-		$this->path = $this->basePath.'/'.$storage;
-		$this->url = $this->baseUrl.'/'.$storage;
-		$this->metaFile = $attachmentConfig->getMetaDBPath().'/'.$storage.'.sqlite';
+	public function __construct($storage, Config $config){
+		$this->basePath = $config->path();
+		$this->baseUrl = $config->url();
+		$this->path = $this->basePath . '/' . $storage;
+		$this->url = $this->baseUrl . '/' . $storage;
+		$this->metaFile = $config->metaDBPath() . '/' . $storage . '.sqlite';
 		$this->storage = $storage;
-		$this->thumbnailConfig = $thumbnailConfig;
+		$this->thumbnailConfig = ServiceContainer::get($config->thumbnailConfig());
 	}
 
 	public function addCategory($name){
@@ -35,9 +35,9 @@ class AttachmentStorage{
 		return $category;
 	}
 
-	public function getThumbnailConfig(): \Eternity2\Attachment\Thumbnail\Config{return $this->thumbnailConfig;}
-	public function getBasePath(){return $this->basePath;}
-	public function getBaseUrl(){return $this->baseUrl;}
+	public function getThumbnailConfig(): \Eternity2\Thumbnail\Config{ return $this->thumbnailConfig; }
+	public function getBasePath(){ return $this->basePath; }
+	public function getBaseUrl(){ return $this->baseUrl; }
 	public function getPath(){ return $this->path; }
 	public function getUrl(){ return $this->url; }
 	public function getCategories(){ return $this->categories; }

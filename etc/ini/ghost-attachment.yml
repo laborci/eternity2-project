@@ -1,0 +1,4 @@
+path: public/attachments
+url: /attachments
+meta-db-path: var/attachment-meta
+thumbnail-config: GhostThumbnailConfig

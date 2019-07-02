@@ -1,16 +1,15 @@
 <?php namespace Eternity2\Attachment;
 
-use Eternity2\Attachment\Thumbnail\Thumbnail;
+use Eternity2\Thumbnail\Thumbnail;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * @property-read $url
- * @property-read $path
- * @property-read $category
+ * @property-read           $url
+ * @property-read           $path
+ * @property-read           $category
  * @property-read Thumbnail $thumbnail
  */
-
-class Attachment extends File {
+class Attachment extends File{
 
 	/** @var AttachmentCategoryManager */
 	private $categoryManager;
@@ -24,7 +23,7 @@ class Attachment extends File {
 		$description = '',
 		$ordinal = 0,
 		$meta = []
-	) {
+	){
 		parent::__construct($categoryManager->getPath() . '/' . $filename);
 		$this->categoryManager = $categoryManager;
 		$this->description = $description;
@@ -32,14 +31,14 @@ class Attachment extends File {
 		$this->meta = $meta;
 	}
 
-	public function getCategory(): AttachmentCategory { return $this->categoryManager->getCategory(); }
+	public function getCategory(): AttachmentCategory{ return $this->categoryManager->getCategory(); }
 
-	public function __get($name) {
-		switch ($name) {
+	public function __get($name){
+		switch ($name){
 			case 'path':
 				return $this->categoryManager->getPath() . $this->getFilename();
 			case 'url':
-				return $this->categoryManager->getUrl() .  $this->getFilename();
+				return $this->categoryManager->getUrl() . $this->getFilename();
 			case 'category':
 				return $this->getCategory()->getName();
 			case 'thumbnail':
@@ -48,7 +47,7 @@ class Attachment extends File {
 		return null;
 	}
 
-	public function getRecord() {
+	public function getRecord(){
 		return [
 			'path'        => $this->categoryManager->getOwner()->getPath(),
 			'file'        => $this->getFilename(),
@@ -60,8 +59,7 @@ class Attachment extends File {
 		];
 	}
 
-	public function store() { $this->categoryManager->store($this); }
-	public function remove() { $this->categoryManager->remove($this); }
-
+	public function store(){ $this->categoryManager->store($this); }
+	public function remove(){ $this->categoryManager->remove($this); }
 
 }

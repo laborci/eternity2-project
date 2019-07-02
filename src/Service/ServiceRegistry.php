@@ -21,6 +21,18 @@ class ServiceRegistry implements BootSequnece {
 		ServiceContainer::shared(\Eternity2\CliApplication\Config::class)->factory(function(){return \Eternity2\CliApplication\Config::factory('cli-application');});
 		ServiceContainer::shared(\Eternity2\WebApplication\Config::class)->factory(function(){return \Eternity2\WebApplication\Config::factory('web-application');});
 		ServiceContainer::shared(\Eternity2\RemoteLog\Config::class)->factory(function(){return \Eternity2\RemoteLog\Config::factory('remote-log');});
+
+		#region Ghost
 		ServiceContainer::shared(\Eternity2\Ghost\Config::class)->factory(function(){return \Eternity2\Ghost\Config::factory('ghost');});
+
+		class_alias(\Eternity2\Attachment\Config::class, \GhostAttachmentConfig::class);
+		ServiceContainer::shared(\GhostAttachmentConfig::class)->factory(function(){return \GhostAttachmentConfig::factory('ghost-attachment');});
+
+		class_alias(\Eternity2\Thumbnail\Config::class, \GhostThumbnailConfig::class);
+		ServiceContainer::shared(\GhostThumbnailConfig::class)->factory(function(){return \GhostThumbnailConfig::factory('ghost-thumbnail');});
+
+		class_alias(\Eternity2\Thumbnail\ThumbnailResponder::class, \GhostThumbnailResponder::class);
+		ServiceContainer::shared(\GhostThumbnailResponder::class)->factory(function(){return new \GhostThumbnailResponder(ServiceContainer::get(\GhostThumbnailConfig::class));});
+		#endregion
 	}
 }

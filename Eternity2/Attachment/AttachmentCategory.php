@@ -34,8 +34,8 @@ class AttachmentCategory{
 		return $this;
 	}
 
-	public function getCategoryManager(AttachmentOwnerInterface $owner = null):AttachmentCategoryManager{
-		if(is_null($this->attachmentCategoryManager)){
+	public function getCategoryManager(AttachmentOwnerInterface $owner = null): AttachmentCategoryManager{
+		if (is_null($this->attachmentCategoryManager)){
 			$this->attachmentCategoryManager = new AttachmentCategoryManager($this, $owner);
 		}
 		return $this->attachmentCategoryManager;

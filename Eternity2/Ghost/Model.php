@@ -61,10 +61,10 @@ class Model {
 		if ($this->attachmentStorage === null) {
 			/** @var Config $config */
 			$config = ServiceContainer::get(Config::class);
+
 			$this->attachmentStorage = new AttachmentStorage(
 				$this->table,
-				new \Eternity2\Attachment\Config($config->attachment()),
-				new \Eternity2\Attachment\Thumbnail\Config($config->thumbnail())
+				ServiceContainer::get($config->attachmentConfig())
 			);
 		}
 		return $this->attachmentStorage;

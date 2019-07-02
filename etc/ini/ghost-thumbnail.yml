@@ -1,0 +1,4 @@
+path: public/thumbnails
+secret: ferengi
+url: /thumbnail
+source-path: public/attachments
