@@ -1,17 +1,8 @@
 :Eternity2
 
-- GHOST
-    - exceptions
-
-
-- clear cache
-- public cleanup
-- .keep
 + plain text build-version
 + env merge
 + env -> var
 + virtualhost dev/prod
 + measure and cache middlewares
 + remotelog config
-
-ConfigBridge $env->argumentumból

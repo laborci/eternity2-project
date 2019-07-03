@@ -9,7 +9,7 @@ class Module extends Application {
 		$router->get('/thumbnail/*', \GhostThumbnailResponder::class)();
 		$router->get('/users/codexinfo', Action\UsersCodexinfo::class)();
 		$router->get('/articles/codexinfo', Action\ArticlesCodexInfo::class)();
-		$router->get('/', Page\Index::class)();
+		$router->get('/*', Page\Index::class)();
 	}
 
 }
