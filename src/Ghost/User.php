@@ -1,8 +1,6 @@
 <?php namespace Ghost;
 
-use Ghost\Helper\UserGhost;
-
-class User extends UserGhost {
+class User extends Helper\GhostUser {
 
 
 }
@@ -12,3 +10,4 @@ User::$model->belongsTo('boss', User::class);
 User::$model->hasMany('workers', User::class, 'bossId');
 User::$model->hasAttachment('avatar');
 User::$model->hasAttachment('gallery');
+

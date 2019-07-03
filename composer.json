@@ -14,7 +14,8 @@
         "symfony/yaml": "^4.2",
         "symfony/console": "^3.4.28",
         "riimu/kit-phpencoder": "^2.3",
-        "laborci/valentine-date": "^1.0"
+        "laborci/valentine-date": "^1.0",
+        "redant/console": "^1.0"
     },
     "autoload": {
         "psr-4": {

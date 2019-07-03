@@ -9,7 +9,7 @@ use Eternity2\System\ServiceManager\ServiceContainer;
 use Ghost\User;
 
 /**
- * @method static UserFinder search(Filter $filter = null)
+ * @method static GhostUserFinder search(Filter $filter = null)
  * @property-read int    id
  * @property-read User   boss
  * @property-read User[] workers
@@ -17,7 +17,7 @@ use Ghost\User;
  * @property-read AttachmentCategoryManager $avatar
  * @property-read AttachmentCategoryManager $gallery
  */
-class UserGhost extends Ghost{
+class GhostUser extends Ghost{
 	protected $id;
 	public $name;
 	public $birthday;
@@ -46,4 +46,4 @@ class UserGhost extends Ghost{
  * @method \Ghost\User[] collectPage($pageSize, $page, &$count = 0)
  * @method \Ghost\User pick()
  */
-abstract class UserFinder extends \Eternity2\DBAccess\Finder\AbstractFinder {}
+abstract class GhostUserFinder extends \Eternity2\DBAccess\Finder\AbstractFinder {}

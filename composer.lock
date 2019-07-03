@@ -1,11 +1,67 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fff062b27583067f00d1abcee6fb19d8",
+    "hash": "ff7e6e61f6216b261f3b4c67a0b517ca",
+    "content-hash": "a45a3e60652b3a31f52b746ae0da4de7",
     "packages": [
+        {
+            "name": "beberlei/assert",
+            "version": "v2.9.9",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/beberlei/assert.git",
+                "reference": "124317de301b7c91d5fce34c98bba2c6925bec95"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/124317de301b7c91d5fce34c98bba2c6925bec95",
+                "reference": "124317de301b7c91d5fce34c98bba2c6925bec95",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.1.1",
+                "phpunit/phpunit": "^4.8.35|^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Assert\\": "lib/Assert"
+                },
+                "files": [
+                    "lib/Assert/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Eberlei",
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
+                },
+                {
+                    "name": "Richard Quadling",
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
+                }
+            ],
+            "description": "Thin assertion library for input validation in business models.",
+            "keywords": [
+                "assert",
+                "assertion",
+                "validation"
+            ],
+            "time": "2019-05-28 15:27:37"
+        },
         {
             "name": "laborci/valentine-date",
             "version": "1.0",
@@ -30,7 +86,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2019-02-14T15:45:26+00:00"
+            "time": "2019-02-14 15:45:26"
         },
         {
             "name": "minime/annotations",
@@ -81,7 +137,7 @@
                 "php",
                 "reflection"
             ],
-            "time": "2017-09-05T15:36:31+00:00"
+            "time": "2017-09-05 15:36:31"
         },
         {
             "name": "nabil1337/case-helper",
@@ -112,7 +168,7 @@
                 "MIT"
             ],
             "description": "Easily convert between camelCase, PascalCase, kebab-case, snake_case, SCREAMING_SNAKE_CASE, Train-Case, and string case!",
-            "time": "2014-12-06T02:33:17+00:00"
+            "time": "2014-12-06 02:33:17"
         },
         {
             "name": "nikic/php-parser",
@@ -163,7 +219,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-02-28T20:30:58+00:00"
+            "time": "2018-02-28 20:30:58"
         },
         {
             "name": "paragonie/random_compat",
@@ -208,7 +264,61 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2018-07-02T15:55:56+00:00"
+            "time": "2018-07-02 15:55:56"
+        },
+        {
+            "name": "php-school/cli-menu",
+            "version": "2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-school/cli-menu.git",
+                "reference": "62d3f44a68774d42ecae3adaacdf4811b0fbff9c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-school/cli-menu/zipball/62d3f44a68774d42ecae3adaacdf4811b0fbff9c",
+                "reference": "62d3f44a68774d42ecae3adaacdf4811b0fbff9c",
+                "shasum": ""
+            },
+            "require": {
+                "beberlei/assert": "^2.4",
+                "ext-posix": "*",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.0",
+                "squizlabs/php_codesniffer": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpSchool\\CliMenu\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Woodward",
+                    "email": "mikeymike.mw@gmail.com"
+                },
+                {
+                    "name": "Aydin Hassan",
+                    "email": "aydin@hotmail.com"
+                }
+            ],
+            "description": "A command line menu helper in PHP",
+            "keywords": [
+                "cli",
+                "console",
+                "menu",
+                "php-school",
+                "phpschool",
+                "terminal"
+            ],
+            "time": "2017-12-11 19:36:16"
         },
         {
             "name": "psr/log",
@@ -255,7 +365,44 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2018-11-20T15:27:04+00:00"
+            "time": "2018-11-20 15:27:04"
+        },
+        {
+            "name": "redant/console",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/redantnl/console.git",
+                "reference": "2b3c597878527589ebf44822f99342b16fc85362"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/redantnl/console/zipball/2b3c597878527589ebf44822f99342b16fc85362",
+                "reference": "2b3c597878527589ebf44822f99342b16fc85362",
+                "shasum": ""
+            },
+            "require": {
+                "php-school/cli-menu": "^2.0",
+                "symfony/console": "2.*||^3.0||^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "RedAnt\\Console\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Gert Wijnalda",
+                    "email": "gert@redant.nl"
+                }
+            ],
+            "description": "Menu helper for Symfony Console component",
+            "time": "2018-03-11 19:12:31"
         },
         {
             "name": "regex-guard/regex-guard",
@@ -300,7 +447,7 @@
                 "support",
                 "utils"
             ],
-            "time": "2014-09-17T18:04:00+00:00"
+            "time": "2014-09-17 18:04:00"
         },
         {
             "name": "riimu/kit-phpencoder",
@@ -351,7 +498,7 @@
                 "generator",
                 "variable"
             ],
-            "time": "2018-07-03T12:46:23+00:00"
+            "time": "2018-07-03 12:46:23"
         },
         {
             "name": "symfony/console",
@@ -423,7 +570,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-09T08:42:51+00:00"
+            "time": "2019-05-09 08:42:51"
         },
         {
             "name": "symfony/debug",
@@ -479,7 +626,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-20T16:16:12+00:00"
+            "time": "2019-05-20 16:16:12"
         },
         {
             "name": "symfony/http-foundation",
@@ -533,7 +680,7 @@
             ],
             "description": "Symfony HttpFoundation Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-27T05:50:24+00:00"
+            "time": "2019-05-27 05:50:24"
         },
         {
             "name": "symfony/polyfill-ctype",
@@ -591,7 +738,7 @@
                 "polyfill",
                 "portable"
             ],
-            "time": "2019-02-06T07:57:58+00:00"
+            "time": "2019-02-06 07:57:58"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -650,7 +797,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-02-06T07:57:58+00:00"
+            "time": "2019-02-06 07:57:58"
         },
         {
             "name": "symfony/polyfill-php70",
@@ -709,7 +856,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-02-06T07:57:58+00:00"
+            "time": "2019-02-06 07:57:58"
         },
         {
             "name": "symfony/yaml",
@@ -768,7 +915,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-06T14:04:46+00:00"
+            "time": "2019-04-06 14:04:46"
         },
         {
             "name": "twig/twig",
@@ -835,7 +982,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2019-05-31T06:21:42+00:00"
+            "time": "2019-05-31 06:21:42"
         }
     ],
     "packages-dev": [],

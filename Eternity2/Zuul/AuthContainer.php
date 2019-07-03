@@ -2,7 +2,7 @@
 
 use Eternity2\System\Session\Container;
 
-class AuthSessionContainer extends Container implements AuthContainerInterface {
+class AuthContainer extends Container implements AuthContainerInterface {
 
 	public $userId;
 	public function setUserId($userId) { $this->userId = $userId; }
