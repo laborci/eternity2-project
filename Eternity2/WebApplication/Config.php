@@ -11,7 +11,6 @@ class Config extends ConfigBridge {
 	protected function onConstruct(){
 		$sources = $this->config['twig']['sources'];
 		if (is_array($sources)) $this->twigSources = array_map(function ($source) { return env('root') . $source; }, $sources);
-		dump($this->twigSources);
 		$this->outputCache = env('root') . $this->config['output-cache'];
 		$clientVersionFile = env('root') . $this->config['client-version'];
 		$this->clientVersion = file_exists($clientVersionFile) ? file_get_contents($clientVersionFile) : 0;

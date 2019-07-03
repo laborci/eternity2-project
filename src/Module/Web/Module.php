@@ -1,6 +1,5 @@
 <?php namespace Application\Module\Web;
 
-use Eternity2\Attachment\Thumbnail\ThumbnailResponder;
 use Eternity2\WebApplication\Application;
 use Eternity2\WebApplication\Routing\Router;
 
