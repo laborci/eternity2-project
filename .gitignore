@@ -1,6 +1,7 @@
 .idea
 vendor
 var/**
+data/**
 build/node_modules
 etc/vhost/virtualhost.*conf
 etc/ini/*.local.yml

@@ -1,5 +1,8 @@
 <?php namespace Eternity2\Attachment;
 
+use Eternity2\Attachment\Exception\FileCount;
+use Eternity2\Attachment\Exception\FileNotAcceptable;
+use Eternity2\Attachment\Exception\FileSize;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -39,11 +42,11 @@ class AttachmentCategoryManager {
 	public function addFile(File $file, $description = '', $ordinal = 0, $meta = []) {
 
 		if ($this->count >= $this->category->getMaxFileCount()) {
-			Exception::fileCountException();
+			throw new FileCount();
 		} else if ($file->getSize() > $this->category->getMaxFileSize()) {
-			Exception::fileSizeException();
+			throw new FileSize();
 		} else if (count($this->category->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->category->getAcceptedExtensions())) {
-			Exception::extensionNotAccepted();
+			throw new FileNotAcceptable();
 		}
 
 		if (!is_dir($this->path))

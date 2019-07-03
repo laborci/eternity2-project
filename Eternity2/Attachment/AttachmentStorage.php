@@ -1,5 +1,6 @@
 <?php namespace Eternity2\Attachment;
 
+use Eternity2\Attachment\Exception\CategoryNotFound;
 use Eternity2\System\ServiceManager\ServiceContainer;
 use SQLite3;
 
@@ -46,7 +47,7 @@ class AttachmentStorage{
 	public function getCategory($category): AttachmentCategory{
 		if (array_key_exists($category, $this->categories))
 			return $this->categories[$category];
-		else Exception::requestedCategoryNotFound($category, $storage);
+		else throw new CategoryNotFound();
 	}
 
 	public function getMetaDBConnection(){

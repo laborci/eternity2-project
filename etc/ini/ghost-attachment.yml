@@ -1,4 +1,4 @@
-path: var/attachments
+path: data/attachment
 url: /fs
-meta-db-path: var/attachment-meta
+meta-db-path: data/attachment-meta
 thumbnail-config: GhostThumbnailConfig

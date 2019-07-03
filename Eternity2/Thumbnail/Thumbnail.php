@@ -1,5 +1,6 @@
 <?php namespace Eternity2\Thumbnail;
 
+use Eternity2\Thumbnail\Exception\SourceFileNotFound;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -26,7 +27,7 @@ class Thumbnail{
 		$this->file = $file;
 		$this->config = $config;
 		if (strpos($file->getPath(), $config->sourcePath()) !== 0){
-			throw new \Exception('File location error');
+			throw new SourceFileNotFound();
 		}
 		$this->pathId = str_replace('/', '-', substr(trim($file->getPath(), '/'), strlen($config->sourcePath())));
 	}

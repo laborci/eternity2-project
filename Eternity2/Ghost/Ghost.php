@@ -1,6 +1,7 @@
 <?php namespace Eternity2\Ghost;
 
 use Eternity2\Attachment\AttachmentOwnerInterface;
+use Eternity2\Ghost\Exception\InsufficientData;
 use Eternity2\System\ServiceManager\ServiceContainer;
 use JsonSerializable;
 
@@ -90,6 +91,8 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 		foreach (static::$model->fields as $fieldName => $field) {
 			if (array_key_exists($fieldName, $record)) {
 				$this->$fieldName = $field->compose($record[$fieldName]);
+			}else{
+				throw new InsufficientData();
 			}
 		}
 	}
