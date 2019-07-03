@@ -39,11 +39,11 @@ class AttachmentCategoryManager {
 	public function addFile(File $file, $description = '', $ordinal = 0, $meta = []) {
 
 		if ($this->count >= $this->category->getMaxFileCount()) {
-			throw new \Exception("Too many files");
+			Exception::fileCountException();
 		} else if ($file->getSize() > $this->category->getMaxFileSize()) {
-			throw new \Exception("Too big file");
+			Exception::fileSizeException();
 		} else if (count($this->category->getAcceptedExtensions()) && !in_array($file->getExtension(), $this->category->getAcceptedExtensions())) {
-			throw new \Exception("File type is not accepted");
+			Exception::extensionNotAccepted();
 		}
 
 		if (!is_dir($this->path))

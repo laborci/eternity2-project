@@ -46,7 +46,7 @@ class AttachmentStorage{
 	public function getCategory($category): AttachmentCategory{
 		if (array_key_exists($category, $this->categories))
 			return $this->categories[$category];
-		else throw new \Exception("Attachment category not found");
+		else Exception::requestedCategoryNotFound($category, $storage);
 	}
 
 	public function getMetaDBConnection(){

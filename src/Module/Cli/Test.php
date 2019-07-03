@@ -18,9 +18,9 @@ class Test extends Command{
 		$style = new SymfonyStyle($input, $output);
 		$time = microtime(true);
 
-		$user = User::pick(1);
+		$user = User::pick(5);
 
-		$user->avatar->addFile(new File(env('root').'assets/0.jpg'));
+		$user->avatar->addFile(new File(env('root').'assets/web/img/0.jpg'));
 		$user->gallery->addFile($user->avatar->first);
 
 		$user->avatar->get('0.jpg');

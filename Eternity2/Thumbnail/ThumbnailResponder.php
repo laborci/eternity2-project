@@ -51,13 +51,13 @@ class ThumbnailResponder extends PageResponder {
 		$oType = $imgInfo['2'];
 		switch ($oType) {
 			case 1:
-				$this->img = imageCreateFromGif($this->source);
+				$this->img = imagecreatefromgif($this->source);
 				break;
 			case 2:
-				$this->img = imageCreateFromJpeg($this->source);
+				$this->img = imagecreatefromjpeg($this->source);
 				break;
 			case 3:
-				$this->img = imageCreateFromPng($this->source);
+				$this->img = imagecreatefrompng($this->source);
 				break;
 			default:
 				die('404');
