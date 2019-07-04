@@ -2,6 +2,7 @@
 
 use CaseHelper\CaseHelperFactory;
 use Eternity2\Ghost\Config;
+use Eternity2\Ghost\Field;
 use Eternity2\System\AnnotationReader\AnnotationReader;
 use Eternity2\System\ServiceManager\Service;
 use Minime\Annotations\Reader;
@@ -49,14 +50,14 @@ class Creator{
 		$database = $input->getArgument('database');
 
 		if ($name){
-			$this->create($name, $table, $database);
+			$this->createMode($name, $table, $database);
 		}else{
 			$this->updateAll();
 		}
 
 	}
 
-	protected function create($name, $table, $database){
+	protected function createMode($name, $table, $database){
 		$name = ucfirst($name);
 		$table = is_null($table) ? CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE)->toSnakeCase($name) : $table;
 		$database = is_null($database) ? $this->config->defaultDatabase() : $database;
@@ -98,13 +99,12 @@ class Creator{
 			$this->style->writeln('');
 		}
 
-		if($action === 'cancel'){
-			$this->style->success('bye');
+		if($action === 'create'){
+			$this->create($name, $table, $database);
 		}elseif ($action === 'update'){
 			$this->update($name);
-		}else{
-			$this->style->writeln("Creating {$name}...");
 		}
+		$this->style->success('done');
 	}
 
 	protected function updateAll(){
@@ -114,6 +114,119 @@ class Creator{
 	protected function update($name){
 		$this->style->writeln("Updating {$name}...");
 	}
+
+	protected function create($name, $table, $database){
+		$this->style->writeln("Create {$name}...");
+		$this->generateGhostHelper($name, $table, $database);
+	}
+
+	protected function generateGhostHelper($name, $table, $database){
+		$this->style->writeln("Generate [Ghost{$name}] Helper");
+		$file = "{$this->config->ghostPath()}/Helper/Ghost{$name}.php";
+		$this->style->writeln($file);
+
+		$this->style->writeln("Connecting to database ${database}");
+		/** @var AbstractPDOConnection $connection */
+		$connection = ServiceContainer::get($database);
+		$this->style->writeln("Fetching table information ${table}");
+
+		$smartAccess = $connection->createSmartAccess();
+
+		$fields = $smartAccess->getFieldData($table);
+
+		$addFields = [];
+		foreach ($fields as $field){
+			$addFields[] = '		$model->addField("'.$field['Field'].'", '.$this->fieldType($field, $field['Field']).');';
+		}
+		$addFields[] = '		$model->protectField("id");';
+
+		$template =
+'<?php namespace {{namespace}}\Helper;
+
+use Eternity2\Attachment\AttachmentCategoryManager;
+use Eternity2\DBAccess\Filter\Filter;
+use Eternity2\Ghost\Field;
+use Eternity2\Ghost\Ghost;
+use Eternity2\Ghost\Model;
+use Eternity2\System\ServiceManager\ServiceContainer;
+use {{namespace}}\{{name}};
+
+trait Ghost{{name}}Fields{
+	protected $id;
+	public $name;
+	public $birthday;
+	public $regdate;
+	public $status;
+	public $data;
+	public $bossId;
+}
+
+/**
+ * @method static Ghost{{name}}Finder search(Filter $filter = null)
+ * @property-read int    id
+ * custom-properties:
+ */
+class Ghost{{name}} extends Ghost{
+	
+	use Ghost{{name}}Fields;
+
+	final static protected function createModel(string $connection, string $table): Model{
+		$model = new Model(ServiceContainer::get($connection), $table, get_called_class());
+{{add-fields}}
+		return $model;
+	}
+}
+
+/**
+ * Nobody uses this class, it exists only to help the code completion
+ * @method \{{namespace}}\{{name}}[] collect($limit = null, $offset = null)
+ * @method \{{namespace}}\{{name}}[] collectPage($pageSize, $page, &$count = 0)
+ * @method \{{namespace}}\{{name}} pick()
+ */
+abstract class Ghost{{name}}Finder extends \Eternity2\DBAccess\Finder\AbstractFinder {}';
+
+		$template = str_replace('{{name}}', $name, $template);
+		$template = str_replace('{{namespace}}', $this->config->ghostNamespace(), $template);
+		$template = str_replace('{{add-fields}}', join("\n", $addFields), $template);
+
+		$this->style->text($template);
+
+		$this->style->writeln('done');
+
+	}
+
+
+
+
+
+	protected function fieldType($db_field, $fieldName){
+		$dbtype = $db_field['Type'];
+
+		if ($db_field['Comment'] == 'json')return 'Field::TYPE_JSON';
+
+		if ($dbtype == 'tinyint(1)') return 'Field::TYPE_BOOL';
+		if ($dbtype == 'date') return 'Field::TYPE_DATE';
+		if ($dbtype == 'datetime') return 'Field::TYPE_DATETIME';
+		if ($dbtype == 'float') return 'Field::TYPE_FLOAT';
+		if (strpos($dbtype, 'int(11) unsigned') === 0 && (substr($fieldName, -2) == 'Id' || $fieldName == 'id')) return 'Field::TYPE_ID';
+		if (strpos($dbtype, 'int') === 0) return 'Field::TYPE_ID';
+		if (strpos($dbtype, 'tinyint') === 0) return 'Field::TYPE_INT';
+		if (strpos($dbtype, 'smallint') === 0) return 'Field::TYPE_INT';
+		if (strpos($dbtype, 'mediumint') === 0)return 'Field::TYPE_INT';
+		if (strpos($dbtype, 'bigint') === 0)return 'Field::TYPE_INT';;
+
+		if (strpos($dbtype, 'varchar') === 0)return 'Field::TYPE_STRING';
+		if (strpos($dbtype, 'char') === 0)return 'Field::TYPE_STRING';
+		if (strpos($dbtype, 'text') === 0)return 'Field::TYPE_STRING';
+		if (strpos($dbtype, 'text') === 0)return 'Field::TYPE_STRING';
+		if (strpos($dbtype, 'tinytext') === 0)return 'Field::TYPE_STRING';
+		if (strpos($dbtype, 'mediumtext') === 0)return 'Field::TYPE_STRING';
+		if (strpos($dbtype, 'longtext') === 0)return 'Field::TYPE_STRING';
+
+		if (strpos($dbtype, 'set') === 0)return 'Field::TYPE_SET';
+		if (strpos($dbtype, 'enum') === 0)return 'Field::TYPE_ENUM';
+	}
+
 
 	protected function menu($title, $options, $default){ return array_search($this->style->choice($title, array_values($options), $options[$default]), $options); }
 
@@ -187,202 +300,202 @@ class Creator{
 
 //	}
 
-	protected function createEntityTrait($database, $table, $name, $source, $destination){
-		$fields = '';
-		$class = "\\Entity\\" . $name . "\\" . $name;
-		/** @var Model $model */
-		$model = $class::model();
-
-		$generatedLines = [];
-
-		$fields = $model->getFields();
-		foreach ($fields as $field){
-			$fieldObj = $model->getField($field);
-			$generatedLines[] = ' * @property' . ($fieldObj->readonly() ? '-read' : '') . ' ' . $this->getFieldDataType($fieldObj) . ' $' . $field;
-		}
-
-		$relations = $model->getRelations();
-		foreach ($relations as $relation){
-			$relationObj = $model->getRelation($relation);
-			$generatedLines[] = ' * @property-read' . ' ' . $relationObj->getRelatedClass() . ' $' . $relation;
-			if ($relationObj instanceof BackReference){
-				$generatedLines[] = ' * @method' . ' ' . $relationObj->getRelatedClass() . ' ' . $relation . '($order=null, $limit=null, $offset=null)';
-			}
-		}
-
-		$attahcmentGroups = $model->getAttachmentGroups();
-		foreach ($attahcmentGroups as $attahcmentGroup){
-			$generatedLines[] = ' * @property-read \\RedFox\\Entity\\Attachment\\AttachmentCategoryManager $' . $attahcmentGroup;
-		}
-
-		$fields = join("\n", $generatedLines);
-
-		$dictionary = [
-			'name'     => $name,
-			'database' => $database,
-			'table'    => $table,
-			'fields'   => $fields,
-		];
-		$this->translateFile($destination, $source, $dictionary, true);
-	}
-
-	protected function createEntityInterface($database, $table, $name, $source, $destination){
-		$constants = '';
-		/** @var AbstractPDOConnection $PDOConnection */
-		$PDOConnection = ServiceContainer::get($database);
-		$access = $PDOConnection->createSmartAccess();
-
-		foreach ($access->getFieldData($table) as $db_field){
-			$label = $db_field['Field'];
-			$options = $access->getEnumValues($table, $db_field['Field']);
-			foreach ($options as $option){
-				$constant = str_replace(' ', '_', strtoupper($label . '_' . $option));
-				$constants .= "\tconst $constant = '$option';\n";
-			}
-		}
-		$dictionary = [
-			'name'      => $name,
-			'database'  => $database,
-			'table'     => $table,
-			'constants' => $constants,
-		];
-		$this->translateFile($destination, $source, $dictionary, true);
-	}
-
-	protected function createModelTrait($database, $table, $name, $source, $destination){
-		$fields = '';
-		/** @var AbstractPDOConnection $PDOConnection */
-		$PDOConnection = ServiceContainer::get($database);
-		$access = $PDOConnection->createSmartAccess();
-
-		foreach ($access->getFieldData($table) as $db_field){
-			$type = $this->selectRedfoxField($db_field, $db_field['Field']);
-			$label = $db_field['Field'];
-			$fields .= ' * px: @property-read ' . $type . ' $' . $label . "\n";
-		}
-
-		$dictionary = [
-			'name'     => $name,
-			'database' => $database,
-			'table'    => $table,
-			'fields'   => $fields,
-		];
-		$this->translateFile($destination, $source, $dictionary, true);
-	}
-
-	protected function translateFile($destination, $source, $dictionary, $force = false){
-		if (!file_exists($destination) || $force){
-			$this->style->write('Creating file: ' . $destination . ' ... ');
-			$output = file_get_contents($source);
-			foreach ($dictionary as $key => $value){
-				$output = str_replace('{{' . $key . '}}', $value, $output);
-			}
-			file_put_contents($destination, $output);
-			$this->style->writeln('DONE');
-		}
-	}
-
-	protected function updateFields($database, $table, $destination){
-		$this->style->write('Updating file: ' . $destination . ' ... ');
-
-		/** @var AbstractPDOConnection $PDOConnection */
-		$PDOConnection = ServiceContainer::get($database);
-
-		$access = $PDOConnection->createSmartAccess();
-
-		$fields = include($destination);
-		$modifiers = [];
-		foreach ($fields as $field => $rest){
-			unset($fields[$field]);
-			$fieldname = trim($field, '@!');
-			$modifiers[$fieldname] = '';
-			if (strpos($field, '@') !== false)
-				$modifiers[$fieldname] .= '@';
-			if (strpos($field, '!') !== false)
-				$modifiers[$fieldname] .= '!';
-			$fields[$fieldname] = $rest;
-		}
-
-		$encoder = new \Riimu\Kit\PHPEncoder\PHPEncoder();
-
-		$output = '<?php return [' . "\n";
-		foreach ($access->getFieldData($table) as $db_field){
-			$label = (array_key_exists($db_field['Field'], $modifiers) ? $modifiers[$db_field['Field']] : '') . $db_field['Field'];
-
-			if (strpos($label, '!') !== false){
-				$output .= "\t'$label' => [" . '\\' . $fields[$db_field['Field']][0] . '::class' . (array_key_exists(1, $fields[$db_field['Field']]) ? ', ' . $encoder->encode($fields[$db_field['Field']][1], ['array.inline' => true]) : '') . "],\n";
-			}else{
-				$type = $this->selectRedfoxField($db_field, $db_field['Field']) . '::class';
-				$output .= "\t'$label' => [$type";
-				$options = $access->getEnumValues($table, $db_field['Field']);
-				if (count($options))
-					$output .= ', ' . $encoder->encode($options, ['array.inline' => true]);
-				$output .= "],\n";
-			}
-		}
-		$output .= "];";
-
-		file_put_contents($destination, $output);
-
-		$this->style->writeln('DONE.');
-	}
-
-	protected function selectRedfoxField($db_field, $fieldName){
-		$dbtype = $db_field['Type'];
-		if ($db_field['Comment'] == 'password')
-			return 'Eternity2\RedFox\Fields\PasswordField';
-		if ($db_field['Comment'] == 'json')
-			return 'Eternity2\RedFox\Fields\JsonStringField';
-
-		if ($dbtype == 'tinyint(1)')
-			return 'Eternity2\RedFox\Fields\BoolField';
-		if ($dbtype == 'date')
-			return 'Eternity2\RedFox\Fields\DateField';
-		if ($dbtype == 'datetime')
-			return 'Eternity2\RedFox\Fields\DateTimeField';
-		if ($dbtype == 'float')
-			return 'Eternity2\RedFox\Fields\FloatField';
-
-		if (strpos($dbtype, 'int(11) unsigned') === 0 && (substr($fieldName, -2) == 'Id' || $fieldName == 'id'))
-			return 'Eternity2\RedFox\Fields\IdField';
-		if (strpos($dbtype, 'int') === 0)
-			return 'Eternity2\RedFox\Fields\IntegerField';
-		if (strpos($dbtype, 'tinyint') === 0)
-			return 'Eternity2\RedFox\Fields\IntegerField';
-		if (strpos($dbtype, 'smallint') === 0)
-			return 'Eternity2\RedFox\Fields\IntegerField';
-		if (strpos($dbtype, 'mediumint') === 0)
-			return 'Eternity2\RedFox\Fields\IntegerField';
-		if (strpos($dbtype, 'bigint') === 0)
-			return 'Eternity2\RedFox\Fields\IntegerField';
-
-		if (strpos($dbtype, 'varchar') === 0)
-			return 'Eternity2\RedFox\Fields\StringField';
-		if (strpos($dbtype, 'char') === 0)
-			return 'Eternity2\RedFox\Fields\StringField';
-		if (strpos($dbtype, 'text') === 0)
-			return 'Eternity2\RedFox\Fields\StringField';
-		if (strpos($dbtype, 'text') === 0)
-			return 'Eternity2\RedFox\Fields\StringField';
-		if (strpos($dbtype, 'tinytext') === 0)
-			return 'Eternity2\RedFox\Fields\StringField';
-		if (strpos($dbtype, 'mediumtext') === 0)
-			return 'Eternity2\RedFox\Fields\StringField';
-		if (strpos($dbtype, 'longtext') === 0)
-			return 'Eternity2\RedFox\Fields\StringField';
-
-		if (strpos($dbtype, 'set') === 0)
-			return 'Eternity2\RedFox\Fields\SetField';
-		if (strpos($dbtype, 'enum') === 0)
-			return 'Eternity2\RedFox\Fields\EnumField';
-
-		return 'Eternity2\RedFox\Fields\UnsupportedField';
-	}
-
-	protected function getFieldDataType($fieldObj){
-		$annotationReader = ServiceContainer::get(AnnotationReader::class);
-		$annotations = $annotationReader->getClassAnnotations(get_class($fieldObj));
-		return $annotations->get('datatype');
-	}
+//	protected function createEntityTrait($database, $table, $name, $source, $destination){
+//		$fields = '';
+//		$class = "\\Entity\\" . $name . "\\" . $name;
+//		/** @var Model $model */
+//		$model = $class::model();
+//
+//		$generatedLines = [];
+//
+//		$fields = $model->getFields();
+//		foreach ($fields as $field){
+//			$fieldObj = $model->getField($field);
+//			$generatedLines[] = ' * @property' . ($fieldObj->readonly() ? '-read' : '') . ' ' . $this->getFieldDataType($fieldObj) . ' $' . $field;
+//		}
+//
+//		$relations = $model->getRelations();
+//		foreach ($relations as $relation){
+//			$relationObj = $model->getRelation($relation);
+//			$generatedLines[] = ' * @property-read' . ' ' . $relationObj->getRelatedClass() . ' $' . $relation;
+//			if ($relationObj instanceof BackReference){
+//				$generatedLines[] = ' * @method' . ' ' . $relationObj->getRelatedClass() . ' ' . $relation . '($order=null, $limit=null, $offset=null)';
+//			}
+//		}
+//
+//		$attahcmentGroups = $model->getAttachmentGroups();
+//		foreach ($attahcmentGroups as $attahcmentGroup){
+//			$generatedLines[] = ' * @property-read \\RedFox\\Entity\\Attachment\\AttachmentCategoryManager $' . $attahcmentGroup;
+//		}
+//
+//		$fields = join("\n", $generatedLines);
+//
+//		$dictionary = [
+//			'name'     => $name,
+//			'database' => $database,
+//			'table'    => $table,
+//			'fields'   => $fields,
+//		];
+//		$this->translateFile($destination, $source, $dictionary, true);
+//	}
+//
+//	protected function createEntityInterface($database, $table, $name, $source, $destination){
+//		$constants = '';
+//		/** @var AbstractPDOConnection $PDOConnection */
+//		$PDOConnection = ServiceContainer::get($database);
+//		$access = $PDOConnection->createSmartAccess();
+//
+//		foreach ($access->getFieldData($table) as $db_field){
+//			$label = $db_field['Field'];
+//			$options = $access->getEnumValues($table, $db_field['Field']);
+//			foreach ($options as $option){
+//				$constant = str_replace(' ', '_', strtoupper($label . '_' . $option));
+//				$constants .= "\tconst $constant = '$option';\n";
+//			}
+//		}
+//		$dictionary = [
+//			'name'      => $name,
+//			'database'  => $database,
+//			'table'     => $table,
+//			'constants' => $constants,
+//		];
+//		$this->translateFile($destination, $source, $dictionary, true);
+//	}
+//
+//	protected function createModelTrait($database, $table, $name, $source, $destination){
+//		$fields = '';
+//		/** @var AbstractPDOConnection $PDOConnection */
+//		$PDOConnection = ServiceContainer::get($database);
+//		$access = $PDOConnection->createSmartAccess();
+//
+//		foreach ($access->getFieldData($table) as $db_field){
+//			$type = $this->selectRedfoxField($db_field, $db_field['Field']);
+//			$label = $db_field['Field'];
+//			$fields .= ' * px: @property-read ' . $type . ' $' . $label . "\n";
+//		}
+//
+//		$dictionary = [
+//			'name'     => $name,
+//			'database' => $database,
+//			'table'    => $table,
+//			'fields'   => $fields,
+//		];
+//		$this->translateFile($destination, $source, $dictionary, true);
+//	}
+//
+//	protected function translateFile($destination, $source, $dictionary, $force = false){
+//		if (!file_exists($destination) || $force){
+//			$this->style->write('Creating file: ' . $destination . ' ... ');
+//			$output = file_get_contents($source);
+//			foreach ($dictionary as $key => $value){
+//				$output = str_replace('{{' . $key . '}}', $value, $output);
+//			}
+//			file_put_contents($destination, $output);
+//			$this->style->writeln('DONE');
+//		}
+//	}
+//
+//	protected function updateFields($database, $table, $destination){
+//		$this->style->write('Updating file: ' . $destination . ' ... ');
+//
+//		/** @var AbstractPDOConnection $PDOConnection */
+//		$PDOConnection = ServiceContainer::get($database);
+//
+//		$access = $PDOConnection->createSmartAccess();
+//
+//		$fields = include($destination);
+//		$modifiers = [];
+//		foreach ($fields as $field => $rest){
+//			unset($fields[$field]);
+//			$fieldname = trim($field, '@!');
+//			$modifiers[$fieldname] = '';
+//			if (strpos($field, '@') !== false)
+//				$modifiers[$fieldname] .= '@';
+//			if (strpos($field, '!') !== false)
+//				$modifiers[$fieldname] .= '!';
+//			$fields[$fieldname] = $rest;
+//		}
+//
+//		$encoder = new \Riimu\Kit\PHPEncoder\PHPEncoder();
+//
+//		$output = '<?php return [' . "\n";
+//		foreach ($access->getFieldData($table) as $db_field){
+//			$label = (array_key_exists($db_field['Field'], $modifiers) ? $modifiers[$db_field['Field']] : '') . $db_field['Field'];
+//
+//			if (strpos($label, '!') !== false){
+//				$output .= "\t'$label' => [" . '\\' . $fields[$db_field['Field']][0] . '::class' . (array_key_exists(1, $fields[$db_field['Field']]) ? ', ' . $encoder->encode($fields[$db_field['Field']][1], ['array.inline' => true]) : '') . "],\n";
+//			}else{
+//				$type = $this->selectRedfoxField($db_field, $db_field['Field']) . '::class';
+//				$output .= "\t'$label' => [$type";
+//				$options = $access->getEnumValues($table, $db_field['Field']);
+//				if (count($options))
+//					$output .= ', ' . $encoder->encode($options, ['array.inline' => true]);
+//				$output .= "],\n";
+//			}
+//		}
+//		$output .= "];";
+//
+//		file_put_contents($destination, $output);
+//
+//		$this->style->writeln('DONE.');
+//	}
+//
+//	protected function selectRedfoxField($db_field, $fieldName){
+//		$dbtype = $db_field['Type'];
+//		if ($db_field['Comment'] == 'password')
+//			return 'Eternity2\RedFox\Fields\PasswordField';
+//		if ($db_field['Comment'] == 'json')
+//			return 'Eternity2\RedFox\Fields\JsonStringField';
+//
+//		if ($dbtype == 'tinyint(1)')
+//			return 'Eternity2\RedFox\Fields\BoolField';
+//		if ($dbtype == 'date')
+//			return 'Eternity2\RedFox\Fields\DateField';
+//		if ($dbtype == 'datetime')
+//			return 'Eternity2\RedFox\Fields\DateTimeField';
+//		if ($dbtype == 'float')
+//			return 'Eternity2\RedFox\Fields\FloatField';
+//
+//		if (strpos($dbtype, 'int(11) unsigned') === 0 && (substr($fieldName, -2) == 'Id' || $fieldName == 'id'))
+//			return 'Eternity2\RedFox\Fields\IdField';
+//		if (strpos($dbtype, 'int') === 0)
+//			return 'Eternity2\RedFox\Fields\IntegerField';
+//		if (strpos($dbtype, 'tinyint') === 0)
+//			return 'Eternity2\RedFox\Fields\IntegerField';
+//		if (strpos($dbtype, 'smallint') === 0)
+//			return 'Eternity2\RedFox\Fields\IntegerField';
+//		if (strpos($dbtype, 'mediumint') === 0)
+//			return 'Eternity2\RedFox\Fields\IntegerField';
+//		if (strpos($dbtype, 'bigint') === 0)
+//			return 'Eternity2\RedFox\Fields\IntegerField';
+//
+//		if (strpos($dbtype, 'varchar') === 0)
+//			return 'Eternity2\RedFox\Fields\StringField';
+//		if (strpos($dbtype, 'char') === 0)
+//			return 'Eternity2\RedFox\Fields\StringField';
+//		if (strpos($dbtype, 'text') === 0)
+//			return 'Eternity2\RedFox\Fields\StringField';
+//		if (strpos($dbtype, 'text') === 0)
+//			return 'Eternity2\RedFox\Fields\StringField';
+//		if (strpos($dbtype, 'tinytext') === 0)
+//			return 'Eternity2\RedFox\Fields\StringField';
+//		if (strpos($dbtype, 'mediumtext') === 0)
+//			return 'Eternity2\RedFox\Fields\StringField';
+//		if (strpos($dbtype, 'longtext') === 0)
+//			return 'Eternity2\RedFox\Fields\StringField';
+//
+//		if (strpos($dbtype, 'set') === 0)
+//			return 'Eternity2\RedFox\Fields\SetField';
+//		if (strpos($dbtype, 'enum') === 0)
+//			return 'Eternity2\RedFox\Fields\EnumField';
+//
+//		return 'Eternity2\RedFox\Fields\UnsupportedField';
+//	}
+//
+//	protected function getFieldDataType($fieldObj){
+//		$annotationReader = ServiceContainer::get(AnnotationReader::class);
+//		$annotations = $annotationReader->getClassAnnotations(get_class($fieldObj));
+//		return $annotations->get('datatype');
+//	}
 
 }

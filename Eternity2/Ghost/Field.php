@@ -5,7 +5,7 @@ use Valentine\Date;
 
 class Field {
 
-	const TYPE_BOOl = 'bool';
+	const TYPE_BOOL = 'bool';
 	const TYPE_STRING = 'string';
 	const TYPE_INT = 'int';
 	const TYPE_ID = 'id';
@@ -21,10 +21,12 @@ class Field {
 	public $protected = false;
 	public $getter = null;
 	public $setter = null;
+	private $data;
 
-	public function __construct($name, $type) {
+	public function __construct($name, $type, $data = null) {
 		$this->name = $name;
 		$this->type = $type;
+		$this->data = $data;
 	}
 
 	public function protect($getter, $setter) {
@@ -51,7 +53,7 @@ class Field {
 			case self::TYPE_FLOAT:
 				return floatval($value);
 
-			case self::TYPE_BOOl:
+			case self::TYPE_BOOL:
 				return (bool)$value;
 
 			case self::TYPE_SET:
@@ -81,7 +83,7 @@ class Field {
 			case self::TYPE_FLOAT:
 				return floatval($value);
 
-			case self::TYPE_BOOl:
+			case self::TYPE_BOOL:
 				return (int)((bool)$value);
 
 			case self::TYPE_SET:
@@ -102,7 +104,7 @@ class Field {
 			case self::TYPE_DATETIME:
 				return (function (\DateTime $date) { return $date->format('c'); })($value);
 
-			case self::TYPE_BOOl:
+			case self::TYPE_BOOL:
 				return (bool)$value;
 
 			case self::TYPE_INT:

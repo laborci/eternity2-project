@@ -8,6 +8,16 @@ use Eternity2\Ghost\Model;
 use Eternity2\System\ServiceManager\ServiceContainer;
 use Ghost\User;
 
+trait GhostUserFields{
+	protected $id;
+	public $name;
+	public $birthday;
+	public $regdate;
+	public $status;
+	public $data;
+	public $bossId;
+}
+
 /**
  * @method static GhostUserFinder search(Filter $filter = null)
  * @property-read int    id
@@ -18,24 +28,19 @@ use Ghost\User;
  * @property-read AttachmentCategoryManager $gallery
  */
 class GhostUser extends Ghost{
+
 	protected $id;
-	public $name;
-	public $birthday;
-	public $regdate;
-	public $status;
-	public $data;
-	public $bossId;
 
 	final static protected function createModel(string $connection, string $table): Model{
 		$model = new Model(ServiceContainer::get($connection), $table, get_called_class());
 		$model->addField('id', Field::TYPE_ID);
+		$model->protectField('id');
 		$model->addField('name', Field::TYPE_STRING);
 		$model->addField('birthday', Field::TYPE_DATE);
 		$model->addField('regdate', Field::TYPE_DATETIME);
-		$model->addField('status', Field::TYPE_BOOl);
+		$model->addField('status', Field::TYPE_BOOL);
 		$model->addField('data', Field::TYPE_JSON);
 		$model->addField('bossId', Field::TYPE_ID);
-		$model->protectField('id');
 		return $model;
 	}
 }
