@@ -21,12 +21,14 @@ class Model {
 	public $repository;
 	/** @var AttachmentStorage */
 	protected $attachmentStorage;
+	public $connectionName;
 
-	public function __construct($connection, $table, $ghost) {
-		$this->connection = $connection;
+	public function __construct($connectionName, $table, $ghost) {
+		$this->connection = ServiceContainer::get($connectionName);
 		$this->table = $table;
 		$this->ghost = $ghost;
 		$this->repository = new Repository($ghost, $this);
+		$this->connectionName = $connectionName;
 	}
 
 	/**

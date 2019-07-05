@@ -29,8 +29,9 @@ class Repository {
 		if (is_null($object)){
 			$record = $this->dbRepository->pick($id);
 			if($record){
+				$ghostClass = $this->ghost;
 				/** @var Ghost $object */
-				$object = new $this->ghost();
+				$object = new $ghostClass();
 				$object->compose($record);
 				$this->addToCache($object);
 			}else return null;

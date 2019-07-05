@@ -5,10 +5,25 @@ use Eternity2\DBAccess\Filter\Filter;
 use Eternity2\Ghost\Field;
 use Eternity2\Ghost\Ghost;
 use Eternity2\Ghost\Model;
-use Eternity2\System\ServiceManager\ServiceContainer;
-use Ghost\User;
 
-trait GhostUserFields{
+/**
+ * @method static GhostUserFinder search(Filter $filter = null)
+ * @property-read $id
+ * @property-read AttachmentCategoryManager $avatar
+ * @property-read AttachmentCategoryManager $gallery
+ * @property-read \Ghost\User $boss
+ * @property-read \Ghost\User[] $workers
+ * @method \Ghost\User[] workers($order = null, $limit = null, $offset = null)
+ */
+abstract class GhostUser extends Ghost{
+	
+	/** @var Model */
+	public static $model;
+	public static $table = "user";
+	public static $connectionName = "DefaultDBConnection";
+	
+
+
 	protected $id;
 	public $name;
 	public $birthday;
@@ -16,31 +31,19 @@ trait GhostUserFields{
 	public $status;
 	public $data;
 	public $bossId;
-}
 
-/**
- * @method static GhostUserFinder search(Filter $filter = null)
- * @property-read int    id
- * @property-read User   boss
- * @property-read User[] workers
- * @method User[] workers($order=null, $limit=null, $offset=null)
- * @property-read AttachmentCategoryManager $avatar
- * @property-read AttachmentCategoryManager $gallery
- */
-class GhostUser extends Ghost{
 
-	protected $id;
 
-	final static protected function createModel(string $connection, string $table): Model{
-		$model = new Model(ServiceContainer::get($connection), $table, get_called_class());
-		$model->addField('id', Field::TYPE_ID);
-		$model->protectField('id');
-		$model->addField('name', Field::TYPE_STRING);
-		$model->addField('birthday', Field::TYPE_DATE);
-		$model->addField('regdate', Field::TYPE_DATETIME);
-		$model->addField('status', Field::TYPE_BOOL);
-		$model->addField('data', Field::TYPE_JSON);
-		$model->addField('bossId', Field::TYPE_ID);
+	final static protected function createModel(): Model{
+		$model = new Model(static::$connectionName, static::$table, get_called_class());
+		$model->addField("id", Field::TYPE_ID);
+		$model->addField("name", Field::TYPE_STRING);
+		$model->addField("birthday", Field::TYPE_DATE);
+		$model->addField("regdate", Field::TYPE_DATETIME);
+		$model->addField("status", Field::TYPE_BOOL);
+		$model->addField("data", Field::TYPE_JSON);
+		$model->addField("bossId", Field::TYPE_ID);
+		$model->protectField("id");
 		return $model;
 	}
 }

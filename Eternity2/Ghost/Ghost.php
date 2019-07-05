@@ -22,22 +22,14 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 
 #region Model Creation
 
-	/** @var Model */
-	public static $model;
-
-	static final public function model(string $table, string $connection = null) {
+	static final public function init() {
 		if (static::$model === null) {
-			if ($connection === null) {
-				/** @var Config $config */
-				$config = ServiceContainer::get(Config::class);
-				$connection = $config->defaultDatabase();
-			}
-			$model = static::createModel($connection, $table);
+			$model = static::createModel();
 			static::$model = $model;
 		}
 	}
 
-	abstract static protected function createModel(string $connection, string $table): Model;
+	abstract static protected function createModel(): Model;
 
 #endregion
 
@@ -92,7 +84,7 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 			if (array_key_exists($fieldName, $record)) {
 				$this->$fieldName = $field->compose($record[$fieldName]);
 			}else{
-				throw new InsufficientData();
+				throw new InsufficientData(static::$model->table.' '.$fieldName);
 			}
 		}
 	}
@@ -118,11 +110,11 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 #region CRUD
 	final public function delete() {
 		if ($this->isExists()) {
-			if ($this->on(self::EVENT___BEFORE_DELETE) === false)
+			if ($this->on(static::EVENT___BEFORE_DELETE) === false)
 				return false;
 			static::$model->repository->delete($this);
 			$this->deleted = true;
-			$this->on(self::EVENT___AFTER_DELETE);
+			$this->on(static::EVENT___AFTER_DELETE);
 		}
 		return true;
 	}
@@ -138,18 +130,18 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface {
 	}
 
 	final private function update() {
-		if ($this->on(self::EVENT___BEFORE_UPDATE) === false)
+		if ($this->on(static::EVENT___BEFORE_UPDATE) === false)
 			return false;
 		static::$model->repository->update($this);
-		$this->on(self::EVENT___AFTER_UPDATE);
+		$this->on(static::EVENT___AFTER_UPDATE);
 		return true;
 	}
 
 	final private function insert() {
-		if ($this->on(self::EVENT___BEFORE_INSERT) === false)
+		if ($this->on(static::EVENT___BEFORE_INSERT) === false)
 			return false;
 		$this->id = static::$model->repository->insert($this);
-		$this->on(self::EVENT___AFTER_INSERT);
+		$this->on(static::EVENT___AFTER_INSERT);
 		return $this->id;
 	}
 

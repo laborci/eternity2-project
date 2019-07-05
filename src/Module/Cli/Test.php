@@ -1,6 +1,7 @@
 <?php namespace Application\Module\Cli;
 
 use Eternity2\DBAccess\Filter\Filter;
+use Ghost\Article;
 use Ghost\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +19,11 @@ class Test extends Command{
 		$style = new SymfonyStyle($input, $output);
 		$time = microtime(true);
 
-		$user = User::pick(1);
+		$article = Article::pick(1);
+
+		$user = User::pick(4);
+		$user->save();
+
 
 		$user->avatar->addFile(new File(env('root').'assets/web/img/0.jpg'));
 		$user->gallery->addFile($user->avatar->first);
