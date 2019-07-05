@@ -15,13 +15,12 @@ use Eternity2\Ghost\Model;
  * @property-read \Ghost\User[] $workers
  * @method \Ghost\User[] workers($order = null, $limit = null, $offset = null)
  */
-abstract class GhostUser extends Ghost{
-	
+abstract class GhostUser extends Ghost {
+
 	/** @var Model */
 	public static $model;
 	public static $table = "user";
 	public static $connectionName = "DefaultDBConnection";
-	
 
 
 	protected $id;
@@ -33,8 +32,7 @@ abstract class GhostUser extends Ghost{
 	public $bossId;
 
 
-
-	final static protected function createModel(): Model{
+	final static protected function createModel(): Model {
 		$model = new Model(static::$connectionName, static::$table, get_called_class());
 		$model->addField("id", Field::TYPE_ID);
 		$model->addField("name", Field::TYPE_STRING);
@@ -54,4 +52,5 @@ abstract class GhostUser extends Ghost{
  * @method \Ghost\User[] collectPage($pageSize, $page, &$count = 0)
  * @method \Ghost\User pick()
  */
-abstract class GhostUserFinder extends \Eternity2\DBAccess\Finder\AbstractFinder {}
+abstract class GhostUserFinder extends \Eternity2\DBAccess\Finder\AbstractFinder {
+}

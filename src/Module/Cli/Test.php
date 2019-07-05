@@ -21,6 +21,8 @@ class Test extends Command{
 
 		$article = Article::pick(1);
 
+		$article->setfield = Article::SETFIELD_BETA;
+
 		$user = User::pick(4);
 		$user->save();
 

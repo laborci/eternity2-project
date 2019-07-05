@@ -1,5 +1,8 @@
 :Eternity2
 
+- codexII
+- purge public fields (ghost, attachment)
++ generator
 + plain text build-version
 + env merge
 + env -> var

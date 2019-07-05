@@ -1,18 +1,12 @@
 <?php namespace Eternity2\Ghost\Generator;
 
 use CaseHelper\CaseHelperFactory;
+use Eternity2\DBAccess\PDOConnection\AbstractPDOConnection;
 use Eternity2\Ghost\Config;
-use Eternity2\Ghost\Field;
 use Eternity2\Ghost\Model;
 use Eternity2\Ghost\Relation;
-use Eternity2\System\AnnotationReader\AnnotationReader;
 use Eternity2\System\ServiceManager\Service;
-use Ghost\User;
-use Minime\Annotations\Reader;
-
 use Eternity2\System\ServiceManager\ServiceContainer;
-use Eternity2\DBAccess\PDOConnection\AbstractPDOConnection;
-
 use RedAnt\Console\Helper\SelectHelper;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
@@ -111,9 +105,9 @@ class Creator {
 		chdir($this->config->ghostPath());
 		$files = glob('*.php');
 		chdir($cwd);
-		foreach($files as $file){
+		foreach ($files as $file) {
 			$name = substr($file, 0, -4);
-			$ghostClass = $this->config->ghostNamespace().'\\'.$name;
+			$ghostClass = $this->config->ghostNamespace() . '\\' . $name;
 			/** @var Model $model */
 			$model = $ghostClass::$model;
 			$this->style->section($name . ' Ghost');
@@ -145,17 +139,17 @@ class Creator {
 		$this->updateGhostHelper($name);
 	}
 
-	protected function update($name, $table, $database){
+	protected function update($name, $table, $database) {
 		$this->generateGhostHelperFromDatabase($name, $table, $database);
 		$this->updateGhostHelper($name);
 	}
 
-	protected function updateGhostHelper($name){
+	protected function updateGhostHelper($name) {
 		$file = "{$this->config->ghostPath()}/Helper/Ghost{$name}.php";
 		$this->style->writeln("Update Helper");
 
 		$this->style->write("- Open Ghost ({$name}) model");
-		$ghostClass = $this->config->ghostNamespace().'\\'.$name;
+		$ghostClass = $this->config->ghostNamespace() . '\\' . $name;
 		$this->style->writeln(" - [OK]");
 		/** @var Model $model */
 		$model = $ghostClass::$model;
@@ -164,36 +158,36 @@ class Creator {
 		$properties = [];
 		$getterSetter = [];
 
-		foreach ($model->fields as $field){
-			$properties[] = "\t".($field->protected ? 'protected' : 'public')." \${$field->name};";
-			if($field->protected){
+		foreach ($model->fields as $field) {
+			$properties[] = "\t" . ($field->protected ? 'protected' : 'public') . " \${$field->name};";
+			if ($field->protected) {
 
-				if($field->setter !== false && $field->getter !== false){
-					$annotations[] = " * @property $".$field->name;
-				}elseif ($field->getter !== false){
-					$annotations[] = " * @property-read $".$field->name;
-				}elseif ($field->setter !== false){
-					$annotations[] = " * @property-write $".$field->name;
+				if ($field->setter !== false && $field->getter !== false) {
+					$annotations[] = " * @property $" . $field->name;
+				} else if ($field->getter !== false) {
+					$annotations[] = " * @property-read $" . $field->name;
+				} else if ($field->setter !== false) {
+					$annotations[] = " * @property-write $" . $field->name;
 				}
-				if(is_string($field->getter)){
-					$getterSetter[] = "\t".'abstract protected function '.$field->getter.'();';
+				if (is_string($field->getter)) {
+					$getterSetter[] = "\t" . 'abstract protected function ' . $field->getter . '();';
 				}
-				if(is_string($field->setter)){
-					$getterSetter[] = "\t".'abstract protected function '.$field->setter.'($value);';
+				if (is_string($field->setter)) {
+					$getterSetter[] = "\t" . 'abstract protected function ' . $field->setter . '($value);';
 				}
 			}
 		}
 
-		foreach ($model->getAttachmentStorage()->getCategories() as $category){
-			$annotations[] = ' * @property-read AttachmentCategoryManager $'.$category->getName();
+		foreach ($model->getAttachmentStorage()->getCategories() as $category) {
+			$annotations[] = ' * @property-read AttachmentCategoryManager $' . $category->getName();
 		}
 
-		foreach ($model->relations as $relation){
-			if($relation->type === Relation::TYPE_BELONGSTO){
-				$annotations[] = ' * @property-read \\'.$relation->descriptor['ghost'].' $'.$relation->name;
-			}elseif ($relation->type === Relation::TYPE_HASMANY){
-				$annotations[] = ' * @property-read \\'.$relation->descriptor['ghost'].'[] $'.$relation->name;
-				$annotations[] = ' * @method \\'.$relation->descriptor['ghost'].'[] '.$relation->name.'($order = null, $limit = null, $offset = null)';
+		foreach ($model->relations as $relation) {
+			if ($relation->type === Relation::TYPE_BELONGSTO) {
+				$annotations[] = ' * @property-read \\' . $relation->descriptor['ghost'] . ' $' . $relation->name;
+			} else if ($relation->type === Relation::TYPE_HASMANY) {
+				$annotations[] = ' * @property-read \\' . $relation->descriptor['ghost'] . '[] $' . $relation->name;
+				$annotations[] = ' * @method \\' . $relation->descriptor['ghost'] . '[] ' . $relation->name . '($order = null, $limit = null, $offset = null)';
 			}
 		}
 
@@ -253,15 +247,14 @@ class {{name}} extends Helper\Ghost{{name}} {
 		$addFields = [];
 		foreach ($fields as $field) {
 			$addFields[] = '		$model->addField("' . $field['Field'] . '", ' . $this->fieldType($field, $field['Field']) . ');';
-			if(strpos($field['Type'], 'set') === 0 || strpos($field['Type'], 'enum') === 0){
+			if (strpos($field['Type'], 'set') === 0 || strpos($field['Type'], 'enum') === 0) {
 				$values = $smartAccess->getEnumValues($table, $field['Field']);
-				foreach ($values as $value){
-					$constants[] = "\t".'const '.strtoupper($field['Field']).'_'.strtoupper($value).' = "'.$value.'";';
+				foreach ($values as $value) {
+					$constants[] = "\t" . 'const ' . strtoupper($field['Field']) . '_' . strtoupper($value) . ' = "' . $value . '";';
 				}
 			}
 		}
 		$addFields[] = '		$model->protectField("id");';
-
 
 
 		$template =

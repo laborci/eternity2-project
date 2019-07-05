@@ -9,6 +9,7 @@ use Eternity2\Ghost\Model;
 /**
  * @method static GhostArticleFinder search(Filter $filter = null)
  * @property-read $id
+ * @property-read \Ghost\User $author
  */
 abstract class GhostArticle extends Ghost{
 	
