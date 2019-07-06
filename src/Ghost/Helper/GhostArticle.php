@@ -9,28 +9,20 @@ use Eternity2\Ghost\Model;
 /**
  * @method static GhostArticleFinder search(Filter $filter = null)
  * @property-read $id
- * @property-read \Ghost\User $author
  */
 abstract class GhostArticle extends Ghost{
-	
+
 	/** @var Model */
 	public static $model;
 	public static $table = "article";
 	public static $connectionName = "DefaultDBConnection";
-	
-	const SETFIELD_ALFA = "alfa";
-	const SETFIELD_BETA = "beta";
-	const SETFIELD_GAMMA = "gamma";
-	const E_ALBERT = "albert";
-	const E_BERTHA = "bertha";
-	const E_CECIL = "cecil";
+
+
 
 	protected $id;
 	public $title;
 	public $body;
 	public $authorId;
-	public $setfield;
-	public $e;
 
 
 
@@ -40,8 +32,6 @@ abstract class GhostArticle extends Ghost{
 		$model->addField("title", Field::TYPE_STRING);
 		$model->addField("body", Field::TYPE_STRING);
 		$model->addField("authorId", Field::TYPE_ID);
-		$model->addField("setfield", Field::TYPE_SET);
-		$model->addField("e", Field::TYPE_ENUM);
 		$model->protectField("id");
 		return $model;
 	}

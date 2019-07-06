@@ -15,32 +15,35 @@ use Eternity2\Ghost\Model;
  * @property-read \Ghost\User[] $workers
  * @method \Ghost\User[] workers($order = null, $limit = null, $offset = null)
  */
-abstract class GhostUser extends Ghost {
+abstract class GhostUser extends Ghost{
 
 	/** @var Model */
 	public static $model;
 	public static $table = "user";
 	public static $connectionName = "DefaultDBConnection";
 
+	const PERMISSIONS_ADMIN = "admin";
+	const PERMISSIONS_SUPER = "super";
+	const STATUS_ACTIVE = "active";
+	const STATUS_INACTIVE = "inactive";
 
 	protected $id;
 	public $name;
-	public $birthday;
-	public $regdate;
+	public $email;
+	public $password;
+	public $permissions;
 	public $status;
-	public $data;
-	public $bossId;
 
 
-	final static protected function createModel(): Model {
+
+	final static protected function createModel(): Model{
 		$model = new Model(static::$connectionName, static::$table, get_called_class());
 		$model->addField("id", Field::TYPE_ID);
 		$model->addField("name", Field::TYPE_STRING);
-		$model->addField("birthday", Field::TYPE_DATE);
-		$model->addField("regdate", Field::TYPE_DATETIME);
-		$model->addField("status", Field::TYPE_BOOL);
-		$model->addField("data", Field::TYPE_JSON);
-		$model->addField("bossId", Field::TYPE_ID);
+		$model->addField("email", Field::TYPE_STRING);
+		$model->addField("password", Field::TYPE_STRING);
+		$model->addField("permissions", Field::TYPE_SET);
+		$model->addField("status", Field::TYPE_ENUM);
 		$model->protectField("id");
 		return $model;
 	}
@@ -52,5 +55,4 @@ abstract class GhostUser extends Ghost {
  * @method \Ghost\User[] collectPage($pageSize, $page, &$count = 0)
  * @method \Ghost\User pick()
  */
-abstract class GhostUserFinder extends \Eternity2\DBAccess\Finder\AbstractFinder {
-}
+abstract class GhostUserFinder extends \Eternity2\DBAccess\Finder\AbstractFinder {}
