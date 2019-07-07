@@ -2,23 +2,27 @@
 
 use Eternity2\DBAccess\PDOConnection\MysqlPDOConnection;
 use Eternity2\DBAccess\PDOConnection\PDOConnectionInterface;
+use Eternity2\System\ServiceManager\ServiceContainer;
 use PDO;
 
 class ConnectionFactory{
 
-	static function factory($config, $sqlHook=null): PDOConnectionInterface {
-		switch ($config['scheme']) {
+	static function factory($config): PDOConnectionInterface{
+		switch ($config['scheme']){
 			case 'mysql':
 				$connection = static::mysql($config);
 				break;
 			default:
 				$connection = null;
 		}
-		if(!is_null($sqlHook)) $connection->setSqlHook($sqlHook);
+
+		$sqlHook = ServiceContainer::get(SqlLogHookInterface::class, true);
+		if (!is_null($sqlHook)) $connection->setSqlLogHook($sqlHook);
+
 		return $connection;
 	}
 
-	static function mysql($config): PDOConnectionInterface {
+	static function mysql($config): PDOConnectionInterface{
 
 		$host = $config['host'];
 		$database = $config['database'];

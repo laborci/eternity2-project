@@ -1,5 +1,5 @@
 <?php namespace Eternity2\Zuul;
 
 Interface UserLoggerInterface {
-	public function log($userId, $type, $description = null);
+	public function log($userId, $event, $details = null);
 }

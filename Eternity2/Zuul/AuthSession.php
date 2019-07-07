@@ -1,8 +1,8 @@
 <?php namespace Eternity2\Zuul;
 
-use Eternity2\System\Session\Container;
+use Eternity2\System\Session\Session;
 
-class AuthContainer extends Container implements AuthContainerInterface {
+class AuthSession extends Session implements AuthSessionInterface {
 
 	public $userId;
 	public function setUserId($userId) { $this->userId = $userId; }

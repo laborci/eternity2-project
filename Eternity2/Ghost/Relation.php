@@ -18,18 +18,18 @@ class Relation {
 	}
 
 	public function get(Ghost $object, $order=null, $limit=null, $offset = null){
+		/** @var \Eternity2\Ghost\Repository $targetRepository */
+
+		$targetGhost = $this->descriptor['ghost'];
+		$targetRepository = $targetGhost::$model->repository;
+		$field = $this->descriptor['field'];
+
 		switch ($this->type){
 			case self::TYPE_BELONGSTO:
-				$targetGhost = $this->descriptor['ghost'];
-				$field = $this->descriptor['field'];
-				return $targetGhost::pick($object->$field);
+				return $targetRepository->pick($object->$field);
 				break;
 			case self::TYPE_HASMANY:
-				$targetGhost = $this->descriptor['ghost'];
-				$field = $this->descriptor['field'];
-				/** @var \Eternity2\Ghost\Repository $repository */
-				$repository = $targetGhost::$model->repository;
-				return $repository->search(Filter::where($field.'=$1', $object->id))->orderIf(!is_null($order), $order)->collect($limit, intval($offset));
+				return $targetRepository->search(Filter::where($field.'=$1', $object->id))->orderIf(!is_null($order), $order)->collect($limit, intval($offset));
 				break;
 		}
 		return null;

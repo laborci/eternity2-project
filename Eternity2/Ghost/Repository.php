@@ -1,63 +1,59 @@
 <?php namespace Eternity2\Ghost;
 
-
 use Eternity2\DBAccess\Filter\Filter;
 use Eternity2\DBAccess\Finder\AbstractFinder;
 use Eternity2\System\Cache\MemoryCache;
 
-class Repository {
+class Repository{
+
+	protected $ghost;
 
 	/** @var Model */
 	protected $model;
-	protected $ghost;
-	/** @var MemoryCache  */
+	/** @var MemoryCache $cache*/
 	protected $cache;
-	/** @var  */
+	/** @var \Eternity2\DBAccess\Repository\AbstractRepository $dbRepository */
 	protected $dbRepository;
 
-	public function __construct($ghost, Model $model) {
+	public function __construct($ghost, Model $model){
 		$this->ghost = $ghost;
 		$this->model = $model;
 		$this->cache = new MemoryCache();
 		$this->dbRepository = $model->connection->createRepository($model->table);
 	}
-	private function addToCache(Ghost $object) { $this->cache->add($object, $object->id); }
+	private function addToCache(Ghost $object):Ghost{ $this->cache->add($object, $object->id); return $object; }
 
-	public function pick($id):?Ghost{
-		if($id === null) return null;
+	public function pick($id): ?Ghost{
+		if ($id === null) return null;
+
 		$object = $this->cache->get($id);
 		if (is_null($object)){
 			$record = $this->dbRepository->pick($id);
-			if($record){
-				$ghostClass = $this->ghost;
-				/** @var Ghost $object */
-				$object = new $ghostClass();
-				$object->compose($record);
+			if ($record){
+				$object = $this->newGhost()->compose($record);
 				$this->addToCache($object);
-			}else return null;
+			}else $object = null;
 		}
 		return $object;
 	}
 
-	public function collect(array $ids):array {
+	public function collect(array $ids): array{
 		$objects = [];
 		$ids = array_unique($ids);
 		$requested = count($ids);
 		if ($requested == 0) return [];
 
-		foreach ($ids as $index => $id) {
+		foreach ($ids as $index => $id){
 			$cached = $this->cache->get($id);
-			if (!is_null($cached)) {
+			if (!is_null($cached)){
 				$objects[] = $cached;
 				unset($ids[$index]);
 			}
 		}
-		if (count($ids)) {
+		if (count($ids)){
 			$records = $this->dbRepository->collect($ids);
-			foreach ($records as $record) {
-				/** @var Ghost $object */
-				$object = new $this->ghost();
-				$object->compose($record);
+			foreach ($records as $record){
+				$object = $this->newGhost()->compose($record);
 				$this->addToCache($object);
 				$objects[] = $object;
 			}
@@ -65,31 +61,30 @@ class Repository {
 		return $objects;
 	}
 
-	protected function count(Filter $filter = null) { return $this->dbRepository->count($filter); }
+	protected function newGhost():Ghost{ return new $this->ghost(); }
 
-	public function insert(Ghost $object) {
+	protected function count(Filter $filter = null){ return $this->dbRepository->count($filter); }
+
+	public function insert(Ghost $object){
 		$record = $object->decompose();
 		return $this->dbRepository->insert($record);
 	}
 
-	public function update(Ghost $object) {
+	public function update(Ghost $object){
 		$record = $object->decompose();
 		return $this->dbRepository->update($record);
 	}
 
-	public function delete(Ghost $object) {
+	public function delete(Ghost $object){
 		$this->cache->delete($object->id);
 		return $this->dbRepository->delete($object->id);
 	}
 
-	public function search(Filter $filter = null):AbstractFinder {
+	public function search(Filter $filter = null): AbstractFinder{
 		$finder = $this->dbRepository->search($filter);
-		$finder->setConverter(function ($record) {
-			/** @var Ghost $object */
-			$object = new $this->ghost();
-			$object->compose($record);
-			$this->addToCache($object);
-			return $object;
+		$finder->setConverter(function ($record){
+			$object = $this->newGhost()->compose($record);
+			return $this->addToCache($object);
 		});
 		return $finder;
 	}

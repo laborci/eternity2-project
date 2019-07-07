@@ -2,7 +2,7 @@
 
 use Eternity2\System\ServiceManager\SharedService;
 
-abstract class Container implements SharedService {
+abstract class Session implements SharedService {
 
 	private $fields;
 	private $namespace;

@@ -9,11 +9,9 @@ use Eternity2\Ghost\Model;
 /**
  * @method static GhostUserFinder search(Filter $filter = null)
  * @property-read $id
+ * @property-write $password
  * @property-read AttachmentCategoryManager $avatar
  * @property-read AttachmentCategoryManager $gallery
- * @property-read \Ghost\User $boss
- * @property-read \Ghost\User[] $workers
- * @method \Ghost\User[] workers($order = null, $limit = null, $offset = null)
  */
 abstract class GhostUser extends Ghost{
 
@@ -22,19 +20,19 @@ abstract class GhostUser extends Ghost{
 	public static $table = "user";
 	public static $connectionName = "DefaultDBConnection";
 
-	const PERMISSIONS_ADMIN = "admin";
-	const PERMISSIONS_SUPER = "super";
+	const ROLES_ADMIN = "admin";
+	const ROLES_SUPER = "super";
 	const STATUS_ACTIVE = "active";
 	const STATUS_INACTIVE = "inactive";
 
 	protected $id;
 	public $name;
 	public $email;
-	public $password;
-	public $permissions;
+	protected $password;
+	public $roles;
 	public $status;
 
-
+	abstract protected function setPassword($value);
 
 	final static protected function createModel(): Model{
 		$model = new Model(static::$connectionName, static::$table, get_called_class());
@@ -42,7 +40,7 @@ abstract class GhostUser extends Ghost{
 		$model->addField("name", Field::TYPE_STRING);
 		$model->addField("email", Field::TYPE_STRING);
 		$model->addField("password", Field::TYPE_STRING);
-		$model->addField("permissions", Field::TYPE_SET);
+		$model->addField("roles", Field::TYPE_SET);
 		$model->addField("status", Field::TYPE_ENUM);
 		$model->protectField("id");
 		return $model;

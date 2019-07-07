@@ -19,33 +19,42 @@ class Test extends Command{
 		$style = new SymfonyStyle($input, $output);
 		$time = microtime(true);
 
+
+//
+//		$article->setfield = Article::SETFIELD_BETA;
+
+		$user = User::pick(5);
+		$user = User::pick(5);
+		$user = User::pick(5);
+
+		$style->writeln($user->name);
+
 		$article = Article::pick(1);
-
-		$article->setfield = Article::SETFIELD_BETA;
-
-		$user = User::pick(4);
-		$user->save();
+		$style->writeln($article->title);
 
 
-		$user->avatar->addFile(new File(env('root').'assets/web/img/0.jpg'));
-		$user->gallery->addFile($user->avatar->first);
+		//		$user->save();
 
-		$user->avatar->get('0.jpg');
-		$user->avatar->first->store();
+//
+//		$user->avatar->addFile(new File(env('root').'assets/web/img/0.jpg'));
+//		$user->gallery->addFile($user->avatar->first);
+//
+//		$user->avatar->get('0.jpg');
+//		$user->avatar->first->store();
 
 //		$user->avatar->first->remove();
 //		$user->gallery->first->remove();
 
-		echo "\n";
-		print_r($user->avatar->first->url);
-		echo "\n";
-		print_r($user->avatar->get('0.jpg')->thumbnail->box(320,320)->jpg);
-		echo "\n";
-
-		$user->avatar->get('0.jpg')->thumbnail->purge();
-
-		echo $user->name;
-
+//		echo "\n";
+//		print_r($user->avatar->first->url);
+//		echo "\n";
+//		print_r($user->avatar->get('0.jpg')->thumbnail->box(320,320)->jpg);
+//		echo "\n";
+//
+//		$user->avatar->get('0.jpg')->thumbnail->purge();
+//
+//		echo $user->name;
+//
 
 		$style->success('runtime: '. (microtime(true) - $time));
 

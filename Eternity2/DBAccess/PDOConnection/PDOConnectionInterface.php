@@ -18,6 +18,6 @@ interface PDOConnectionInterface {
 	public function createSmartAccess(): AbstractSmartAccess;
 	public function createRepository(string $table): AbstractRepository;
 	public function createFilterBuilder(): AbstractFilterBuilder;
-	public function setSqlHook(callable $hook);
+	public function setSqlLogHook($hook);
 	public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = []);
 }
