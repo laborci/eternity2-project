@@ -115,7 +115,6 @@ class Creator{
 		}
 	}
 
-
 	protected function purge($name){
 		$this->style->writeln("Remove existing files");
 		foreach ([
@@ -210,8 +209,10 @@ class Creator{
 
 		$constants = [];
 		$addFields = [];
+		$fieldConstants = [];
 		foreach ($fields as $field){
 			$addFields[] = "\t\t" . '$model->addField("' . $field['Field'] . '", ' . $this->fieldType($field, $field['Field']) . ');';
+			$fieldConstants[] = "\t" . 'const F_' . strtoupper($field['Field']) .' = "' . $field['Field'] . '";';
 			if (strpos($field['Type'], 'set') === 0 || strpos($field['Type'], 'enum') === 0){
 				$values = $smartAccess->getEnumValues($table, $field['Field']);
 				foreach ($values as $value){
@@ -229,6 +230,7 @@ class Creator{
 		$template = str_replace('{{namespace}}', $this->config->ghostNamespace(), $template);
 		$template = str_replace('{{add-fields}}', join("\n", $addFields), $template);
 		$template = str_replace('{{constants}}', join("\n", $constants), $template);
+		$template = str_replace('{{fieldConstants}}', join("\n", $fieldConstants), $template);
 
 		$this->style->writeln("Generate Helper from database");
 		$this->style->write("- {$file}");
@@ -253,7 +255,6 @@ class Creator{
 
 		}
 	}
-
 
 	protected function fieldType($db_field, $fieldName){
 

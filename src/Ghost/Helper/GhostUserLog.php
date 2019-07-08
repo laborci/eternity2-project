@@ -20,6 +20,12 @@ abstract class GhostUserLog extends Ghost{
 
 
 
+	const F_ID = "id";
+	const F_DATETIME = "datetime";
+	const F_USERID = "userId";
+	const F_EVENT = "event";
+	const F_DETAILS = "details";
+
 	protected $id;
 	public $datetime;
 	public $userId;

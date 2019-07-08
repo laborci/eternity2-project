@@ -19,6 +19,11 @@ abstract class GhostArticle extends Ghost{
 
 
 
+	const F_ID = "id";
+	const F_TITLE = "title";
+	const F_BODY = "body";
+	const F_AUTHORID = "authorId";
+
 	protected $id;
 	public $title;
 	public $body;

@@ -25,6 +25,13 @@ abstract class GhostUser extends Ghost{
 	const STATUS_ACTIVE = "active";
 	const STATUS_INACTIVE = "inactive";
 
+	const F_ID = "id";
+	const F_NAME = "name";
+	const F_EMAIL = "email";
+	const F_PASSWORD = "password";
+	const F_ROLES = "roles";
+	const F_STATUS = "status";
+
 	protected $id;
 	public $name;
 	public $email;

@@ -1,9 +1,8 @@
 <?php namespace Eternity2\Ghost;
 
-
 use Valentine\Date;
 
-class Field {
+class Field{
 
 	const TYPE_BOOL = 'bool';
 	const TYPE_STRING = 'string';
@@ -23,99 +22,79 @@ class Field {
 	public $setter = null;
 	private $data;
 
-	public function __construct($name, $type, $data = null) {
+	public function __construct($name, $type, $data = null){
 		$this->name = $name;
 		$this->type = $type;
 		$this->data = $data;
 	}
 
-	public function protect($getter, $setter) {
+	public function protect($getter, $setter){
 		$this->protected = true;
 		$this->getter = $getter;
 		$this->setter = $setter;
 	}
 
-	public function compose($value) {
+	public function compose($value){
 		if ($value === null) return null;
-		switch ($this->type) {
+		switch ($this->type){
 			case self::TYPE_DATE:
 				return new Date($value);
-
 			case self::TYPE_DATETIME:
 				return new \DateTime($value);
-
 			case self::TYPE_INT:
 				return intval($value);
-
 			case self::TYPE_ID:
-				return intval($value)>0 ? intval($value) : null;
-
+				return intval($value) > 0 ? intval($value) : null;
 			case self::TYPE_FLOAT:
 				return floatval($value);
-
 			case self::TYPE_BOOL:
 				return (bool)$value;
-
 			case self::TYPE_SET:
 				return !$value ? [] : explode(',', $value);
-
 			case self::TYPE_JSON:
 				return json_decode($value, true);
 		}
 		return $value;
 	}
 
-	public function decompose($value) {
+	public function decompose($value){
 		if ($value === null) return null;
-		switch ($this->type) {
+		switch ($this->type){
 			case self::TYPE_DATE:
-				return (function (Date $date) { return $date->format('Y-m-d'); })($value);
-
+				return (function (Date $date){ return $date->format('Y-m-d'); })($value);
 			case self::TYPE_DATETIME:
-				return (function (\DateTime $date) { return $date->format('Y-m-d H:i:s'); })($value);
-
+				return (function (\DateTime $date){ return $date->format('Y-m-d H:i:s'); })($value);
 			case self::TYPE_INT:
 				return intval($value);
-
 			case self::TYPE_ID:
-				return intval($value)>0 ? intval($value) : null;
-
+				return intval($value) > 0 ? intval($value) : null;
 			case self::TYPE_FLOAT:
 				return floatval($value);
-
 			case self::TYPE_BOOL:
 				return (int)((bool)$value);
-
 			case self::TYPE_SET:
 				return join(',', $value);
-
 			case self::TYPE_JSON:
 				return json_encode($value);
 		}
 		return $value;
 	}
 
-	public function export($value) {
+	public function export($value){
 		if ($value === null) return null;
-		switch ($this->type) {
+		switch ($this->type){
 			case self::TYPE_DATE:
-				return (function (Date $date) { return $date->format('c'); })($value);
-
+				return (function (Date $date){ return $date->format('c'); })($value);
 			case self::TYPE_DATETIME:
-				return (function (\DateTime $date) { return $date->format('c'); })($value);
-
+				return (function (\DateTime $date){ return $date->format('c'); })($value);
 			case self::TYPE_BOOL:
 				return (bool)$value;
-
 			case self::TYPE_INT:
 				return intval($value);
-
 			case self::TYPE_FLOAT:
 				return floatval($value);
-
 			case self::TYPE_SET:
 				return join(',', $value);
-
 			case self::TYPE_JSON:
 				return $value;
 		}

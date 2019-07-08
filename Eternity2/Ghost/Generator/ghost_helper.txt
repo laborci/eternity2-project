@@ -19,6 +19,8 @@ abstract class Ghost{{name}} extends Ghost{
 
 {{constants}}
 
+{{fieldConstants}}
+
 /*ghost-generator-properties*/
 
 /*ghost-generator-getters-setters*/
