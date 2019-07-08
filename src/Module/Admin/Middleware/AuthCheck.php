@@ -1,8 +1,8 @@
-<?php namespace Application\HTTP\Admin\Middleware;
+<?php namespace Application\Module\Admin\Middleware;
 
 use Application\Service\Auth\AuthService;
-use Application\HTTP\Admin\Page\Login;
-use Eternity\Response\Responder\Middleware;
+use Application\Module\Admin\Page\Login;
+use Eternity2\WebApplication\Pipeline\Middleware;
 
 class AuthCheck extends Middleware {
 

@@ -18,6 +18,7 @@ class ServiceRegistry implements BootSequnece{
 
 		include 'ServiceRegistry/config.php';
 		include 'ServiceRegistry/ghost.php';
+		include 'ServiceRegistry/auth.php';
 
 	}
 }

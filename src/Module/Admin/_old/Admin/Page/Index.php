@@ -1,6 +1,6 @@
 <?php namespace Application\HTTP\Admin\Page;
 
-use Application\Service\AuthService;
+use Application\Service\Auth\AuthService;
 use Eternity\Response\Responder\SmartPageResponder;
 
 /**

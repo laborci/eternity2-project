@@ -1,7 +1,7 @@
 <?php namespace Application\HTTP\Admin\Action;
 
 
-use Application\Service\ScheduleBridge;
+use Application\Service\Auth\ScheduleBridge;
 use Entity\Classroom\Classroom;
 use Entity\Reservation\Reservation;
 use Eternity\Response\Responder\JsonResponder;
