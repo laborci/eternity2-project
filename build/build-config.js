@@ -3,7 +3,11 @@ module.exports = new (require("./build-config-reader"))({
 	googlefonts: {
 		fontlist: "google-fonts",
 		path    : "../public/fonts/",
-		css     : "google-fonts.css"
+		css     : "google-fonts.css",
+		srcify:{
+			fontsurl: '/fonts/',
+			srcpath: 'src/google-fonts.less'
+		}
 	},
 	copy       : [
 		{src: "./node_modules/@fortawesome/fontawesome-pro/webfonts/", pattern: "*", dest: "../public/fonts/fontawesome/"},

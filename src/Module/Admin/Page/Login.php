@@ -4,8 +4,8 @@
 use Eternity2\WebApplication\Responder\SmartPageResponder;
 
 /**
- * @css /dist/admin/style.css
- * @js  /dist/admin/app.js
+ * @css /admin/css/style.css
+ * @js  /admin/js/app.js
  * @title Admin
  * @bodyclass login
  * @template "@admin/Login.twig"
