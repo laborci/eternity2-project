@@ -14,7 +14,7 @@ class User extends Helper\GhostUser implements AuthenticableInterface{
 	protected function getPermissions(){ return $this->roles; }
 
 	public static function authLookup($id){ return User::search(static::getActiveFilter()->and('id=$1', $id))->pick(); }
-	public static function authLoginLookup($login){ return User::search(static::getActiveFilter()->and('login=$1', $login))->pick(); }
+	public static function authLoginLookup($login){ return User::search(static::getActiveFilter()->and(User::F_NAME.'=$1', $login))->pick(); }
 	public static function getActiveFilter(): Filter{ return Filter::where('status=$1', User::STATUS_ACTIVE); }
 
 }

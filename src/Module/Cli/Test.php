@@ -25,7 +25,9 @@ class Test extends Command{
 
 		$user = User::pick(5);
 		$user = User::pick(5);
-		$user = User::pick(5);
+		$user = User::pick(1);
+		$user->password = 'galaga';
+		$user->save();
 
 		$style->writeln($user->name);
 

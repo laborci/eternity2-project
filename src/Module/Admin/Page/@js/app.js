@@ -1,8 +1,8 @@
-import Brick           from "zengular-brick";
+import Brick from "zengular-brick";
 
-new (class{
+new (class {
 
-	constructor(){
+	constructor() {
 		Brick.registry.initialize();
 	}
 

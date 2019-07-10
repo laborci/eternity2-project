@@ -20,22 +20,29 @@ abstract class GhostUser extends Ghost{
 	public static $table = "user";
 	public static $connectionName = "DefaultDBConnection";
 
-
+	const STATUS_ACTIVE = "active";
+	const STATUS_INACTIVE = "inactive";
+	const ROLES_ADMIN = "admin";
 
 	const F_ID = "id";
 	const F_NAME = "name";
 	const F_BIRTHDAY = "birthday";
 	const F_REGDATE = "regdate";
-	const F_STATUS = "status";
 	const F_DATA = "data";
 	const F_BOSSID = "bossId";
+	const F_PASSWORD = "password";
+	const F_STATUS = "status";
+	const F_ROLES = "roles";
 
 	protected $id;
 	public $name;
-	public $email;
+	public $birthday;
+	public $regdate;
+	public $data;
+	public $bossId;
 	protected $password;
-	public $roles;
 	public $status;
+	public $roles;
 
 	abstract protected function setPassword($value);
 
@@ -45,9 +52,11 @@ abstract class GhostUser extends Ghost{
 		$model->addField("name", Field::TYPE_STRING);
 		$model->addField("birthday", Field::TYPE_DATE);
 		$model->addField("regdate", Field::TYPE_DATETIME);
-		$model->addField("status", Field::TYPE_BOOL);
 		$model->addField("data", Field::TYPE_JSON);
 		$model->addField("bossId", Field::TYPE_ID);
+		$model->addField("password", Field::TYPE_STRING);
+		$model->addField("status", Field::TYPE_ENUM);
+		$model->addField("roles", Field::TYPE_SET);
 		$model->protectField("id");
 		return $model;
 	}

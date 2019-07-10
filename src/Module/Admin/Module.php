@@ -7,8 +7,12 @@ use Eternity2\WebApplication\Routing\Router;
 class Module extends Application{
 
 	protected function route(Router $router){
+
+		$router->get('/thumbnail/*', \GhostThumbnailResponder::class)();
+
 		$router->post('/login', Action\AuthAction::class, ['method' => 'login'])();
 		$router->pipe(Middleware\AuthCheck::class);
+		$router->post('/logout', Action\AuthAction::class, ['method' => 'logout'])();
 
 		$router->get('/', Page\Index::class)();
 //		$router->get('/users/codexinfo', Action\UsersCodexinfo::class)();

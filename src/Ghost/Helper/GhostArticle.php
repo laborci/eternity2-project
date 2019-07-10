@@ -35,6 +35,8 @@ abstract class GhostArticle extends Ghost{
 	public $title;
 	public $body;
 	public $authorId;
+	public $setfield;
+	public $e;
 
 
 
