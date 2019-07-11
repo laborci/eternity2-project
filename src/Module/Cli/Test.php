@@ -24,8 +24,6 @@ class Test extends Command{
 //		$article->setfield = Article::SETFIELD_BETA;
 
 		$user = User::pick(5);
-		$user = User::pick(5);
-		$user = User::pick(1);
 		$user->password = 'galaga';
 		$user->save();
 

@@ -20,29 +20,24 @@ abstract class GhostUser extends Ghost{
 	public static $table = "user";
 	public static $connectionName = "DefaultDBConnection";
 
+	const ROLES_ADMIN = "admin";
+	const ROLES_SUPER = "super";
 	const STATUS_ACTIVE = "active";
 	const STATUS_INACTIVE = "inactive";
-	const ROLES_ADMIN = "admin";
 
 	const F_ID = "id";
 	const F_NAME = "name";
-	const F_BIRTHDAY = "birthday";
-	const F_REGDATE = "regdate";
-	const F_DATA = "data";
-	const F_BOSSID = "bossId";
+	const F_EMAIL = "email";
 	const F_PASSWORD = "password";
-	const F_STATUS = "status";
 	const F_ROLES = "roles";
+	const F_STATUS = "status";
 
 	protected $id;
 	public $name;
-	public $birthday;
-	public $regdate;
-	public $data;
-	public $bossId;
+	public $email;
 	protected $password;
-	public $status;
 	public $roles;
+	public $status;
 
 	abstract protected function setPassword($value);
 
@@ -50,13 +45,10 @@ abstract class GhostUser extends Ghost{
 		$model = new Model(static::$connectionName, static::$table, get_called_class());
 		$model->addField("id", Field::TYPE_ID);
 		$model->addField("name", Field::TYPE_STRING);
-		$model->addField("birthday", Field::TYPE_DATE);
-		$model->addField("regdate", Field::TYPE_DATETIME);
-		$model->addField("data", Field::TYPE_JSON);
-		$model->addField("bossId", Field::TYPE_ID);
+		$model->addField("email", Field::TYPE_STRING);
 		$model->addField("password", Field::TYPE_STRING);
-		$model->addField("status", Field::TYPE_ENUM);
 		$model->addField("roles", Field::TYPE_SET);
+		$model->addField("status", Field::TYPE_ENUM);
 		$model->protectField("id");
 		return $model;
 	}

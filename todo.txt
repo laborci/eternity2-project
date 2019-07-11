@@ -9,3 +9,27 @@
 + virtualhost dev/prod
 + measure and cache middlewares
 + remotelog config
+
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_hungarian_ci NOT NULL DEFAULT '',
+  `email` varchar(255) COLLATE utf8_hungarian_ci NOT NULL DEFAULT '',
+  `password` char(60) COLLATE utf8_hungarian_ci NOT NULL DEFAULT '' COMMENT 'password',
+  `roles` set('admin','super') COLLATE utf8_hungarian_ci DEFAULT '',
+  `status` enum('active','inactive') COLLATE utf8_hungarian_ci NOT NULL DEFAULT 'active',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `roles`, `status`)
+VALUES
+	(5,'elvis','elvis@presley.com','$2y$10$Ibj81iEH03pKno39fdeWY.hVCe.WMumeYMdgu7iwQTHVRCFyZHNki','admin','active');
+
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
