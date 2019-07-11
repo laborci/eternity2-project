@@ -1,5 +1,5 @@
 import Brick           from "zengular-brick";
-import './src/login/brick';
+import './src/codex-login/brick';
 
 new (class{
 

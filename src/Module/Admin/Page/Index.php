@@ -1,6 +1,7 @@
 <?php namespace Application\Module\Admin\Page;
 
 
+use Application\Service\Auth\WhoAmI;
 use Eternity2\WebApplication\Responder\SmartPageResponder;
 
 /**
@@ -11,19 +12,17 @@ use Eternity2\WebApplication\Responder\SmartPageResponder;
  */
 class Index extends SmartPageResponder {
 
+	/** @var \Application\Service\Auth\WhoAmI */
+	private $whoAmI;
 
-	protected $authService;
-	protected $authRepository;
-	protected $user;
+	public function __construct(WhoAmI $whoAmI) {
+		parent::__construct();
+		$this->whoAmI = $whoAmI;
+	}
 
-//	public function __construct(AuthService $authService) {
-//		parent::__construct();
-//		$this->authService = $authService;
-//	}
-//
-//	function prepare() {
-//		$user = $this->authService->getAuthenticated();
-//		$this->getDataBag()->set('user', $user);
-//	}
+	function prepare() {
+		$this->getDataBag()->set('user', $this->whoAmI->getUser()->name);
+		$this->getDataBag()->set('avatar', $this->whoAmI->getUser()->getCodexAvatar());
+	}
 
 }

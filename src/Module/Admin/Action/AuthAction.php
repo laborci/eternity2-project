@@ -1,31 +1,32 @@
 <?php namespace Application\Module\Admin\Action;
 
 use Application\Service\Auth\AuthService;
+use Application\Service\Auth\UserLogger;
 use Eternity2\WebApplication\Responder\JsonResponder;
+use Eternity2\Zuul\AuthServiceInterface;
 
 class AuthAction extends JsonResponder {
 
 	protected $authService;
-	protected $userLog;
+	protected $userLogger;
 
-	public function __construct(AuthService $authService) {
+	public function __construct(AuthServiceInterface $authService, UserLogger $userLogger) {
 		$this->authService = $authService;
-		//$this->userLog = $userLogger;
+		$this->userLogger = $userLogger;
 	}
 
 	protected function respond() {
 		$method = $this->getArgumentsBag()->get('method');
 		switch ($method) {
 			case 'login':
-				dump('LOGIN');
 				if (!$this->authService->login($this->getRequestBag()->get('login'), $this->getRequestBag()->get('password'), 'admin')) {
 					$this->getResponse()->setStatusCode('401');
 				} else {
-					//$this->userLog->log($this->authService->getAuthenticatedId(), UserLogger::ADMINLOGIN);
+					$this->userLogger->log($this->authService->getAuthenticatedId(), UserLogger::ADMINLOGIN);
 				}
 				break;
 			case 'logout':
-				//$this->userLog->log($this->authService->getAuthenticatedId(), UserLogger::ADMINLOGOUT);
+				$this->userLogger->log($this->authService->getAuthenticatedId(), UserLogger::ADMINLOGOUT);
 				$this->authService->logout();
 				break;
 		}

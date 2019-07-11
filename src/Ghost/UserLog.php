@@ -2,7 +2,7 @@
 
 class UserLog extends Helper\GhostUserLog {
 
-	public static function authLog($userId, $event, $details){
+	public static function log($userId, $event, $details){
 		$log = new static();
 		$log->datetime = new \DateTime();
 		$log->userId = $userId;

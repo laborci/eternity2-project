@@ -1,6 +1,4 @@
-<?php namespace Application\HTTP\Site\Middleware;
-
-
+<?php namespace Eternity2\WebApplication\Middleware;
 
 use Eternity2\WebApplication\Pipeline\Middleware;
 
