@@ -1,5 +1,6 @@
 <?php namespace Application\Module\Admin\Service;
 
+use Eternity2\Ghost\Ghost;
 class CodexGhostDataProvider implements CodexDataProvider{
 
 	protected $ghost;
@@ -12,30 +13,24 @@ class CodexGhostDataProvider implements CodexDataProvider{
 		$this->model = $this->ghost::$model;
 	}
 
-	public function getList($page, $sorting, $filter, $pageSize){
+	public function getList($page, $sorting, $filter, $pageSize, $fields, $rowConverter){
 		/** @var \Eternity2\Ghost\Ghost[] $items */
 		$items = $this->model->repository->search()->collectPage($pageSize, $page, $count);
 		$rows = [];
-		foreach ($items as $item){
-			$rows[$item->id] = [
-				'data' => $item->decompose(),
-				'item' => $item,
-			];
+
+		// convert items to array
+		foreach ($items as $item) $rows[$item->id] = $rowConverter ? $rowConverter($item) : $this->convertRow($item);
+
+		// filter fields
+		foreach ($rows as $key => $row){
+			$rows[$key] = [];
+			foreach ($fields as $field) $rows[$key][$field] = $row[$field];
 		}
+
 		return new CodexListingResult($rows, $count, $page);
 	}
-}
 
-class CodexListingResult{
-
-	public $rows;
-	public $count;
-	public $page;
-
-	public function __construct($rows, $count, $page){
-		$this->rows = $rows;
-		$this->count = $count;
-		$this->page = $page;
-	}
+	protected function convertRow(Ghost $item): array{ return $item->decompose(); }
 
 }
+

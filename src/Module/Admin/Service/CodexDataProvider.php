@@ -2,6 +2,6 @@
 
 interface CodexDataProvider{
 
-	public function getList($page, $sorting, $filter, $pageSize);
+	public function getList($page, $sorting, $filter, $pageSize, $fields, $rowConverter);
 
 }

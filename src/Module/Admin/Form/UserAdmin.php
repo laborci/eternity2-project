@@ -4,6 +4,8 @@ use Application\Module\Admin\Service\CodexDataProvider;
 use Application\Module\Admin\Service\CodexDescriptor;
 use Application\Module\Admin\Service\CodexGhostDataProvider;
 use Application\Module\Admin\Service\CodexList;
+use Application\Module\Admin\Service\CodexListingResult;
+use Eternity2\Ghost\Ghost;
 use Ghost\User;
 
 class UserAdmin extends CodexDescriptor{
@@ -14,13 +16,20 @@ class UserAdmin extends CodexDescriptor{
 	protected $fields = [
 		User::F_NAME  => 'név',
 		User::F_EMAIL => 'e-mail',
+		User::F_ROLES => 'szerepkörök',
 	];
 
-	protected function createDataProvider():CodexDataProvider{ return new CodexGhostDataProvider(User::class); }
+	protected function createDataProvider(): CodexDataProvider{ return new CodexGhostDataProvider(User::class); }
 
 	protected function listDescriptor(CodexList $list): CodexList{
 		$list->add(User::F_NAME);
 		$list->add(User::F_EMAIL);
+		$list->add(User::F_ROLES);
+//		$list->setRowConverter(function (Ghost $row){
+//			$row = $row->decompose();
+//			$row['email'] = strtoupper($row['email']);
+//			return $row;
+//		});
 		return $list;
 	}
 

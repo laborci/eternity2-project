@@ -18,6 +18,8 @@ class CodexList{
 	protected $sorting;
 	/** @var \Application\Module\Admin\Service\CodexDataProvider */
 	protected $dataProvider;
+	/** @var callable */
+	private $rowConverter;
 
 	public function __construct(CodexDescriptor $admin){
 		$this->admin = $admin;
@@ -41,8 +43,10 @@ class CodexList{
 		if ($sortable === self::SORT_ASC || $sortable === self::SORT_DESC) $this->sorting = ['field' => $name, 'order' => $sortable];
 	}
 
-	public function get($page, $sorting = null, $filter = null): CodexListingResult {
-		return $this->dataProvider->getList($page, $sorting, $filter, $this->pageSize);
+	public function get($page, $sorting=null, $filter=null): CodexListingResult{
+		return $this->dataProvider->getList($page, $sorting, $filter, $this->pageSize, array_keys($this->fields), $this->rowConverter);
 	}
+
+	public function setRowConverter(callable $rowConverter){ $this->rowConverter = $rowConverter; }
 
 }
