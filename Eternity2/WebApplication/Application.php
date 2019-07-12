@@ -17,9 +17,12 @@ abstract class Application implements SharedService, Module {
 	}
 
 	public function run(){
+		$this->initialize();
 		$this->route($this->router);
 		die();
 	}
+
+	protected function initialize(){	}
 
 	abstract protected function route(Router $router);
 }

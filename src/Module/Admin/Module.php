@@ -1,6 +1,8 @@
 <?php namespace Application\Module\Admin;
 
+use Application\Module\Admin\Form\UserAdmin;
 use Application\Module\Admin\Page\Login;
+use Application\Module\Admin\Service\CodexRegistry;
 use Eternity2\WebApplication\Action\Forbidden;
 use Eternity2\WebApplication\Action\NotAuthorized;
 use Eternity2\WebApplication\Application;
@@ -9,6 +11,10 @@ use Eternity2\WebApplication\Middleware\PermissionCheck;
 use Eternity2\WebApplication\Routing\Router;
 
 class Module extends Application{
+
+	protected function initialize(){
+		CodexRegistry::Service()->registerForm(UserAdmin::class);
+	}
 
 	protected function route(Router $router){
 
@@ -31,7 +37,8 @@ class Module extends Application{
 		// API
 
 
-		//		$router->get('/users/codexinfo', Action\UsersCodexinfo::class)();
+		$router->get('/{form}/codexinfo', Action\CodexInfo::class)();
+
 //		$router->get('/thumbnails/*', ThumbnailResponder::class)();
 //		$router->get('/menu', Action\GetMenu::class)();
 //		$router->get('/', Page\Index::class)();

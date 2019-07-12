@@ -9,7 +9,7 @@ export default [
 				icon: 'fas fa-user',
 				action: {
 					content: 'codex-eternity-form-frame',
-					name: 'users'
+					name: 'UserForm'
 				}
 			},
 			{

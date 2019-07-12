@@ -4,29 +4,22 @@ export default [
 		icon: 'fas fa-user',
 		submenu: [
 			{
-				option: 'users',
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'UserAdmin'}
 			},
 			{
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			},
 			{
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			}
 		]
 	}, {
@@ -34,29 +27,22 @@ export default [
 		icon: 'fas fa-user',
 		submenu: [
 			{
-				option: 'users',
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			},
 			{
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			},
 			{
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			}
 		]
 	}, {
@@ -64,40 +50,30 @@ export default [
 		icon: 'fas fa-user',
 		submenu: [
 			{
-				option: 'users',
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			},
 			{
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			},
 			{
 				label: 'Felhasználók',
 				icon: 'fas fa-user',
-				action: {
-					content: 'codex-eternity-form-frame',
-					name: 'users'
-				}
+				event: 'SHOW-FORM',
+				data: {name: 'users'}
 			}
 		]
 	},
 	{
-		option: 'articles',
 		label: 'Cikkek',
 		icon: 'fas fa-user',
-		action: {
-			content: 'codex-eternity-form-frame',
-			name: 'articles'
-		}
+		event: 'SHOW-FORM',
+		data: {name: 'users'}
 	}
 ];
 

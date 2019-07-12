@@ -6,15 +6,15 @@ import "./style.less";
 export default class CodexLayoutContentBrick extends Brick{
 
 	onRender(){
-		this.tag = null;
+		this.brick = null;
 		this.content = null;
 	}
 
-	show(tag, data){
-		if(this.tag !== tag){
-			this.tag = tag;
+	show(brick, data){
+		if(this.brick !== brick){
+			this.brick = brick;
 			while(this.root.firstChild) this.root.removeChild(this.root.firstChild);
-			this.content = Brick.registry.getBrick(tag).create('div', true).controller;
+			this.content = brick.create('div', true).controller;
 			this.root.appendChild(this.content.root);
 		}
 		this.content.route(data);
