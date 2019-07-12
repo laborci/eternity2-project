@@ -25,6 +25,15 @@ class UserAdmin extends CodexDescriptor{
 		$list->add(User::F_NAME);
 		$list->add(User::F_EMAIL);
 		$list->add(User::F_ROLES);
+
+		$list->setRowConverter(new class() implements CodexItemConverterInterface{
+			public function convert(Ghost $item):array{
+				$row = $item->decompose();
+				$row['email'] = strtoupper($row['email']);
+				return $row;
+			}
+		});
+
 //		$list->setRowConverter(function (Ghost $row){
 //			$row = $row->decompose();
 //			$row['email'] = strtoupper($row['email']);
