@@ -1,15 +1,15 @@
-<?php namespace Application\Module\Admin\Service;
+<?php namespace Eternity2\Codex;
 
-class CodexListingResult{
+class ListingResult{
 
-	public $rows;
+	public $rows = [];
 	public $count;
 	public $page;
 
 	public function __construct($rows, $count, $page){
-		$this->rows = $rows;
 		$this->count = $count;
 		$this->page = $page;
+		$this->rows = $rows;
 	}
 
 }

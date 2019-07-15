@@ -80,13 +80,36 @@ class Field{
 		return $value;
 	}
 
+	public function import($value){
+		if ($value === null) return null;
+		switch ($this->type){
+			case self::TYPE_DATE:
+				return new Date($value);
+			case self::TYPE_DATETIME:
+				return \DateTime::createFromFormat(\DateTime::ISO8601, $value);
+			case self::TYPE_INT:
+				return intval($value);
+			case self::TYPE_ID:
+				return intval($value) > 0 ? intval($value) : null;
+			case self::TYPE_FLOAT:
+				return floatval($value);
+			case self::TYPE_BOOL:
+				return (bool)$value;
+			case self::TYPE_SET:
+				return !$value ? [] : explode(',', $value);
+			case self::TYPE_JSON:
+				return json_decode($value, true);
+		}
+		return $value;
+	}
+
 	public function export($value){
 		if ($value === null) return null;
 		switch ($this->type){
 			case self::TYPE_DATE:
-				return (function (Date $date){ return $date->format('c'); })($value);
+				return (function (Date $date){ return $date->format(\DateTime::ISO8601); })($value);
 			case self::TYPE_DATETIME:
-				return (function (\DateTime $date){ return $date->format('c'); })($value);
+				return (function (\DateTime $date){ return $date->format(\DateTime::ISO8601); })($value);
 			case self::TYPE_BOOL:
 				return (bool)$value;
 			case self::TYPE_INT:
@@ -94,7 +117,7 @@ class Field{
 			case self::TYPE_FLOAT:
 				return floatval($value);
 			case self::TYPE_SET:
-				return join(',', $value);
+				return $value;
 			case self::TYPE_JSON:
 				return $value;
 		}

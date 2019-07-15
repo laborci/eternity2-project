@@ -8,5 +8,6 @@ class RemoteLogBoot implements BootSequnece {
 	public function run() {
 		RemoteLog::Service()->registerErrorHandlers();
 		ServiceContainer::shared(SqlLogHookInterface::class)->service(SqlLogHook::class);
+		//error_log("Remotelog initialized");
 	}
 }

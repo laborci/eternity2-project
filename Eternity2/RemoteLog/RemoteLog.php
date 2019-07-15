@@ -4,7 +4,7 @@ use Eternity2\System\ServiceManager\Service;
 use Eternity2\System\ServiceManager\SharedService;
 use Symfony\Component\HttpFoundation\Request;
 
-class RemoteLog implements SharedService {
+class RemoteLog implements SharedService{
 
 	use Service;
 
@@ -13,36 +13,52 @@ class RemoteLog implements SharedService {
 	protected $request;
 	protected $guid;
 
-	public function __construct(Request $request, Config $config) {
+	public function __construct(Request $request, Config $config){
 		$this->host = $config->host() . '/';
 		$this->guid = uniqid();
 		$this->request = $request;
 	}
 
-	public function registerErrorHandlers() {
+	public function registerErrorHandlers(){
 		error_reporting(E_ALL ^ E_DEPRECATED);
-		set_exception_handler([ $this, 'handleException' ]);
-		set_error_handler(function ($severity, $message, $file, $line) { throw new \ErrorException($message, $severity, $severity, $file, $line); });
+		set_exception_handler([$this, 'handleException']);
+		set_error_handler(function ($severity, $message, $file, $line){ throw new \ErrorException($message, $severity, $severity, $file, $line); });
+		register_shutdown_function([$this, 'shutdownFatalErrorHandler']);
+
 	}
 
-	public function handleException(\Throwable $exception) {
+	public function shutdownFatalErrorHandler(){
+		$error = error_get_last();
+		if ($error !== null){
+			$this->log('error', [
+				'errorlevel' => $this->friendlyErrorType($error['type']),
+				'message'    => $error['message'],
+				'file'       => $error['file'],
+				'line'       => $error['line'],
+				'trace'      => [],
+			]);
+			exit;
+		}
+	}
+
+	public function handleException(\Throwable $exception){
 		$line = $exception->getLine();
 		$file = $exception->getFile();
 		$message = $exception->getMessage() . ' (' . $exception->getCode() . ')';
 		$trace = $exception->getTrace();
 		$type = get_class($exception);
-		if ($exception instanceof \ErrorException) {
-			$ftrace = $trace[ 0 ];
+		if ($exception instanceof \ErrorException){
+			$ftrace = $trace[0];
 			array_shift($trace);
 			$this->log('error', [
 				'type'       => $type,
-				'errorlevel' => $this->friendlyErrorType($ftrace[ 'args' ][ 0 ]),
+				'errorlevel' => $this->friendlyErrorType($ftrace['args'][0]),
 				'message'    => $message,
 				'file'       => $file,
 				'line'       => $line,
 				'trace'      => $trace,
 			]);
-		} else {
+		}else{
 			$this->log('exception', [
 				'type'    => $type,
 				'message' => $message,
@@ -53,11 +69,11 @@ class RemoteLog implements SharedService {
 		}
 	}
 
-	public function __invoke($data) { $this->log('info', $data); }
-	public function dump($data) { $this->log('info', $data); }
-	public function sql($sql) { $this->log('sql', $sql); }
+	public function __invoke($data){ $this->log('info', $data); }
+	public function dump($data){ $this->log('info', $data); }
+	public function sql($sql){ $this->log('sql', $sql); }
 
-	protected function log($type, $message) {
+	protected function log($type, $message){
 		$this->post_without_wait($this->host, [
 			'request' => [
 				'id'     => $this->guid,
@@ -70,14 +86,14 @@ class RemoteLog implements SharedService {
 		]);
 	}
 
-	protected function post_without_wait($url, $message) {
+	protected function post_without_wait($url, $message){
 		$post_string = json_encode($message);
 		$parts = parse_url($url);
-		try {
-			$fp = @fsockopen($parts[ 'host' ], isset($parts[ 'port' ]) ? $parts[ 'port' ] : 80, $errno, $errstr, 30);
-			if ($fp) {
-				$out = "POST " . $parts[ 'path' ] . " HTTP/1.1\r\n";
-				$out .= "Host: " . $parts[ 'host' ] . "\r\n";
+		try{
+			$fp = @fsockopen($parts['host'], isset($parts['port']) ? $parts['port'] : 80, $errno, $errstr, 30);
+			if ($fp){
+				$out = "POST " . $parts['path'] . " HTTP/1.1\r\n";
+				$out .= "Host: " . $parts['host'] . "\r\n";
 				$out .= "Content-Type: application/json\r\n";
 				$out .= "Content-Length: " . strlen($post_string) . "\r\n";
 				$out .= "Connection: Close\r\n\r\n";
@@ -86,12 +102,12 @@ class RemoteLog implements SharedService {
 				fwrite($fp, $out);
 				fclose($fp);
 			}
-		} catch (\Exception $ex) {
+		}catch (\Exception $ex){
 		}
 	}
 
-	protected function friendlyErrorType($type) {
-		switch ($type) {
+	protected function friendlyErrorType($type){
+		switch ($type){
 			case E_ERROR: // 1 //
 				return 'E_ERROR';
 			case E_WARNING: // 2 //

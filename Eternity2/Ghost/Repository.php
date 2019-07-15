@@ -75,9 +75,9 @@ class Repository{
 		return $this->dbRepository->update($record);
 	}
 
-	public function delete(Ghost $object){
-		$this->cache->delete($object->id);
-		return $this->dbRepository->delete($object->id);
+	public function delete(int $id){
+		$this->cache->delete($id);
+		return $this->dbRepository->delete($id);
 	}
 
 	public function search(Filter $filter = null): AbstractFinder{

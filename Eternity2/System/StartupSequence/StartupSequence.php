@@ -25,12 +25,8 @@ class StartupSequence {
 		setenv('context', getenv('context'));
 
 		if (env('output-buffering')) ob_start();
-
-		//dump(env('remote-log-errors'));
-
-
-
 		date_default_timezone_set(env('timezone'));
+		if(getenv('context') === 'WEB') session_start();
 
 		foreach (env('boot-sequence') as $sequence) {
 			(function(BootSequnece $sequnece){$sequnece->run();})(ServiceContainer::get($sequence));

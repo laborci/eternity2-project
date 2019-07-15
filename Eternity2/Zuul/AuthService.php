@@ -10,9 +10,6 @@ class AuthService implements AuthServiceInterface{
 		$this->repository = $repository;
 	}
 
-	public function isAuthenticated(): bool{ return (bool)$this->session->getUserId(); }
-	public function getAuthenticatedId(): int{ return $this->session->getUserId(); }
-
 	public function login($login, $password, $permission = null): bool{
 		$user = $this->repository->authLoginLookup($login);
 		if ($user && $user->checkPassword($password) && (is_null($permission) || $user->checkPermission($permission))){
@@ -23,6 +20,9 @@ class AuthService implements AuthServiceInterface{
 	}
 
 	public function logout(){ $this->clearAuthSession(); }
+
+	public function isAuthenticated(): bool{ return (bool)$this->session->getUserId(); }
+	public function getAuthenticatedId(): int{ return $this->session->getUserId(); }
 
 	public function checkPermission($permission): bool{
 		return $this->isAuthenticated() ?

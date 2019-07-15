@@ -14,20 +14,22 @@ export default class CodexFormFrame extends Brick{
 	}
 
 	route(data){
-		let name = data.name;
-		console.log(name)
-		Ajax.request('/'+name+'/codexinfo').get().promise()
-		.then(result=>{
-			this.codexinfo = result.json;
-			this.setHeader();
-		})
+		if(this.name !== data.name){
+			this.name = data.name;
+			Ajax.request('/' + this.name + '/codexinfo').get().promise()
+				.then(result => {
+					this.codexinfo = result.json;
+					this.setHeader();
+					this.loadList();
+				})
+		}
 	}
 
 	onRender(){}
 
 	setHeader(){
-		this.find('[data-placeholder=icon]').classList.add(...this.codexinfo.icon.split(' '));
-		this.find('[data-placeholder=title]').innerHTML = this.codexinfo.title;
+		this.find('[data-placeholder=icon]').classList.add(...this.codexinfo.header.icon.split(' '));
+		this.find('[data-placeholder=title]').innerHTML = this.codexinfo.header.title;
 	}
 }
 
