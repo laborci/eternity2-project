@@ -2,14 +2,16 @@
 
 use Eternity2\Codex\AdminDescriptor;
 
-class CodexInfo extends Responder{
+class CodexGetList extends Responder{
 
 	protected function getRequiredPermissionType(): ?string{ return AdminDescriptor::PERMISSION; }
 
 	protected function codexRespond(): ?array{
+		$result = $this->adminDescriptor->getListDescriptor()->get(1);
 		return [
-			'header' => $this->adminDescriptor->getHeader(),
-			'list'   => $this->adminDescriptor->getListDescriptor()->descriptor(),
+			'rows'=>$result->rows,
+			'count'=>$result->count,
+			'page'=>$result->page
 		];
 	}
 

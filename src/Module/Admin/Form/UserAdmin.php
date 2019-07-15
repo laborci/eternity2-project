@@ -16,7 +16,7 @@ class UserAdmin extends AdminDescriptor{
 		User::F_ID    => 'id',
 		User::F_NAME  => 'név',
 		User::F_EMAIL => 'e-mail',
-		User::F_ROLES => 'szerepkörök',
+		User::F_ROLES => 'szerepkörök'
 	];
 
 	protected function createDataProvider(): DataProviderInterface{ return new GhostDataProvider(User::class); }
@@ -26,7 +26,12 @@ class UserAdmin extends AdminDescriptor{
 		$list->add(User::F_ID)->visible(false);
 		$list->add(User::F_NAME);
 		$list->add(User::F_EMAIL);
-		$list->add(User::F_ROLES);
+		$list->add(User::F_ROLES)->visible(false);
+		$list->add(User::F_STATUS, '<i class="fas fa-user"></i>')->visible(false);
+		$list->add('userType', '<i class="fas fa-user"></i>')->clientOnly();
+
+//		$list->addJSPlugin('UserListPreprocess');
+		$list->addJSPlugin('UserListPreprocess2');
 		return $list;
 
 	}

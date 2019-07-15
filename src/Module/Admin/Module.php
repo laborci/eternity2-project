@@ -3,6 +3,7 @@
 use Application\Module\Admin\Form\UserAdmin;
 use Application\Module\Admin\Page\Login;
 use Eternity2\Codex\AdminRegistry;
+use Eternity2\Codex\Responder\CodexGetList;
 use Eternity2\Codex\Responder\CodexInfo;
 use Eternity2\WebApplication\Action\Forbidden;
 use Eternity2\WebApplication\Action\NotAuthorized;
@@ -39,6 +40,7 @@ class Module extends Application{
 
 		// API
 		$router->get('/{form}/codexinfo', CodexInfo::class)();
+		$router->post('/{form}/get-list/{page}', CodexGetList::class)();
 
 //		$router->get('/menu', Action\GetMenu::class)();
 //		$router->get('/', Page\Index::class)();

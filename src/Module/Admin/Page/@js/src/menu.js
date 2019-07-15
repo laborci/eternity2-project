@@ -1,5 +1,12 @@
 export default [
 	{
+		label: 'Felhasználók',
+		icon: 'fas fa-user',
+		event: 'SHOW-FORM',
+		data: {name: 'UserAdmin'}
+	},
+	{
+
 		label: 'Felhasználó1k',
 		icon: 'fas fa-user',
 		submenu: [

@@ -31,7 +31,7 @@ abstract class AdminDescriptor implements SharedService{
 	public function getUrlBase(){ return $this->urlBase; }
 	public function getHeader(){ return ['icon' => $this->headerIcon, 'title' => $this->headerTitle]; }
 
-	public function getFieldLabel($name){ return $this->fields[$name]; }
+	public function getFieldLabel($name){ return array_key_exists($name, $this->fields) ? $this->fields[$name] : $name; }
 
 	abstract protected function listDescriptor(ListHandler $codexList): ListHandler;
 

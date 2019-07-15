@@ -20,9 +20,18 @@ class Test extends Command{
 		$time = microtime(true);
 
 
+		for($i=0;$i<310;$i++){
+			$user = new User();
+			$user->name = 'dummy '.$i;
+			$user->email = 'dummy'.$i."@dummy.hu";
+			$user->password = "password";
+			$user->status = User::STATUS_ACTIVE;
+			$user->save();
+		}
+
 //
 //		$article->setfield = Article::SETFIELD_BETA;
-
+/*
 		$user = User::pick(5);
 		$user->password = 'galaga';
 		$user->save();
@@ -31,7 +40,7 @@ class Test extends Command{
 
 		$article = Article::pick(1);
 		$style->writeln($article->title);
-
+*/
 
 		//		$user->save();
 

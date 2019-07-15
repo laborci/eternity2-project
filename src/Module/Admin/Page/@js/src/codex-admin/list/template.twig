@@ -1,0 +1,14 @@
+<table>
+	<thead>
+	<tr>
+		{% for column in fields %}
+			{% if column.visible %}
+				<th data-field="{{ column.name }}">{{ column.label }}</th>
+			{% endif %}
+		{% endfor %}
+	</tr>
+	</thead>
+	<tbody>
+
+	</tbody>
+</table>

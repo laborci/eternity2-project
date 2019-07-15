@@ -23,6 +23,8 @@ class ListHandler{
 	/** @var FilterCreatorInterface */
 	private $filterCreator;
 
+	protected $idField = "id";
+
 	public function __construct(AdminDescriptor $admin){
 		$this->admin = $admin;
 		$this->dataProvider = $admin->getDataProvider();
@@ -33,6 +35,7 @@ class ListHandler{
 
 	public function setPageSize(int $pageSize){ $this->pageSize = $pageSize; }
 	public function addJSPlugin($plugin){ $this->JSplugins[] = $plugin; }
+	public function setIdField($field){ $this->idField = $field; }
 	public function setItemConverter(ItemConverterInterface $itemConverter){ $this->itemConverter = $itemConverter; }
 	public function setFilterCreator(FilterCreatorInterface $filterCreator){ $this->filterCreator = $filterCreator; }
 
@@ -50,7 +53,7 @@ class ListHandler{
 		foreach ($rows as $key => $row){
 			$rows[$key] = [];
 			foreach ($this->fields as $field){
-				$rows[$key][$field->getName()] = $row[$field->getName()];
+				if (!$field->isClientOnly()) $rows[$key][$field->getName()] = $row[$field->getName()];
 			}
 		}
 		return new ListingResult($rows, $page, $count);
@@ -61,6 +64,8 @@ class ListHandler{
 			'plugins'  => $this->JSplugins,
 			'pageSize' => $this->pageSize,
 			'fields'   => $this->fields,
+			'urlBase'  => $this->urlBase,
+			'idField'  => $this->idField,
 		];
 	}
 
