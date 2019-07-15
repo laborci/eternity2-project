@@ -30,15 +30,18 @@ export default class CodexAdminList extends Brick {
 			.then(result => result.json)
 			.then(result => {
 
-				let plugins = pluginManager.get(this.listDescription.plugins, ListPreprocessPlugin);
+				this.find('[data-for=count]').innerHTML = (result.page-1)*this.listDescription.pageSize+1 + '-' + (result.page*this.listDescription.pageSize) + ' / '+result.count;
 
+				let plugins = pluginManager.get(this.listDescription.plugins, ListPreprocessPlugin);
 				let tbody = this.find('tbody');
+				this.listen('tbody', 'click', event=>{
+					console.log(event.target.parentNode.dataset.id)
+				});
 				tbody.innerHTML = '';
 				result.rows.forEach(row => {
 					let tr = document.createElement('tr');
 					tr.dataset.id = row[this.listDescription.idField];
 					plugins.forEach(plugin => { plugin.preprocess(row);});
-
 					this.listDescription.fields.forEach(field => {
 						if (field.visible) {
 							let td = document.createElement('td');

@@ -1,14 +1,26 @@
-<table>
+<table class="browse">
 	<thead>
 	<tr>
+		{% set cols=0 %}
 		{% for column in fields %}
 			{% if column.visible %}
 				<th data-field="{{ column.name }}">{{ column.label }}</th>
+				{% set cols= cols+1 %}
 			{% endif %}
 		{% endfor %}
 	</tr>
 	</thead>
-	<tbody>
-
-	</tbody>
+	<tbody></tbody>
+	<tfoot>
+	<tr>
+		<th colspan="{{ cols }}">
+			<div style="display: grid">
+				<div>
+					<i class="fas fa-layer-group"></i> <span data-for="count"></span>
+				</div>
+				<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+			</div>
+		</th>
+	</tr>
+	</tfoot>
 </table>

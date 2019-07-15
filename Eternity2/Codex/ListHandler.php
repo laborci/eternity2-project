@@ -56,7 +56,7 @@ class ListHandler{
 				if (!$field->isClientOnly()) $rows[$key][$field->getName()] = $row[$field->getName()];
 			}
 		}
-		return new ListingResult($rows, $page, $count);
+		return new ListingResult($rows, $count, $page);
 	}
 
 	public function descriptor(){
