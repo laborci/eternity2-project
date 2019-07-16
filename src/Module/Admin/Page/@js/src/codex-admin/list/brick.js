@@ -26,11 +26,27 @@ export default class CodexAdminList extends Brick {
 	}
 
 	onRender() {
-		Ajax.request('/' + this.listDescription.urlBase + '/get-list/' + this.page).post().promise()
+		this.listen('.slider input', 'input', event=>{
+			let page = event.target.value;
+			this.find('[data-for=current]').innerHTML = (page-1)*this.listDescription.pageSize+1 + '-' + page*this.listDescription.pageSize;
+		});
+		this.listen('.slider input', 'change', event=>{
+			this.load(event.target.value);
+		});
+		this.load(this.page);
+	}
+
+	load(page){
+		Ajax.request('/' + this.listDescription.urlBase + '/get-list/' + page).post().promise()
 			.then(result => result.json)
 			.then(result => {
+				this.page = result.page;
 
-				this.find('[data-for=count]').innerHTML = (result.page-1)*this.listDescription.pageSize+1 + '-' + (result.page*this.listDescription.pageSize) + ' / '+result.count;
+				this.find('[data-for=current]').innerHTML = (result.page-1)*this.listDescription.pageSize+1 + '-' + (result.page*this.listDescription.pageSize);
+				this.find('[data-for=count]').innerHTML = result.count;
+				let pages = Math.ceil(result.count / this.listDescription.pageSize);
+				this.find('.slider input').setAttribute('max', pages);
+				this.find('.slider input').setAttribute('value', result.page);
 
 				let plugins = pluginManager.get(this.listDescription.plugins, ListPreprocessPlugin);
 				let tbody = this.find('tbody');

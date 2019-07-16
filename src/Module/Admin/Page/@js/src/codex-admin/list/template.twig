@@ -14,11 +14,17 @@
 	<tfoot>
 	<tr>
 		<th colspan="{{ cols }}">
-			<div style="display: grid">
+			<div>
 				<div>
-					<i class="fas fa-layer-group"></i> <span data-for="count"></span>
+					<i class="fas fa-layer-group"></i>
+					<span data-for="current"></span> /
+					<span data-for="count"></span>
 				</div>
-				<input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+				<div class="slider">
+					<i class="left fas fa-arrow-alt-circle-left"></i>
+					<input type="range" min="1" max="100" value="1">
+					<i class="right fas fa-arrow-alt-circle-right"></i>
+				</div>
 			</div>
 		</th>
 	</tr>
