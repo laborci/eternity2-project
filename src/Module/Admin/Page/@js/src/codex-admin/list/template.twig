@@ -4,7 +4,7 @@
 		{% set cols=0 %}
 		{% for column in fields %}
 			{% if column.visible %}
-				<th data-field="{{ column.name }}">{{ column.label }}</th>
+				<th data-field="{{ column.name }}" class="{% if column.sortable %}sortable{% endif %}">{{ column.label }}</th>
 				{% set cols= cols+1 %}
 			{% endif %}
 		{% endfor %}
@@ -15,14 +15,14 @@
 	<tr>
 		<th colspan="{{ cols }}">
 			<div>
-				<div>
+				<div class="paging-info">
 					<i class="fas fa-layer-group"></i>
 					<span data-for="current"></span> /
 					<span data-for="count"></span>
 				</div>
 				<div class="slider">
 					<i class="left fas fa-arrow-alt-circle-left"></i>
-					<input type="range" min="1" max="100" value="1">
+					<input type="range" min="1" max="1" value="1">
 					<i class="right fas fa-arrow-alt-circle-right"></i>
 				</div>
 			</div>

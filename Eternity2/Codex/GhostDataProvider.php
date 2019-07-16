@@ -14,7 +14,7 @@ class GhostDataProvider implements DataProviderInterface, ItemConverterInterface
 	}
 
 	public function getList($page, $sorting, $filter, $pageSize, &$count): array{
-		$finder = $this->model->repository->search()->orderIf(!is_null($sorting), $sorting['field'] . ' ' . $sorting['order']);
+		$finder = $this->model->repository->search()->orderIf(!is_null($sorting), $sorting['field'] . ' ' . $sorting['dir']);
 		return $finder->collectPage($pageSize, $page, $count);
 	}
 

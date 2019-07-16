@@ -28,7 +28,7 @@ class UserAdmin extends AdminDescriptor{
 		$list->add(User::F_EMAIL);
 		$list->add(User::F_ROLES)->visible(false);
 		$list->add(User::F_STATUS)->visible(false);
-		$list->add('userType', '<i class="fas fa-user"></i>')->clientOnly();
+		$list->add('userType', '<i class="fas fa-user"></i>')->clientOnly()->sortable(false);
 
 //		$list->addJSPlugin('UserListPreprocess');
 		$list->addJSPlugin('UserListPreprocess2');

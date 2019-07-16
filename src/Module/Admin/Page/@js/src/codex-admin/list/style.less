@@ -1,6 +1,6 @@
 [is=codex-admin-list] {
 	table {
-		min-height: 100%;
+		min-height      : 100%;
 		border-spacing  : 0;
 		border-collapse : collapse;
 		width           : 100%;
@@ -39,6 +39,29 @@
 			position         : -webkit-sticky;
 			top              : 0;
 			white-space      : nowrap;
+			&.sortable {
+				cursor: pointer;
+				transition: all .3s;
+				&:hover{
+					background-color: #4c6985;
+				}
+
+				&:before {
+					content: "\f0dc";
+					font-family: "Font Awesome 5 Pro";
+					color: #ffffff88;
+					margin-right: 4px;
+				}
+
+				&.sort-1:before {
+					color:white;
+					content: "\f0dd";
+				}
+				&.sort--1:before {
+					color:white;
+					content: "\f0de";
+				}
+			}
 		}
 
 		td {
@@ -74,6 +97,16 @@
 		}
 	}
 
+	div.paging-info {
+		height    : 24px;
+		font-size : 11px;
+		min-width : 120px;
+
+		[data-for=count] {
+			color : #86b0d8;
+		}
+	}
+
 	div.slider {
 		width         : 100%;
 		background    : #516c86;
@@ -86,8 +119,18 @@
 			font-size : 16px;
 			width     : 20px;
 			float     : left;
+
 			&.right {
 				text-align : right
+			}
+
+			&:not(.unavailable) {
+				cursor : pointer;
+				color  : #bee1ff;
+			}
+
+			&.unavailable {
+				color : #5f809e;
 			}
 		}
 
