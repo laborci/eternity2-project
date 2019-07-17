@@ -1,6 +1,12 @@
-<?php include __DIR__.'/../vendor/autoload.php';
+<?php
 
-\Eternity2\RemoteLog\RemoteLog::loadFacades();
-\Eternity2\System\Env\Env::loadFacades();
+use Eternity2\RemoteLog\RemoteLog;
+use Eternity2\System\Env\Env;
+use Eternity2\System\StartupSequence\StartupSequence;
 
-new \Eternity2\System\StartupSequence\StartupSequence(__DIR__.'/..');
+include __DIR__.'/../vendor/autoload.php';
+
+RemoteLog::loadFacades();
+Env::loadFacades();
+
+new StartupSequence(__DIR__.'/..');
