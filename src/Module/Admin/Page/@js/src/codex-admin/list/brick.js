@@ -32,8 +32,6 @@ export default class CodexAdminList extends Brick {
 		super.setup();
 	}
 
-	bindPagingDisplay(pagingDisplay) {this.pagingDisplay = pagingDisplay;}
-
 	createViewModel() {
 		return {
 			fields: this.fields
@@ -42,21 +40,34 @@ export default class CodexAdminList extends Brick {
 
 	onRender() {
 
-		this.listen('tbody', 'click', event => {
-			console.log(event.target.parentNode.dataset.id)
+		this.$$('list').listen('click', event => {
+			this.appEventManager.fire('ITEM-SELECTED', {id: event.target.closest('tr').dataset.id});
 		});
 
 
-		this.listen('[data-for=pager]', 'input', event => {
+		this.$$('pager-slider').listen('input', event => {
 			let page = event.target.value;
-			this.pagingDisplay.current.innerHTML = (page - 1) * this.pageSize + 1 + '-' + Math.min(page * this.pageSize, this.count);
+			this.appEventManager.fire('PAGING-CHANGED', {page: page, pageSize: this.pageSize, count: this.count});
 		});
-		this.listen('[data-for=pager]', 'change', event => this.load(event.target.value));
-		this.listen('[data-for=step-page-right]', 'click', event => this.load(this.page + 1));
-		this.listen('[data-for=step-page-left]', 'click', event => this.load(this.page - 1));
+
+		this.$$('pager-slider').listen('change', event => this.load(event.target.value));
+
+		this.$$('step-page-right').listen('click', event =>
+			this.$$('pager-slider', slider => {
+				slider.value++;
+				this.load(slider.value);
+			})
+		);
+
+		this.$$('step-page-left').listen('click', event =>
+			this.$$('pager-slider', slider => {
+				slider.value--;
+				this.load(slider.value);
+			})
+		);
 
 
-		this.listen('.sortable', 'click', event => {
+		this.$$('sortable').listen('click', event => {
 			if (this.loading) return;
 			if (this.sort.field === event.target.dataset.field) {
 				this.sort.dir = this.sort.dir === 'asc' ? 'desc' : 'asc';
@@ -74,12 +85,12 @@ export default class CodexAdminList extends Brick {
 	}
 
 	renderSortingIcons() {
-		this.$('.sort--1', elem => elem.classList.remove('sort--1'));
-		this.$('.sort-1', elem => elem.classList.remove('sort-1'));
-		this.find('.sortable[data-field=' + this.sort.field + ']').classList.add(this.sort.dir === 'asc' ? 'sort-1' : 'sort--1');
+		this.$$('sortable', elem => elem.classList.remove('sort-asc', 'sort-desc'));
+		this.$$('sortable').filter(`[data-field=${this.sort.field}]`, elem => elem.classList.add('sort-' + this.sort.dir));
 	}
 
 	load(page = null) {
+
 		if (page === null) page = this.page;
 		if (this.loading) return;
 
@@ -88,21 +99,25 @@ export default class CodexAdminList extends Brick {
 		Ajax.request('/' + this.urlBase + '/get-list/' + page).postJSON({sort: this.sort.field ? this.sort : null}).promise()
 			.then(result => result.json)
 			.then(result => {
-				console.log(result);
 				this.page = parseInt(result.page);
 				this.count = result.count;
 
-				this.pagingDisplay.current.innerHTML = (result.page - 1) * this.pageSize + 1 + '-' + (Math.min(result.page * this.pageSize, this.count));
-				this.pagingDisplay.count.innerHTML = result.count;
+				this.appEventManager.fire('PAGING-CHANGED', {page: this.page, pageSize: this.pageSize, count: this.count});
 
 				let pages = Math.ceil(result.count / this.pageSize);
-				this.find('.slider input').setAttribute('max', pages);
-				this.find('.slider input').value = result.page;
-				if (this.page === 1) this.find(".left").classList.add('unavailable');
-				else this.find(".left").classList.remove('unavailable');
-				if (this.page === pages) this.find(".right").classList.add('unavailable');
-				else this.find(".right").classList.remove('unavailable');
+				this.$$('pager-slider').get().setAttribute('max', pages);
+				this.$$('pager-slider').get().value = result.page;
 
+
+				this.$$('step-page-left', stepper => {
+					if (this.page === 1) stepper.classList.add('unavailable');
+					else stepper.classList.remove('unavailable');
+				});
+
+				this.$$('step-page-right', stepper => {
+					if (this.page === pages) stepper.classList.add('unavailable');
+					else stepper.classList.remove('unavailable');
+				});
 
 				this.renderContent(result.rows);
 				this.loading = false;
@@ -111,7 +126,7 @@ export default class CodexAdminList extends Brick {
 
 	renderContent(rows) {
 		let plugins = pluginManager.get(this.plugins, ListPreprocessPlugin);
-		let tbody = this.find('tbody');
+		let tbody = this.$$('list').get();
 		tbody.innerHTML = '';
 		rows.forEach(row => {
 			let tr = document.createElement('tr');

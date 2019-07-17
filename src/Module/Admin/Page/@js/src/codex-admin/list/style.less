@@ -5,6 +5,70 @@
 		border-collapse : collapse;
 		width           : 100%;
 
+		th, td {
+			font-size   : 12px;
+			font-weight : 600;
+			line-height : 24px;
+			padding     : 0 10px;
+		}
+
+		thead th {
+			background-color : #3f5468;
+			height           : 30px;
+			text-align       : left;
+			color            : #ECF0F1;
+			position         : sticky;
+			position         : -webkit-sticky;
+			top              : 0;
+			white-space      : nowrap;
+
+			&[\(sortable\)] {
+				cursor     : pointer;
+				transition : all .3s;
+
+				&:hover { background-color : #4c6985;}
+
+				&:before {
+					content      : "\f0dc";
+					font-family  : "Font Awesome 5 Pro";
+					color        : #ffffff88;
+					margin-right : 4px;
+				}
+
+				&.sort-asc:before {
+					color   : white;
+					content : "\f0dd";
+				}
+
+				&.sort-desc:before {
+					color   : white;
+					content : "\f0de";
+				}
+			}
+		}
+
+		tbody {
+			td {
+				border-bottom    : 1px solid #ddd;
+				color            : #73879C;
+				transition       : all .2s;
+				background-color : white;
+				font-weight      : 400;
+				cursor           : pointer;
+
+			}
+
+			tr:nth-child(even) td {
+				background-color : #f6f6f6;
+			}
+
+
+			tr:hover td {
+				background-color : #58aeff;
+				color            : #ffffff;
+			}
+		}
+
 		tfoot th {
 			background-color : #3f5468;
 			text-align       : left;
@@ -13,155 +77,72 @@
 			position         : -webkit-sticky;
 			bottom           : 0;
 			white-space      : nowrap;
-			line-height      : 28px;
-			height           : 40px;
+			height           : 30px;
+			padding          : 0 3px;
 
-		}
+			div.slider {
+				width         : 100%;
+				background    : #516c86;
+				border-radius : 24px;
+				height        : 20px;
+				margin        : 5px 0;
+				//float         : left;
+				line-height   : 20px;
+				padding       : 0 3px;
 
-		th, td {
-			font-size   : 12px;
-			font-weight : 600;
-			line-height : initial;
-			padding     : 6px 10px;
-		}
+				i {
+					font-size   : 14px;
+					line-height : 20px;
+					width       : 20px;
+					float       : left;
 
-		th:first-child, td:first-child {
-			border-left : 0
-		}
+					&.right {
+						text-align : right
+					}
 
+					&:not(.unavailable) {
+						cursor : pointer;
+						color  : #bee1ff;
+					}
 
-		thead th {
-			background-color : #3f5468;
-			height           : 40px;
-			text-align       : left;
-			color            : #ECF0F1;
-			position         : sticky;
-			position         : -webkit-sticky;
-			top              : 0;
-			white-space      : nowrap;
-			&.sortable {
-				cursor: pointer;
-				transition: all .3s;
-				&:hover{
-					background-color: #4c6985;
+					&.unavailable {
+						color : #5f809e;
+					}
 				}
 
-				&:before {
-					content: "\f0dc";
-					font-family: "Font Awesome 5 Pro";
-					color: #ffffff88;
-					margin-right: 4px;
+				input[type=range] {
+					float              : left;
+					width              : ~"calc(100% - 40px)";
+					background         : none;
+					-webkit-appearance : none;
+					margin             : 0;
+					padding            : 0;
+					display            : block;
 				}
 
-				&.sort-1:before {
-					color:white;
-					content: "\f0dd";
+				input[type=range]:focus {outline : none;}
+
+				input[type=range]::-webkit-slider-runnable-track {
+					width  : 100%;
+					height : 20px;
+					cursor : pointer;
 				}
-				&.sort--1:before {
-					color:white;
-					content: "\f0de";
+
+				input[type=range]::-webkit-slider-thumb {
+					margin-top         : 3px;
+					border             : none;
+					height             : 14px;
+					width              : 14px;
+					border-radius      : 20px;
+					background         : #58aeff;
+					cursor             : pointer;
+					-webkit-appearance : none;
 				}
 			}
 		}
 
-		td {
-			border-bottom    : 1px solid #ddd;
-			color            : #73879C;
-			transition       : all .2s;
-			background-color : white;
-			font-weight      : 400;
-		}
-
-		tr:nth-child(even) td {
-			background-color : #f6f6f6;
-		}
-
-		&.browse {
-			td {
-				cursor : pointer;
-			}
-
-			tr:hover td {
-				background-color : #58aeff;
-				color            : #ffffff;
-			}
-		}
 	}
 
-
-	tfoot {
-		th > div {
-			//display               : grid;
-			//grid-column-gap       : 10px;
-			//grid-template-columns : auto 1fr;
-		}
-	}
-
-	//div.paging-info {
-	//	height    : 24px;
-	//	font-size : 11px;
-	//	min-width : 120px;
-	//
-	//	[data-for=count] {
-	//		color : #86b0d8;
-	//	}
-	//}
-
-	div.slider {
-		width         : 100%;
-		background    : #516c86;
-		border-radius : 24px;
-		height        : 24px;
-		border        : 4px solid rgba(0, 1, 0, 0);
-		margin        : 2px 0;
-		float:left;
-
-		i {
-			font-size : 16px;
-			width     : 20px;
-			float     : left;
-
-			&.right {
-				text-align : right
-			}
-
-			&:not(.unavailable) {
-				cursor : pointer;
-				color  : #bee1ff;
-			}
-
-			&.unavailable {
-				color : #5f809e;
-			}
-		}
-
-		input[type=range] {
-			float              : left;
-			width              : ~"calc(100% - 40px)";
-			background         : none;
-			-webkit-appearance : none;
-			margin             : 0;
-			display            : block;
-		}
-
-		input[type=range]:focus {outline : none;}
-
-		input[type=range]::-webkit-slider-runnable-track {
-			width  : 100%;
-			height : 24px;
-			cursor : pointer;
-		}
-
-		input[type=range]::-webkit-slider-thumb {
-			border             : 0px solid #58aeff;
-			height             : 16px;
-			width              : 16px;
-			border-radius      : 20px;
-			background         : #58aeff;
-			cursor             : pointer;
-			-webkit-appearance : none;
-		}
-	}
 
 }
 

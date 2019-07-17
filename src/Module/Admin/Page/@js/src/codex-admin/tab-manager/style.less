@@ -1,0 +1,97 @@
+[is=codex-admin-tab-manager] {
+
+	[\(tabs\)] {
+		//border-bottom:1px solid #ddd;
+		background-color : #ddd;
+		overflow         : hidden;
+		height           : 23px;
+
+		& > div {
+			position              : relative;
+			color                 : #3f5468;
+			width                 : 100px;
+			overflow              : hidden;
+			margin-right          : 1px;
+			float                 : left;
+			line-height           : 22px;
+			font-size             : 11px;
+			padding               : 0 6px;
+			cursor                : pointer;
+			transition            : all .3s;
+			display               : grid;
+			grid-template-columns : 14px auto 10px;
+
+			&.selected {
+				background-color : #fff;
+				border-bottom    : 1px solid #fff;
+
+				& + div:not(:hover):before {
+					border-color : transparent !important;
+				}
+
+				border-radius    : 4px 4px 0 0;
+
+				i.close {
+					opacity : 1;
+				}
+			}
+
+			&:hover + div:before {
+				border-color : transparent !important;
+			}
+
+			&:not(.selected) {
+				border-bottom : 1px solid #ddd;
+
+				&:not(:first-child):not(:hover):before {
+					position    : absolute;
+					left        : 0;
+					top         : 2px;
+					content     : '';
+					height      : 18px;
+					border-left : 1px solid #ccc;
+				}
+
+				&:hover {
+					background-color : #eee;
+
+					i.close {
+						opacity : .6;
+					}
+				}
+
+				border-radius : 6px;
+			}
+
+			span {
+				overflow      : hidden;
+				text-overflow : ellipsis;
+				white-space   : nowrap;
+			}
+
+			i.icon {
+				line-height : 22px;
+				font-size   : 10px;
+			}
+
+			i.close {
+				transition  : all .3s;
+				opacity     : 0;
+				font-size   : 10px;
+				line-height : 22px;
+				text-align  : right;
+
+				&:hover {
+					color : red;
+				}
+			}
+
+		}
+	}
+
+	[\(forms\)] {
+
+	}
+
+}
+

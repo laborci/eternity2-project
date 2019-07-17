@@ -1,16 +1,16 @@
 <header class="page-header">
 	<h2>
-		<i data-placeholder="icon"></i>
-		<span data-placeholder="title"></span>
+		<i (header-icon)></i>
+		<span (header-title)></span>
 		<div class="paging-info">
 			<i class="fas fa-layer-group"></i>
-			<span data-for="current"></span> /
-			<span data-for="count"></span>
+			<span (page-current)></span> /
+			<span (page-count)></span>
 		</div>
 	</h2>
 </header>
 
 <div class="content-wrapper">
 	<div is="codex-admin-list" class="panel w-6x h-3x pull-left pull-right close-up"></div>
-	<div is="codex-form" class="panel w-6x h-3x close-up pull-left pull-right close-down"></div>
+	<div is="codex-admin-tab-manager" class="panel w-6x h-3x close-up pull-left pull-right close-down"></div>
 </div>

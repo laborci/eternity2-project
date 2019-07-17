@@ -14,7 +14,6 @@ class ListHandler{
 	protected $pageSize = 50;
 	protected $JSplugins = [];
 
-	protected $urlBase;
 	protected $sorting;
 	/** @var DataProviderInterface */
 	protected $dataProvider;
@@ -28,7 +27,6 @@ class ListHandler{
 	public function __construct(AdminDescriptor $admin){
 		$this->admin = $admin;
 		$this->dataProvider = $admin->getDataProvider();
-		$this->urlBase = $admin->getUrlBase();
 		$this->itemConverter = $this->dataProvider;
 		$this->filterCreator = $this->dataProvider;
 	}
@@ -64,7 +62,6 @@ class ListHandler{
 			'plugins'  => $this->JSplugins,
 			'pageSize' => $this->pageSize,
 			'fields'   => $this->fields,
-			'urlBase'  => $this->urlBase,
 			'idField'  => $this->idField,
 		];
 	}

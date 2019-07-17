@@ -3,7 +3,8 @@ import twig from "./template.twig";
 import "./style.less";
 import Ajax from "zengular-ajax";
 import CodexAdminList from "../list/brick";
-
+import "../tab-manager/brick";
+import CodexAdminTabManager from "../tab-manager/brick";
 
 @Brick.register('codex-admin-frame', twig)
 @Brick.registerSubBricksOnRender()
@@ -12,6 +13,20 @@ export default class CodexAdminFrame extends Brick {
 
 
 	onInitialize() {
+		this.appEventManager.listen('ITEM-SELECTED', event => {
+			this.tabManager.open(this.codexinfo.urlBase, event.data.id);
+		});
+		this.appEventManager.listen('PAGING-CHANGED', event => {
+			let page = event.data.page;
+			let pageSize = event.data.pageSize;
+			let count = event.data.count;
+
+			let from = (page-1)*pageSize + 1;
+			let to =  Math.min(page * pageSize, count);
+
+			this.$$("page-current").get().innerHTML = `${from} - ${to}`;
+			this.$$("page-count").get().innerHTML = count;
+		});
 	}
 
 	route(data) {
@@ -20,6 +35,7 @@ export default class CodexAdminFrame extends Brick {
 			Ajax.request('/' + this.name + '/codexinfo').get().promise()
 				.then(result => {
 					this.codexinfo = result.json;
+					this.codexinfo.list.urlBase = this.codexinfo.urlBase;
 					this.setHeader();
 					this.loadList();
 				})
@@ -28,16 +44,14 @@ export default class CodexAdminFrame extends Brick {
 
 	onRender() {
 		this.list = this.find(CodexAdminList.selector).controller;
-		this.list.bindPagingDisplay({current: this.find("[data-for=current]"), count: this.find("[data-for=count]")});
+		this.tabManager = this.find(CodexAdminTabManager.selector).controller;
 	}
 
 	loadList() { this.list.setup(this.codexinfo.list);}
 
-	setHeader(header) {
-		let icon = this.codexinfo.header.icon;
-		let title = this.codexinfo.header.title;
-		this.find('[data-placeholder=icon]').classList.add(...icon.split(' '));
-		this.find('[data-placeholder=title]').innerHTML = title;
+	setHeader() {
+		this.$$('header-icon', e => e.classList.add(...this.codexinfo.header.icon.split(' ')));
+		this.$$('header-title', e => e.innerHTML = this.codexinfo.header.title);
 	}
 }
 

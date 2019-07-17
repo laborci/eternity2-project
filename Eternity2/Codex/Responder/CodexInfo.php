@@ -10,6 +10,7 @@ class CodexInfo extends Responder{
 		return [
 			'header' => $this->adminDescriptor->getHeader(),
 			'list'   => $this->adminDescriptor->getListDescriptor()->descriptor(),
+			'urlBase'=> $this->adminDescriptor->getUrlBase()
 		];
 	}
 
