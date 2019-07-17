@@ -7,8 +7,8 @@ class ListingResult{
 	public $page;
 
 	public function __construct($rows, $count, $page){
-		$this->count = $count;
-		$this->page = $page;
+		$this->count = intval($count);
+		$this->page = intval($page);
 		$this->rows = $rows;
 	}
 
