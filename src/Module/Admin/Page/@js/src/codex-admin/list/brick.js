@@ -86,7 +86,7 @@ export default class CodexAdminList extends Brick {
 
 	renderSortingIcons() {
 		this.$$('sortable', elem => elem.classList.remove('sort-asc', 'sort-desc'));
-		this.$$('sortable').filter(`[data-field=${this.sort.field}]`, elem => elem.classList.add('sort-' + this.sort.dir));
+		this.$$('sortable').filter(`[data-field=${this.sort.field}]`).all(elem => elem.classList.add('sort-' + this.sort.dir));
 	}
 
 	load(page = null) {
