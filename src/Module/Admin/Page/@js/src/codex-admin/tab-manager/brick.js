@@ -30,7 +30,7 @@ export default class CodexAdminTabManager extends Brick {
 			this.$$('tabs').get().appendChild(tab);
 
 			let form = CodexAdminForm.create('div', true);
-			
+
 		}
 		this.selectTab(tab.controller);
 	}
