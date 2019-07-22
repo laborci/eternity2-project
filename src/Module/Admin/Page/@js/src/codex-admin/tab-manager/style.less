@@ -1,13 +1,19 @@
 [is=codex-admin-tab-manager] {
 
+	display            : grid;
+	grid-template-rows : 23px auto;
+	overflow           : hidden;
+
 	[\(tabs\)] {
 		background-color : #ddd;
 		overflow         : hidden;
 		height           : 23px;
+		position         : sticky;
+		top              : 0;
 	}
 
 	[\(forms\)] {
-
+		overflow : hidden;
 	}
 
 }

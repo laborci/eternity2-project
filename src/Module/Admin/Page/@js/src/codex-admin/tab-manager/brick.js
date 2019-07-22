@@ -27,10 +27,15 @@ export default class CodexAdminTabManager extends Brick {
 			tab.dataset.type = urlBase;
 			tab.dataset.icon = 'fas fa-infinity';
 			tab.dataset.label = 'new tab';
-			this.$$('tabs').get().appendChild(tab);
+			this.$$('tabs').node.appendChild(tab);
 
 			let form = CodexAdminForm.create('div', true);
 
+			tab.controller.form = form.controller;
+			form.controller.tab = tab.controller;
+
+			form.controller.load(id, urlBase);
+			this.$$('forms').node.appendChild(form);
 		}
 		this.selectTab(tab.controller);
 	}
@@ -38,6 +43,8 @@ export default class CodexAdminTabManager extends Brick {
 	selectTab(tab) {
 		this.$(CodexAdminTab.selector).filter('[data-selected=yes]', tab => tab.dataset.selected = 'no');
 		tab.root.dataset.selected = 'yes';
+		this.$(CodexAdminForm.selector).filter('.visible', element=>element.classList.remove('visible'));
+		tab.form.root.classList.add('visible');
 	}
 
 	removeTab(tab){
@@ -48,6 +55,7 @@ export default class CodexAdminTabManager extends Brick {
 				this.selectTab(tab.root.previousElementSibling.controller);
 			}
 		}
+		tab.form.root.remove();
 		tab.root.remove();
 	}
 

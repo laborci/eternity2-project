@@ -8,5 +8,11 @@ import "./style.less";
 export default class CodexAdminForm extends Brick {
 
 
+	load(id, urlBase){
+		this.urlBase = urlBase;
+		this.id = id;
+	}
+
+
 }
 

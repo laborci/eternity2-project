@@ -11,17 +11,18 @@ class ListHandler{
 	/** @var AdminDescriptor */
 	protected $admin;
 
-	protected $pageSize = 50;
-	protected $JSplugins = [];
-
-	protected $sorting;
 	/** @var DataProviderInterface */
 	protected $dataProvider;
+
 	/** @var ItemConverterInterface */
 	private $itemConverter;
+
 	/** @var FilterCreatorInterface */
 	private $filterCreator;
 
+	protected $pageSize = 50;
+	protected $JSplugins = [];
+	protected $sorting;
 	protected $idField = "id";
 
 	public function __construct(AdminDescriptor $admin){
@@ -57,7 +58,7 @@ class ListHandler{
 		return new ListingResult($rows, $count, $page);
 	}
 
-	public function descriptor(){
+	public function getDescriptor(){
 		return [
 			'plugins'  => $this->JSplugins,
 			'pageSize' => $this->pageSize,

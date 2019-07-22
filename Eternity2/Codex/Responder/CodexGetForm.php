@@ -2,15 +2,15 @@
 
 use Eternity2\Codex\AdminDescriptor;
 
-class CodexInfo extends Responder{
+class CodexGetForm extends Responder{
 
 	protected function getRequiredPermissionType(): ?string{ return AdminDescriptor::PERMISSION; }
 
 	protected function codexRespond(): ?array{
+
+		$formHandler = $this->adminDescriptor->getFormHandler();
 		return [
-			'header' => $this->adminDescriptor->getHeader(),
-			'urlBase'=> $this->adminDescriptor->getUrlBase(),
-			'list'   => $this->adminDescriptor->getListHandler()->getDescriptor(),
+			'descriptor'=>$formHandler->getDescriptor()
 		];
 	}
 

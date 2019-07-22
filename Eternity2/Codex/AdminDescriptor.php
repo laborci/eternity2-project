@@ -33,8 +33,10 @@ abstract class AdminDescriptor implements SharedService{
 
 	public function getFieldLabel($name){ return array_key_exists($name, $this->fields) ? $this->fields[$name] : $name; }
 
-	abstract protected function listDescriptor(ListHandler $codexList): ListHandler;
+	abstract protected function listHandler(ListHandler $codexList): ListHandler;
+	abstract protected function formHandler(FormHandler $codexForm): FormHandler;
 
-	public function getListDescriptor(): ListHandler{ return $this->listDescriptor(new ListHandler($this)); }
+	public function getListHandler(): ListHandler{ return $this->listHandler(new ListHandler($this)); }
+	public function getFormHandler(): FormHandler{ return $this->formHandler(new FormHandler($this)); }
 
 }
