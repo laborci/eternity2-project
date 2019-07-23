@@ -43,8 +43,7 @@ class UserAdmin extends AdminDescriptor{
 		('options', [
 			User::STATUS_ACTIVE   => 'aktív',
 			User::STATUS_INACTIVE => 'inaktív',
-		])
-		('valami', 'másvalami');
+		]);
 
 		return $form;
 	}

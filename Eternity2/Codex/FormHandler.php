@@ -1,6 +1,7 @@
 <?php namespace Eternity2\Codex;
 
-class FormHandler{
+use JsonSerializable;
+class FormHandler implements JsonSerializable{
 
 	/** @var AdminDescriptor */
 	protected $admin;
@@ -35,39 +36,13 @@ class FormHandler{
 		return $section;
 	}
 
-	public function getDescriptor(){
-		return [$this->sections];
+	public function jsonSerialize(){
+		return [
+			'sections'=>$this->sections,
+			'plugins'=>$this->JSplugins,
+			'idField'=>$this->idField,
+			'labelField'=>$this->labelField,
+		];
 	}
-
-
-//
-//	public function add($name, $label = null): ListField{
-//		if (is_null($label)) $label = !is_null($this->admin->getFieldLabel($name)) ? $this->admin->getFieldLabel($name) : $name;
-//		$field = new ListField($name, $label);
-//		$this->fields[] = $field;
-//		return $field;
-//	}
-//
-//	public function get($page, $sorting = null, $filter = null): ListingResult{
-//		$items = $this->dataProvider->getList($page, $sorting, $filter, $this->pageSize, $count);
-//		$rows = [];
-//		foreach ($items as $item) $rows[] = $this->itemConverter->convertItem($item);
-//		foreach ($rows as $key => $row){
-//			$rows[$key] = [];
-//			foreach ($this->fields as $field){
-//				if (!$field->isClientOnly()) $rows[$key][$field->getName()] = $row[$field->getName()];
-//			}
-//		}
-//		return new ListingResult($rows, $count, $page);
-//	}
-//
-//	public function descriptor(){
-//		return [
-//			'plugins'  => $this->JSplugins,
-//			'pageSize' => $this->pageSize,
-//			'fields'   => $this->fields,
-//			'idField'  => $this->idField,
-//		];
-//	}
 
 }

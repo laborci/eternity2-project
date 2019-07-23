@@ -1,6 +1,7 @@
 <?php namespace Eternity2\Codex;
 
-class ListHandler{
+use JsonSerializable;
+class ListHandler implements JsonSerializable{
 
 	const SORT_ASC = 'asc';
 	const SORT_DESC = 'desc';
@@ -58,7 +59,7 @@ class ListHandler{
 		return new ListingResult($rows, $count, $page);
 	}
 
-	public function getDescriptor(){
+	public function jsonSerialize(){
 		return [
 			'plugins'  => $this->JSplugins,
 			'pageSize' => $this->pageSize,

@@ -25,21 +25,6 @@ class FormInput implements JsonSerializable{
 		return $this;
 	}
 
-//	public function __set($name, $value) {
-//		if(substr($name,0, 3) === 'opt'){
-//			$this->options[strtolower(substr($name, 3))] = $value;
-//		}
-//	}
-//
-//	public function __call($name, $arguments) {
-//		if(substr($name,0, 3) === 'opt'){
-//			$this->options[strtolower(substr($name, 3))] = $arguments[0];
-//			return $this;
-//		}
-//		return null;
-//	}
-
-
 	public function jsonSerialize(){
 		return [
 			'type'=>$this->type,

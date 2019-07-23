@@ -21,11 +21,11 @@ export default class CodexAdminFrame extends Brick {
 			let pageSize = event.data.pageSize;
 			let count = event.data.count;
 
-			let from = (page-1)*pageSize + 1;
-			let to =  Math.min(page * pageSize, count);
+			let from = (page - 1) * pageSize + 1;
+			let to = Math.min(page * pageSize, count);
 
-			this.$$("page-current").get().innerHTML = `${from} - ${to}`;
-			this.$$("page-count").get().innerHTML = count;
+			this.$$("page-current").node.innerHTML = `${from} - ${to}`;
+			this.$$("page-count").node.innerHTML = count;
 		});
 	}
 
@@ -50,8 +50,8 @@ export default class CodexAdminFrame extends Brick {
 	loadList() { this.list.setup(this.codexinfo.list);}
 
 	setHeader() {
-		this.$$('header-icon', e => e.classList.add(...this.codexinfo.header.icon.split(' ')));
-		this.$$('header-title', e => e.innerHTML = this.codexinfo.header.title);
+		this.$$('header-icon').each(e => e.classList.add(...this.codexinfo.header.icon.split(' ')));
+		this.$$('header-title').each(e => e.innerHTML = this.codexinfo.header.title);
 	}
 }
 
