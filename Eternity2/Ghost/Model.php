@@ -42,6 +42,10 @@ class Model {
 		$this->fields[$field]->protect($getter, $setter);
 	}
 
+	public function createGhost(): Ghost{
+		return new $this->ghost;
+	}
+
 	public function hasMany($target, $ghost, $field): Relation {
 		return $this->relations[$target] = new Relation($target, Relation::TYPE_HASMANY, ['ghost' => $ghost, 'field' => $field]);
 	}

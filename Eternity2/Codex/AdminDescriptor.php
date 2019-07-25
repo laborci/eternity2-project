@@ -1,5 +1,8 @@
 <?php namespace Eternity2\Codex;
 
+use Eternity2\Codex\DataProvider\DataProviderInterface;
+use Eternity2\Codex\FormHandler\FormHandler;
+use Eternity2\Codex\ListHandler\ListHandler;
 use Eternity2\System\ServiceManager\Service;
 use Eternity2\System\ServiceManager\SharedService;
 

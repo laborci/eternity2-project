@@ -1,4 +1,4 @@
-<?php namespace Eternity2\Codex;
+<?php namespace Eternity2\Codex\FormHandler;
 
 use JsonSerializable;
 
@@ -9,14 +9,14 @@ class FormInput implements JsonSerializable{
 	protected $field;
 	protected $options;
 
-	public function __construct($type, $label, $field, $options = []) {
+	public function __construct($type, $label, $field, $options = []){
 		$this->type = $type;
 		$this->label = $label;
 		$this->field = $field;
 		$this->options = $options;
 	}
 
-	public function __invoke($option, $value = true) {
+	public function __invoke($option, $value = true){
 		return $this->option($option, $value);
 	}
 
@@ -27,10 +27,12 @@ class FormInput implements JsonSerializable{
 
 	public function jsonSerialize(){
 		return [
-			'type'=>$this->type,
-			'label'=>$this->label,
-			'field' => $this->field,
-			'options' => $this->options
+			'type'    => $this->type,
+			'label'   => $this->label,
+			'field'   => $this->field,
+			'options' => $this->options,
 		];
 	}
+
+	public function getField(){ return $this->field; }
 }

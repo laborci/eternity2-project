@@ -96,7 +96,7 @@ export default class CodexAdminList extends Brick {
 
 		this.loading = true;
 
-		Ajax.request('/' + this.urlBase + '/get-list/' + page).postJSON({sort: this.sort.field ? this.sort : null}).promise()
+		Ajax.json.post('/' + this.urlBase + '/get-list/' + page,{sort: this.sort.field ? this.sort : null})
 			.then(result => result.json)
 			.then(result => {
 				this.page = parseInt(result.page);
