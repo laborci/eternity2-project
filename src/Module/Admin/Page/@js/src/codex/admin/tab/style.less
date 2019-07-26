@@ -29,10 +29,10 @@
 		}
 	}
 
-	&.closed{
-		width: 0;
-		opacity: 0;
-		padding:0;
+	&.closed {
+		width   : 0;
+		opacity : 0;
+		padding : 0;
 	}
 
 	&:hover + div:before {
@@ -40,7 +40,8 @@
 	}
 
 	&:not([data-selected=yes]) {
-		border-bottom : 1px solid #ddd;
+		border-bottom : 1px solid transparent;
+		color         : #6fceee;
 
 		&:not(:first-child):not(:hover):before {
 			position    : absolute;
@@ -48,12 +49,13 @@
 			top         : 2px;
 			content     : '';
 			height      : 18px;
-			border-left : 1px solid #ccc;
+			border-left : 1px solid #516c86;
 		}
 
 		&:hover {
-			background-color : #eee;
-
+			color:white;
+			background-color : rgba(255, 255, 255, .2);
+			border-color     : #15283a;
 			i.close {
 				opacity : .6;
 			}

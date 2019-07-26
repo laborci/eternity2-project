@@ -1,4 +1,4 @@
-import ListPreprocessPlugin from "../codex-plugin/types/ListPreprocessPlugin";
+import ListPreprocessPlugin from "../plugin/types/ListPreprocessPlugin";
 
 @ListPreprocessPlugin.register()
 export default class UserListPreprocess2 extends ListPreprocessPlugin {

@@ -13,6 +13,8 @@ class UserAdmin extends AdminDescriptor{
 
 	protected $headerIcon = 'fal fa-user';
 	protected $headerTitle = 'Felhasználók';
+	protected $formIcon = 'fal fa-user';
+	protected $tabIcon = 'fas fa-user';
 	protected $fields = [
 		User::F_ID    => 'id',
 		User::F_NAME  => 'név',

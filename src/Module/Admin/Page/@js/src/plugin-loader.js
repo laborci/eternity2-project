@@ -1,2 +1,2 @@
-import "./plugins/user-list-preprocess";
-import "./plugins/user-list-preprocess2";
+import "./codex/plugins/user-list-preprocess";
+import "./codex/plugins/user-list-preprocess2";

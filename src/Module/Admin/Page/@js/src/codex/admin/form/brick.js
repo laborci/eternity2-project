@@ -9,14 +9,16 @@ import Ajax from "zengular-ajax";
 export default class CodexAdminForm extends Brick {
 
 
-	load(id, urlBase){
-		this.urlBase = urlBase;
-		this.id = id;
+	load(id = null, urlBase = null){
+		if(urlBase !== null) this.urlBase = urlBase;
+		if(id !== null) this.id = id;
 
 		Ajax.json.post('/' + this.urlBase + '/get-form-item/' + this.id)
 			.then(result => result.json)
 			.then(result => {
-				console.log(result);
+				//this.setIcon(result.descriptor)
+				this.tab.dataset.icon = result.descriptor.tabIcon;
+				this.tab.dataset.label = result.data.data[result.descriptor.labelField];
 			});
 	}
 

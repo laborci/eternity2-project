@@ -2,8 +2,8 @@ import Brick from "zengular-brick";
 import twig from "./template.twig";
 import "./style.less";
 import Ajax from "zengular-ajax";
-import pluginManager from "../../codex-plugin/plugin-manager";
-import ListPreprocessPlugin from "../../codex-plugin/types/ListPreprocessPlugin";
+import pluginManager from "../../plugin/plugin-manager";
+import ListPreprocessPlugin from "../../plugin/types/ListPreprocessPlugin";
 
 
 @Brick.register('codex-admin-list', twig)
