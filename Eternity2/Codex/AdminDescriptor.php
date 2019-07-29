@@ -1,5 +1,8 @@
 <?php namespace Eternity2\Codex;
 
+use Eternity2\Codex\DataProvider\DataProviderInterface;
+use Eternity2\Codex\FormHandler\FormHandler;
+use Eternity2\Codex\ListHandler\ListHandler;
 use Eternity2\System\ServiceManager\Service;
 use Eternity2\System\ServiceManager\SharedService;
 
@@ -14,6 +17,8 @@ abstract class AdminDescriptor implements SharedService{
 	];
 
 	protected $headerIcon = 'fal fa-infinite';
+	protected $formIcon = null;
+	protected $tabIcon = null;
 	protected $headerTitle = 'Eternity Form';
 	protected $fields = [];
 	protected $urlBase = null;
@@ -23,6 +28,8 @@ abstract class AdminDescriptor implements SharedService{
 	public function __construct(){
 		if (is_null($this->urlBase)) $this->urlBase = (new \ReflectionClass($this))->getShortName();
 		$this->dataProvider = $this->createDataProvider();
+		if(is_null($this->formIcon)) $this->formIcon = $this->headerIcon;
+		if(is_null($this->tabIcon)) $this->tabIcon = $this->formIcon;
 	}
 
 	abstract protected function createDataProvider(): DataProviderInterface;
@@ -30,6 +37,8 @@ abstract class AdminDescriptor implements SharedService{
 	public function getPermission($type){ return $this->permissions[$type]; }
 	public function getUrlBase(){ return $this->urlBase; }
 	public function getHeader(){ return ['icon' => $this->headerIcon, 'title' => $this->headerTitle]; }
+	public function getFormIcon(){return $this->formIcon;}
+	public function getTabIcon(){return $this->tabIcon;}
 
 	public function getFieldLabel($name){ return array_key_exists($name, $this->fields) ? $this->fields[$name] : $name; }
 

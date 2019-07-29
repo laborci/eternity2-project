@@ -114,6 +114,15 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface{
 		return $record;
 	}
 
+	final public function import($data){
+		foreach (static::model()->fields as $fieldName => $field){
+			if (array_key_exists($fieldName, $data)){
+				$this->$fieldName = $field->import($data[$fieldName]);
+			}
+		}
+		return $this;
+	}
+
 #endregion
 
 #region CRUD

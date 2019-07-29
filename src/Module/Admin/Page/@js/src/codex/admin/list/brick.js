@@ -2,8 +2,8 @@ import Brick from "zengular-brick";
 import twig from "./template.twig";
 import "./style.less";
 import Ajax from "zengular-ajax";
-import pluginManager from "../../codex-plugin/plugin-manager";
-import ListPreprocessPlugin from "../../codex-plugin/types/ListPreprocessPlugin";
+import pluginManager from "../../plugin/plugin-manager";
+import ListPreprocessPlugin from "../../plugin/types/ListPreprocessPlugin";
 
 
 @Brick.register('codex-admin-list', twig)
@@ -86,7 +86,7 @@ export default class CodexAdminList extends Brick {
 
 	renderSortingIcons() {
 		this.$$('sortable', elem => elem.classList.remove('sort-asc', 'sort-desc'));
-		this.$$('sortable').filter(`[data-field=${this.sort.field}]`).all(elem => elem.classList.add('sort-' + this.sort.dir));
+		this.$$('sortable').filter(`[data-field=${this.sort.field}]`).each(elem => elem.classList.add('sort-' + this.sort.dir));
 	}
 
 	load(page = null) {
@@ -96,7 +96,7 @@ export default class CodexAdminList extends Brick {
 
 		this.loading = true;
 
-		Ajax.request('/' + this.urlBase + '/get-list/' + page).postJSON({sort: this.sort.field ? this.sort : null}).promise()
+		Ajax.json.post('/' + this.urlBase + '/get-list/' + page,{sort: this.sort.field ? this.sort : null})
 			.then(result => result.json)
 			.then(result => {
 				this.page = parseInt(result.page);

@@ -1,5 +1,8 @@
-<?php namespace Eternity2\Codex;
+<?php namespace Eternity2\Codex\DataProvider;
 
+use Eternity2\Codex\DataProvider\DataProviderInterface;
+use Eternity2\Codex\FilterCreatorInterface;
+use Eternity2\Codex\ItemConverterInterface;
 use Eternity2\Ghost\Ghost;
 class GhostDataProvider implements DataProviderInterface, ItemConverterInterface, FilterCreatorInterface{
 
@@ -26,13 +29,22 @@ class GhostDataProvider implements DataProviderInterface, ItemConverterInterface
 
 	public function createFilter($filter){ return null; }
 
-	public function getItem($id){ return $this->model->repository->pick($id); }
-	public function deleteItem($id){ return $this->model->repository->delete($id); }
-	public function updateItem($id, $data){
-		// TODO: Implement updateItem() method.
+	public function getItem($id):Ghost{ return $this->model->repository->pick($id); }
+
+	public function getNewItem():Ghost{
+		$this->model->createGhost();
+		$this->createItem(1);
 	}
-	public function createItem($id, $data){
-		// TODO: Implement createItem() method.
+
+	public function deleteItem($id){ return $this->model->repository->delete($id); }
+
+	public function updateItem($id, array $data){
+		$this->getItem($id)->import($data);
+	}
+
+	public function createItem(array $data):int{
+		$id = 1;
+		return $id;
 	}
 
 }

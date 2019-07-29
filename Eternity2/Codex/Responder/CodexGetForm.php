@@ -9,8 +9,9 @@ class CodexGetForm extends Responder{
 	protected function codexRespond(): ?array{
 
 		$formHandler = $this->adminDescriptor->getFormHandler();
+
 		return [
-			'descriptor'=>$formHandler->getDescriptor()
+			'descriptor'=>$formHandler
 		];
 	}
 

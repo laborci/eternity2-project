@@ -26,7 +26,7 @@ export default class CodexAdminTabManager extends Brick {
 			tab.dataset.id = id;
 			tab.dataset.type = urlBase;
 			tab.dataset.icon = 'fas fa-infinity';
-			tab.dataset.label = 'new tab';
+			tab.dataset.label = '...';
 			this.$$('tabs').node.appendChild(tab);
 
 			let form = CodexAdminForm.create('div', true);

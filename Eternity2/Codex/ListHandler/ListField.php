@@ -1,4 +1,4 @@
-<?php namespace Eternity2\Codex;
+<?php namespace Eternity2\Codex\ListHandler;
 
 class ListField implements \JsonSerializable{
 

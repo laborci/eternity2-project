@@ -1,10 +1,10 @@
 <?php namespace Application\Module\Admin\Form;
 
 use Eternity2\Codex\AdminDescriptor;
-use Eternity2\Codex\DataProviderInterface;
-use Eternity2\Codex\FormHandler;
-use Eternity2\Codex\GhostDataProvider;
-use Eternity2\Codex\ListHandler;
+use Eternity2\Codex\DataProvider\DataProviderInterface;
+use Eternity2\Codex\FormHandler\FormHandler;
+use Eternity2\Codex\DataProvider\GhostDataProvider;
+use Eternity2\Codex\ListHandler\ListHandler;
 use Ghost\User;
 
 class UserAdmin extends AdminDescriptor{
@@ -13,6 +13,8 @@ class UserAdmin extends AdminDescriptor{
 
 	protected $headerIcon = 'fal fa-user';
 	protected $headerTitle = 'Felhasználók';
+	protected $formIcon = 'fal fa-user';
+	protected $tabIcon = 'fas fa-user';
 	protected $fields = [
 		User::F_ID    => 'id',
 		User::F_NAME  => 'név',
@@ -37,14 +39,15 @@ class UserAdmin extends AdminDescriptor{
 
 	protected function formHandler(FormHandler $form): FormHandler{
 
+		$form->setLabelField(User::F_NAME);
+
 		$main = $form->section('main');
 		$main->input('string', User::F_NAME);
 		$main->input('select', User::F_STATUS)
 		('options', [
 			User::STATUS_ACTIVE   => 'aktív',
 			User::STATUS_INACTIVE => 'inaktív',
-		])
-		('valami', 'másvalami');
+		]);
 
 		return $form;
 	}

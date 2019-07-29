@@ -4,6 +4,7 @@ use Application\Module\Admin\Form\UserAdmin;
 use Application\Module\Admin\Page\Login;
 use Eternity2\Codex\AdminRegistry;
 use Eternity2\Codex\Responder\CodexGetForm;
+use Eternity2\Codex\Responder\CodexGetFormItem;
 use Eternity2\Codex\Responder\CodexGetList;
 use Eternity2\Codex\Responder\CodexInfo;
 use Eternity2\WebApplication\Action\Forbidden;
@@ -42,6 +43,7 @@ class Module extends Application{
 		// API
 		$router->get('/{form}/codexinfo', CodexInfo::class)();
 		$router->post('/{form}/get-list/{page}', CodexGetList::class)();
+		$router->post('/{form}/get-form-item/{id}', CodexGetFormItem::class)();
 		$router->get('/{form}/get-form', CodexGetForm::class)();
 
 //		$router->get('/menu', Action\GetMenu::class)();
