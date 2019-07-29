@@ -2,9 +2,6 @@ let buildConfig = require("./build-config");
 let VersionBump = require('./version-bump-plugin');
 let path = require('path');
 
-console.log(buildConfig.jsEntries)
-console.log(buildConfig.cssEntries)
-
 module.exports = [
 	{
 		name:    'Transpiler',

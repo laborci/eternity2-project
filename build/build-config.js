@@ -23,3 +23,10 @@ module.exports = new (require("./build-config-reader"))({
 		{src: "../src/Module/Admin/Page/@js/", dest: "../public/admin/js/"}
 	]
 });
+
+
+class ZengularBuilder{
+
+
+
+}
