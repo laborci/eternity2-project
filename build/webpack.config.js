@@ -9,6 +9,7 @@ module.exports = [
 		output:  {filename: '[name].js', path: __dirname},
 		resolve: {modules: ['./build/node_modules']},
 		plugins: [new VersionBump({file: path.resolve(__dirname, buildConfig.buildVersionFile)})],
+		devtool: 'inline-source-map',
 		module:  {
 			rules: [
 				{
