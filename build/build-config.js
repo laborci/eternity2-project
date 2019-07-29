@@ -1,13 +1,12 @@
 module.exports = new (require("./build-config-reader"))({
 	buildVersionFile: "./build-version",
 	googlefonts: {
-		fontlist: "google-fonts",
-		path    : "../public/fonts/",
-		css     : "google-fonts.css",
-		srcify:{
-			fontsurl: '/fonts/',
-			srcpath: 'src/google-fonts.less'
-		}
+		"src": [
+			"../src/Module/Web/Page/@css/google-fonts.json",
+			"../src/Module/Admin/Page/@css/google-fonts.json"
+		],
+		"dest": "../public/fonts/",
+		"path": "/fonts/"
 	},
 	copy       : [
 		{src: "./node_modules/@fortawesome/fontawesome-pro/webfonts/", pattern: "*", dest: "../public/fonts/fontawesome/"},
@@ -25,7 +24,16 @@ module.exports = new (require("./build-config-reader"))({
 });
 
 
-class ZengularBuilder{
+class ZengularBuilderConfig{
+
+	constructor(){
+		this.config = {};
+	}
+
+	set buildVersionFile(value){
+		this.config.buildVersionFile = value;
+	}
+
 
 
 

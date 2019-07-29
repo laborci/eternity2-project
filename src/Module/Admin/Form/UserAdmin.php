@@ -42,8 +42,9 @@ class UserAdmin extends AdminDescriptor{
 		$form->setLabelField(User::F_NAME);
 
 		$main = $form->section('main');
-		$main->input('string', User::F_NAME);
-		$main->input('select', User::F_STATUS)
+		$main->input('text', User::F_NAME)
+		('rows', 10);
+		$main->input('checkboxes', User::F_STATUS)
 		('options', [
 			User::STATUS_ACTIVE   => 'aktív',
 			User::STATUS_INACTIVE => 'inaktív',

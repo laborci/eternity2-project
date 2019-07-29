@@ -1,18 +1,23 @@
 let {series, parallel, watch, src, dest} = require('gulp');
+
 let buildConfig = require('./build-config');
+
 let prefixer = require('gulp-autoprefixer');
 let less = require('gulp-less');
 let uglifycss = require("gulp-uglifycss");
-let googleWebFonts = require("gulp-google-webfonts");
+let GetGoogleFonts = require('get-google-fonts');
+
 let fs = require('fs');
+let path = require('path');
+let crypto = require('crypto');
 
+//--------------------------------------------------------------------------------------------
 
-
-function watcher(cb) {
+function startWatcher(cb) {
 
 	buildConfig.css.forEach(entry => {
 		watch(['**/*.less'], {cwd: entry.src}, compileLess);
-		watch([buildConfig.googlefonts.fontlist], {cwd: entry.src}, getGoogleFonts);
+		watch(buildConfig.googlefonts.src, getGoogleFonts);
 	});
 
 	buildConfig.copy.forEach(entry => {
@@ -24,33 +29,33 @@ function watcher(cb) {
 
 
 function getGoogleFonts() {
-	buildConfig.css.forEach(entry => {
-		src(entry.src + buildConfig.googlefonts.fontlist)
-			.pipe(googleWebFonts({
-				fontsDir: buildConfig.googlefonts.path,
-				cssDir: entry.dest,
-				cssFilename: buildConfig.googlefonts.css,
-				outBaseDir: '',
-				relativePaths: true
-			}))
-			.pipe(dest())
-		;
-		//bumpVersion();
 
-		if (typeof buildConfig.googlefonts.srcify !== 'undefined') {
-			let src = entry.dest + buildConfig.googlefonts.css;
-			let dest = entry.src + buildConfig.googlefonts.srcify.srcpath;
-			fs.copyFileSync(src, dest);
-			let str = fs.readFileSync(dest, {encoding: 'UTF-8'});
-			const regex = /url\((.*)\//gm;
-			let m;
-			while ((m = regex.exec(str)) !== null) {
-				if (m.index === regex.lastIndex) {regex.lastIndex++;}
-				str = str.replace(m[1], '/fonts');
-			}
-			fs.writeFileSync(dest, str, {encoding: 'UTF-8'});
-		}
+	let dest = buildConfig.googlefonts.dest;
+	let url = buildConfig.googlefonts.path;
+	let promises = [];
+	let outputs = [];
+
+	buildConfig.googlefonts.src.forEach(src => {
+		let source = JSON.parse(fs.readFileSync(src, {encoding: 'UTF-8'}));
+		let hash = crypto.createHash('md5').update(src).digest('hex');
+
+		outputs.push({
+			src: dest + hash + '.css',
+			dest: path.dirname(src) + '/' + source.css
+		});
+
+		let ggf = new GetGoogleFonts({
+			userAgent: 'Mozilla/4.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36',
+			overwriting: false,
+			cssFile: hash + ".css",
+			path: url,
+			outputDir: dest,
+			template: '{_family}-{weight}.{ext}'
+		});
+		promises.push(ggf.download([source.fonts, source.family]));
 	});
+
+	return Promise.all(promises).then(() => outputs.forEach(entry => fs.renameSync(entry.src, entry.dest)));
 }
 
 function compileLess(cb) {
@@ -62,7 +67,7 @@ function compileLess(cb) {
 			.pipe(dest(entry.dest));
 	});
 
-	//bumpVersion();
+	bumpVersion();
 	cb();
 }
 
@@ -72,12 +77,10 @@ function copy(cb) {
 }
 
 function copyWatched(cb) {
-
 	buildConfig.copy.forEach(entry => {
 		if (entry.watch) src(entry.src + entry.pattern).pipe(dest(entry.dest));
 	});
-
-	//	bumpVersion();
+	bumpVersion();
 	cb();
 }
 
@@ -87,4 +90,5 @@ function bumpVersion() {
 	(new VB({file: path.resolve(__dirname, buildConfig.buildVersionFile)})).bump();
 }
 
-exports.default = series(copy, compileLess, watcher);
+exports.default = series(copy, getGoogleFonts, compileLess, startWatcher);
+exports.build = series(copy, getGoogleFonts, compileLess);

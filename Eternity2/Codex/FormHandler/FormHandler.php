@@ -59,7 +59,7 @@ class FormHandler implements JsonSerializable{
 		}
 		return [
 			"id"   => $id,
-			"data" => $data,
+			"fields" => $data,
 		];
 	}
 
