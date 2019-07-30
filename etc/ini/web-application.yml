@@ -4,5 +4,5 @@ twig:
   cache: /var/template-cache/
   debug: true
   sources:
-    web: /src/Module/Web/Page/@template/
-    admin: /src/Module/Admin/Page/@template/
+    web: /src/Mission/Web/Page/@template/
+    admin: /src/Mission/Admin/Page/@template/

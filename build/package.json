@@ -10,44 +10,60 @@
 	"author": "Gergely Laborci",
 	"license": "ISC",
 	"dependencies": {
-		"@babel/core": "^7.5.5",
-		"@babel/plugin-proposal-class-properties": "^7.5.5",
-		"@babel/plugin-proposal-decorators": "^7.1.2",
-		"@babel/plugin-proposal-object-rest-spread": "^7.5.5",
-		"@babel/plugin-proposal-optional-chaining": "^7.0.0",
-		"@babel/preset-env": "^7.5.5",
 		"@fortawesome/fontawesome-pro": "^5.9.0",
-		"babel-loader": "^8.0.4",
-		"copy": "^0.3.0",
-		"css-loader": "^0.28.4",
-		"file-loader": "^0.11.2",
-		"get-google-fonts": "^1.2.0",
-		"glob": "^7.1.3",
-		"gulp": "^4.0.2",
-		"gulp-autoprefixer": "^3.1.0",
-		"gulp-browserify": "^0.5.1",
-		"gulp-concat": "^2.6.1",
-		"gulp-google-webfonts": "~1.1.0",
-		"gulp-less": "^3.0.5",
-		"gulp-sourcemaps": "^1.9.1",
-		"gulp-uglifycss": "^1.1.0",
-		"gulp-watch": "^4.3.5",
-		"html-loader": "^0.5.5",
-		"less": "^2.7.2",
-		"less-loader": "^4.0.5",
-		"load-css-file": "^1.0.0",
-		"load-js": "^1.2.0",
-		"phlex-codex": "^1.2.8",
-		"phlex-datetime-local": "^1.0.0",
-		"style-loader": "^0.18.2",
-		"twig-loader": "^0.4.1",
-		"watchify": "^3.9.0",
-		"webpack": "^4.38.0",
-		"zengular-ajax": "^1.1.1",
-		"zengular-brick": "^1.0.17",
-		"zengular-router": "^1.0.2"
+		"zengular-application": "^1.0.1"
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.3.6"
+	},
+	"zengular-build": {
+		"buildVersionFile": "./build-version",
+		"googlefonts": {
+			"src": [
+				"../src/Mission/Web/Page/@css/google-fonts.json",
+				"../src/Mission/Admin/Page/@css/google-fonts.json"
+			],
+			"dest": "../public/fonts/",
+			"path": "/fonts/"
+		},
+		"copy": [
+			{
+				"src": "./node_modules/@fortawesome/fontawesome-pro/webfonts/",
+				"pattern": "*",
+				"dest": "../public/fonts/fontawesome/"
+			},
+			{
+				"src": "../assets/",
+				"pattern": "**",
+				"dest": "../public/",
+				"watch": true
+			},
+			{
+				"src": "../src/",
+				"pattern": "index.php",
+				"dest": "../public/",
+				"watch": true
+			}
+		],
+		"css": [
+			{
+				"src": "../src/Mission/Web/Page/@css/",
+				"dest": "../public/web/css/"
+			},
+			{
+				"src": "../src/Mission/Admin/Page/@css/",
+				"dest": "../public/admin/css/"
+			}
+		],
+		"js": [
+			{
+				"src": "../src/Mission/Web/Page/@js/",
+				"dest": "../public/web/js/"
+			},
+			{
+				"src": "../src/Mission/Admin/Page/@js/",
+				"dest": "../public/admin/js/"
+			}
+		]
 	}
 }

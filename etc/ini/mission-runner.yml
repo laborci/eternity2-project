@@ -1,0 +1,11 @@
+missions:
+  - pattern: ":"
+    handler: \Application\Mission\Cli\Missionary
+  - pattern: www.{domain}
+    handler: \Application\Mission\Web\Missionary
+  - pattern: api.{domain}
+    handler: \Application\Mission\API\Missionary
+  - pattern: admin.{domain}
+    handler: \Application\Mission\Admin\Missionary
+  - pattern: "*"
+    reroute: www.{domain}

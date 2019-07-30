@@ -45,8 +45,8 @@ class FormHandler implements JsonSerializable{
 			'plugins'    => $this->JSplugins,
 //			'idField'    => $this->idField,
 			'labelField' => $this->labelField,
-			'headerIcon' => $this->admin->getFormIcon(),
 			'tabIcon' => $this->admin->getTabIcon(),
+			'formIcon' => $this->admin->getFormIcon(),
 		];
 	}
 

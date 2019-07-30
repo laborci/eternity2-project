@@ -1,0 +1,22 @@
+<div class="header">
+	<span class="buttons" (buttons)>
+
+	</span>
+	<i class="icon {{ icon }}"></i>
+	<span class="label">{{ label }}</span>
+	<span class="id">{{ id }}</span>
+</div>
+<div class="sections">
+
+	{% for section in sections %}
+		<section>
+			{% for input in section.inputs %}
+				<div class="field">
+					<label>{{ input.label }}</label>
+					<div is="codex-input-{{ input.type }}" data-name="{{ input.field }}" (input)></div>
+				</div>
+			{% endfor %}
+		</section>
+	{% endfor %}
+
+</div>

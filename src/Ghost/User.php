@@ -29,3 +29,4 @@ User::init();
 User::$model->hasAttachment('avatar');
 User::$model->hasAttachment('gallery');
 User::$model->protectField('password', false, true);
+User::$model->immutable();

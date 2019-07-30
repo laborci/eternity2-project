@@ -1,6 +1,7 @@
 let {series, parallel, watch, src, dest} = require('gulp');
 
-let buildConfig = require('./build-config');
+let buildConfig = require('zengular-build').ConfigReader.load('./package.json');
+let VersionBump = require('zengular-build').VersionBump;
 
 let prefixer = require('gulp-autoprefixer');
 let less = require('gulp-less');
@@ -14,10 +15,9 @@ let crypto = require('crypto');
 //--------------------------------------------------------------------------------------------
 
 function startWatcher(cb) {
-
 	buildConfig.css.forEach(entry => {
 		watch(['**/*.less'], {cwd: entry.src}, compileLess);
-		watch(buildConfig.googlefonts.src, getGoogleFonts);
+		if(typeof buildConfig.googlefonts !== 'undefined')watch(buildConfig.googlefonts.src, getGoogleFonts);
 	});
 
 	buildConfig.copy.forEach(entry => {
@@ -28,7 +28,12 @@ function startWatcher(cb) {
 }
 
 
-function getGoogleFonts() {
+function getGoogleFonts(cb) {
+
+	if(typeof buildConfig.googlefonts === 'undefined'){
+		cb();
+		return;
+	}
 
 	let dest = buildConfig.googlefonts.dest;
 	let url = buildConfig.googlefonts.path;
@@ -85,9 +90,7 @@ function copyWatched(cb) {
 }
 
 function bumpVersion() {
-	const path = require("path");
-	const VB = require("./version-bump-plugin");
-	(new VB({file: path.resolve(__dirname, buildConfig.buildVersionFile)})).bump();
+	(new VersionBump({file: path.resolve(__dirname, buildConfig.buildVersionFile)})).bump();
 }
 
 exports.default = series(copy, getGoogleFonts, compileLess, startWatcher);

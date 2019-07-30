@@ -1,6 +1,6 @@
 <?php use Eternity2\System\ServiceManager\ServiceContainer;
 
-ServiceContainer::shared(\Eternity2\System\Module\Config::class)->factory(function (){ return \Eternity2\System\Module\Config::factory('module-runner'); });
+ServiceContainer::shared(\Eternity2\System\Mission\Config::class)->factory(function (){ return \Eternity2\System\Mission\Config::factory('mission-runner'); });
 ServiceContainer::shared(\Eternity2\System\AnnotationReader\Config::class)->factory(function (){ return \Eternity2\System\AnnotationReader\Config::factory('annotation-reader'); });
 ServiceContainer::shared(\Eternity2\System\VhostGenerator\Config::class)->factory(function (){ return \Eternity2\System\VhostGenerator\Config::factory('vhost-generator'); });
 ServiceContainer::shared(\Eternity2\CliApplication\Config::class)->factory(function (){ return \Eternity2\CliApplication\Config::factory('cli-application'); });

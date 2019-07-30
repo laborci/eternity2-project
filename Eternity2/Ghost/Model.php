@@ -23,6 +23,9 @@ class Model {
 	protected $attachmentStorage;
 	public $connectionName;
 
+	/** @var bool  */
+	protected $mutable = true;
+
 	public function __construct($connectionName, $table, $ghost) {
 		$this->connection = ServiceContainer::get($connectionName);
 		$this->table = $table;
@@ -41,6 +44,12 @@ class Model {
 		if ($setter === true || $setter === null) $setter = 'set' . ucfirst($field);
 		$this->fields[$field]->protect($getter, $setter);
 	}
+
+	public function immutable(){
+		$this->mutable = false;
+	}
+
+	public function isMutable(){return $this->mutable;}
 
 	public function createGhost(): Ghost{
 		return new $this->ghost;

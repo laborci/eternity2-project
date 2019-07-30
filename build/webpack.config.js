@@ -1,21 +1,22 @@
-let buildConfig = require("./build-config");
-let VersionBump = require('./version-bump-plugin');
+let buildConfig = require('zengular-build').ConfigReader.load('./package.json');
+let VersionBump = require('zengular-build').VersionBump;
+
 let path = require('path');
 
 module.exports = [
 	{
-		name:    'Transpiler',
-		entry:   buildConfig.jsEntries,
-		output:  {filename: '[name].js', path: __dirname},
+		name: 'Transpiler',
+		entry: buildConfig.jsEntries,
+		output: {filename: '[name].js', path: __dirname},
 		resolve: {modules: ['./build/node_modules']},
 		plugins: [new VersionBump({file: path.resolve(__dirname, buildConfig.buildVersionFile)})],
 		devtool: 'inline-source-map',
-		module:  {
+		module: {
 			rules: [
 				{
 					test: /\.js$/,
-					use:  {
-						loader:  'babel-loader',
+					use: {
+						loader: 'babel-loader',
 						options: {
 							presets: ['@babel/preset-env'],
 							plugins: [
@@ -29,24 +30,25 @@ module.exports = [
 				},
 				{
 					test: /\.(html)$/,
-					use:  "html-loader"
+					use: "html-loader"
 				},
 				{
 					test: /\.twig$/,
-					use:  "twig-loader"
+					use: "twig-loader"
 				},
 				{
 					test: /@\.less$/, // loads @*.less as a string
-					use:  ["html-loader", "less-loader"]
+					use: ["html-loader", "less-loader"]
 				},
 				{
 					test: /[^@]\.less$/,
-					use:  ["style-loader", "css-loader", "less-loader"]
+					use: ["style-loader", "css-loader", "less-loader"]
 				},
 				{
 					test: /\.css$/,
-					use:  ["style-loader", "css-loader"]
+					use: ["style-loader", "css-loader"]
 				}
 			]
 		}
-	}];
+	}
+];

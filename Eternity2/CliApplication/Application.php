@@ -1,10 +1,10 @@
 <?php namespace Eternity2\CliApplication;
 
-use Eternity2\System\Module\Module;
+use Eternity2\System\Mission\Mission;
 use Eternity2\System\ServiceManager\ServiceContainer;
 use Eternity2\System\ServiceManager\SharedService;
 
-class Application implements Module, SharedService {
+class Application implements Mission, SharedService {
 
 	/** @var \Symfony\Component\Console\Application  */
 	protected $application;
