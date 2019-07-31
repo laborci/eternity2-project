@@ -44,6 +44,7 @@ export default class CodexAdminForm extends Brick {
 					this.plugins = result.descriptor.plugins ? result.descriptor.plugins : [];
 					this.tab.dataset.icon = result.descriptor.tabIcon;
 					this.tab.dataset.label = this.label;
+					this.tab.dataset.id = this.id;
 					this.data = result.data;
 					this.sections = result.descriptor.sections;
 					this.setup();

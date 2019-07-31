@@ -1,4 +1,4 @@
-{% for option in options %}
+{% for option in options.options %}
 	<div>
 		<label><input type="radio" name="{{ name }}" value="{{ option.value }}" (input-element)> {{ option.label }}</label>
 	</div>

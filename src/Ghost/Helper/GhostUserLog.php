@@ -40,7 +40,7 @@ abstract class GhostUserLog extends Ghost{
 		$model->addField("datetime", Field::TYPE_DATETIME);
 		$model->addField("userId", Field::TYPE_ID);
 		$model->addField("event", Field::TYPE_STRING);
-		$model->addField("details", Field::TYPE_STRING);
+		$model->addField("details", Field::TYPE_JSON);
 		$model->protectField("id");
 		return $model;
 	}

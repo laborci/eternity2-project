@@ -30,7 +30,6 @@ export default class CodexAdminList extends Brick {
 		});
 
 
-
 		super.setup();
 	}
 
@@ -97,8 +96,9 @@ export default class CodexAdminList extends Brick {
 		if (this.loading) return;
 
 		this.loading = true;
+		this.showOverlay();
 
-		Ajax.json.post('/' + this.urlBase + '/get-list/' + page,{sort: this.sort.field ? this.sort : null})
+		Ajax.json.post('/' + this.urlBase + '/get-list/' + page, {sort: this.sort.field ? this.sort : null})
 			.then(result => result.json)
 			.then(result => {
 				this.page = parseInt(result.page);
@@ -123,7 +123,11 @@ export default class CodexAdminList extends Brick {
 
 				this.renderContent(result.rows);
 				this.loading = false;
-			});
+			})
+			.finally(() => {
+				this.hideOverlay();
+			})
+		;
 	}
 
 	renderContent(rows) {
@@ -145,13 +149,10 @@ export default class CodexAdminList extends Brick {
 		});
 	}
 
-	reload(urlBase = null){
-		if(urlBase === null || this.urlBase === urlBase) this.load();
-	}
-
-	addNew(){
-		this.appEventManager.fire('ADD-NEW-ITEM');
-	}
+	reload(urlBase = null) { if (urlBase === null || this.urlBase === urlBase) this.load();}
+	addNew() { this.appEventManager.fire('ADD-NEW-ITEM');}
+	showOverlay() { this.$$('overlay').node.classList.add('visible');}
+	hideOverlay() { this.$$('overlay').node.classList.remove('visible');}
 
 }
 

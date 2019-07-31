@@ -43,6 +43,7 @@ class UserAdmin extends AdminDescriptor{
 		$list->addJSPlugin('ListPreprocessUser');
 		$list->addJSPlugin('ListButtonAddNew');
 		$list->addJSPlugin('ListButtonReload');
+		$list->addJSPlugin('ListButtonSearch');
 
 		return $list;
 	}
@@ -53,14 +54,14 @@ class UserAdmin extends AdminDescriptor{
 		$form->addJSPlugin('FormButtonSave');
 		$form->addJSPlugin('FormButtonDelete');
 		$form->addJSPlugin('FormButtonReload');
-		//$form->addJSPlugin('FormButtonFiles');
+		$form->addJSPlugin('FormButtonFiles');
 
 		$main = $form->section('main');
 		$main->input('string', User::F_NAME);
 		$main->input('string', User::F_EMAIL);
 		$main->input('string', User::F_PASSWORD);
 		$main->input('string', 'newpassword');
-		$main->input('select', User::F_STATUS)
+		$main->input('radio', User::F_STATUS)
 		('options', $this->dict[User::F_STATUS]);
 
 		return $form;
