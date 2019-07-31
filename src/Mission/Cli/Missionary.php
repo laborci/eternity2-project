@@ -2,7 +2,7 @@
 
 use Eternity2\CliApplication\Application;
 
-class Mission extends Application {
+class Missionary extends Application {
 
 	protected function addCustomCommands(){
 		$this->application->add(new Test());

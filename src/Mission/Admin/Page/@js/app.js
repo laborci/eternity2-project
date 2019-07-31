@@ -6,7 +6,8 @@ import "./src/codex/admin/loader";
 import menu from "./src/menu";
 import CodexFormFrame from "./src/codex/admin/frame/brick";
 
-import "./src/plugin-loader";
+import "./src/codex/plugins/loader";
+import "./src/plugins/loader";
 
 
 

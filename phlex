@@ -8,6 +8,7 @@ then
     cd build
     gulp
 else
+    echo 'PHLEXCLI'
     php public/index.php $*
 fi
 

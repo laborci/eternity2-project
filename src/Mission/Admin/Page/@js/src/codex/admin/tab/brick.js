@@ -28,11 +28,15 @@ export default class CodexAdminTab extends Brick {
 	onRender() {
 		this.root.setAttribute('title', this.dataset.label);
 		this.$$('close').listen('click', event=>{
-			this.root.classList.add('closed');
-			setTimeout(()=>this.appEventManager.fire('TAB-CLOSED'), 300);
+			this.close();
 			event.stopPropagation();
 		});
 		window.requestAnimationFrame(()=>this.root.classList.remove('closed'));
+	}
+
+	close(){
+		this.root.classList.add('closed');
+		setTimeout(()=>this.appEventManager.fire('TAB-CLOSED'), 300);
 	}
 
 }

@@ -43,24 +43,42 @@ class FormHandler implements JsonSerializable{
 		return [
 			'sections'   => $this->sections,
 			'plugins'    => $this->JSplugins,
-//			'idField'    => $this->idField,
 			'labelField' => $this->labelField,
-			'tabIcon' => $this->admin->getTabIcon(),
-			'formIcon' => $this->admin->getFormIcon(),
+			'tabIcon'    => $this->admin->getTabIcon(),
+			'formIcon'   => $this->admin->getFormIcon(),
 		];
 	}
 
-	public function get($id){
-		$item = $this->dataProvider->getItem($id);
+	public function get($id = null){
+		if(is_null($id)) $item = $this->dataProvider->getNewItem();
+		else $item = $this->dataProvider->getItem($id);
+		if(is_null($item)) return null;
 		$row = $this->itemConverter->convertItem($item);
 		$data = [];
 		foreach ($this->sections as $section) foreach ($section->getInputs() as $input){
-			$data[$input->getField()] = $row[$input->getField()];
+			$data[$input->getField()] = array_key_exists($input->getField(), $row) ? $row[$input->getField()] : null;
 		}
 		return [
-			"id"   => $id,
+			"id"     => $id,
 			"fields" => $data,
 		];
+	}
+
+	public function save($id, $data){
+		if (is_numeric($id) && $id > 0){
+			$newid = $this->dataProvider->updateItem($id, $data);
+		}else{
+			$newid = $this->dataProvider->createItem($data);
+		}
+		return $newid;
+	}
+
+	public function delete($id){
+		$this->dataProvider->deleteItem($id);
+	}
+
+	public function getNew(){
+		return $this->get();
 	}
 
 }

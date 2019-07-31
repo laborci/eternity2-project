@@ -1,11 +1,11 @@
 import Plugin from "../plugin";
 
-export default class FormButtonPlugin extends Plugin {
-	static get pluginType() {return FormButtonPlugin.name; }
+export default class ListButtonPlugin extends Plugin {
+	static get pluginType() {return ListButtonPlugin.name; }
 
-	constructor(form){
+	constructor(list){
 		super();
-		this.form = form;
+		this.list = list;
 	}
 
 	createButton(){

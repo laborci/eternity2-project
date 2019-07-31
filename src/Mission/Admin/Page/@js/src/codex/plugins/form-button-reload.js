@@ -6,5 +6,7 @@ export default class FormButtonReload extends FormButtonPlugin {
 	get label() { return 'Reload';}
 	get icon() { return 'fas fa-recycle';}
 	get color() { return 'orange';}
-	action(form, event){form.reload();}
+	action(event){this.form.reload();}
+	createButton() { return this.form.id ? super.createButton() : false; }
+
 }

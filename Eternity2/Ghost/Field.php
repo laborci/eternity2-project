@@ -81,7 +81,7 @@ class Field{
 	}
 
 	public function import($value){
-		if ($value === null) return null;
+		if ($value === null || $this->setter === false) return null;
 		switch ($this->type){
 			case self::TYPE_DATE:
 				return new Date($value);
@@ -104,7 +104,7 @@ class Field{
 	}
 
 	public function export($value){
-		if ($value === null) return null;
+		if ($value === null || $this->getter === false) return null;
 		switch ($this->type){
 			case self::TYPE_DATE:
 				return (function (Date $date){ return $date->format(\DateTime::ISO8601); })($value);

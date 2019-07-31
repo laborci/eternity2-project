@@ -61,7 +61,7 @@ class ListHandler implements JsonSerializable{
 		foreach ($rows as $key => $row){
 			$rows[$key] = [];
 			foreach ($this->fields as $field){
-				if (!$field->isClientOnly()) $rows[$key][$field->getName()] = $row[$field->getName()];
+				if (!$field->isClientOnly()) $rows[$key][$field->getName()] = ($dictionary = $field->getDictionary()) ? $dictionary($row[$field->getName()]) : $row[$field->getName()];
 			}
 		}
 		return new ListingResult($rows, $count, $page);

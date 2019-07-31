@@ -6,5 +6,5 @@ export default class FormButtonSave extends FormButtonPlugin {
 	get label() { return 'Save';}
 	get icon() { return 'fas fa-save';}
 	get color() { return 'green';}
-	action(form, event){form.save();}
+	action(event){this.form.save();}
 }

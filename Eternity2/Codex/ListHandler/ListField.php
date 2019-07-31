@@ -1,5 +1,6 @@
 <?php namespace Eternity2\Codex\ListHandler;
 
+use Eternity2\Codex\Dictionary\DictionaryInterface;
 class ListField implements \JsonSerializable{
 
 	const FIELD_TYPE_TEXT = 'text';
@@ -10,6 +11,7 @@ class ListField implements \JsonSerializable{
 	private $type = 'text';
 	private $visible = true;
 	private $clientOnly = false;
+	private $dictionary = null;
 
 	public function clientOnly(bool $mode = true){
 		$this->clientOnly = $mode;
@@ -34,6 +36,14 @@ class ListField implements \JsonSerializable{
 	public function type($type): self{
 		$this->type = $type;
 		return $this;
+	}
+
+	public function dictionary(DictionaryInterface $dictionary){
+		$this->dictionary = $dictionary;
+	}
+
+	public function getDictionary():?DictionaryInterface{
+		return $this->dictionary;
 	}
 
 	public function jsonSerialize(){

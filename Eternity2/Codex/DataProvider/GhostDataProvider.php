@@ -29,22 +29,24 @@ class GhostDataProvider implements DataProviderInterface, ItemConverterInterface
 
 	public function createFilter($filter){ return null; }
 
-	public function getItem($id):Ghost{ return $this->model->repository->pick($id); }
+	public function getItem($id): ?Ghost{ return $this->model->repository->pick($id); }
 
-	public function getNewItem():Ghost{
-		$this->model->createGhost();
-		$this->createItem(1);
+	public function getNewItem(): Ghost{
+		return $this->model->createGhost();
 	}
 
 	public function deleteItem($id){ return $this->model->repository->delete($id); }
 
 	public function updateItem($id, array $data){
-		$this->getItem($id)->import($data);
+		$item = $this->getItem($id);
+		$item->import($data);
+		return $item->save();
 	}
 
-	public function createItem(array $data):int{
-		$id = 1;
-		return $id;
+	public function createItem(array $data){
+		$item=$this->getNewItem();
+		$item->import($data);
+		return $item->save();
 	}
 
 }

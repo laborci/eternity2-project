@@ -28,5 +28,46 @@
 				font-size : 11px;
 			}
 		}
+
+		.buttons {
+			float: right;
+			height: 60px;
+			padding: 10px 0;
+
+			span {
+				border-left : 1px solid #c6dcee;
+				color       : #3f5468;
+				width       : 50px;
+				text-align  : center;
+				line-height : 30px;
+				height      : 40px;
+				display     : block;
+				float       : right;
+				position    : relative;
+				transition  : all .2s;
+				cursor      : pointer;
+
+				&:not(:hover){
+					color:#73879C !important;
+				}
+
+				&:hover {
+					line-height : 36px;
+				}
+
+				&:after {
+					content     : attr(data-label);
+					position    : absolute;
+					bottom      : 0px;
+					line-height : initial;
+					left        : 0;
+					width       : 50px;
+					font-size   : 9px;
+					font-family : Roboto;
+					font-weight : normal;
+					color       : #73879C;
+				}
+			}
+		}
 	}
 }

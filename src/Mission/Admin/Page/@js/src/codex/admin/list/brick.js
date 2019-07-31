@@ -29,6 +29,8 @@ export default class CodexAdminList extends Brick {
 			if (field.visible && field.sortable && this.sort.field === null) this.sort.field = field.name;
 		});
 
+
+
 		super.setup();
 	}
 
@@ -141,6 +143,14 @@ export default class CodexAdminList extends Brick {
 			});
 			tbody.appendChild(tr);
 		});
+	}
+
+	reload(urlBase = null){
+		if(urlBase === null || this.urlBase === urlBase) this.load();
+	}
+
+	addNew(){
+		this.appEventManager.fire('ADD-NEW-ITEM');
 	}
 
 }

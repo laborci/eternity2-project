@@ -17,12 +17,19 @@ abstract class GhostArticle extends Ghost{
 	public static $table = "article";
 	public static $connectionName = "DefaultDBConnection";
 
-
+	const SETFIELD_ALFA = "alfa";
+	const SETFIELD_BETA = "beta";
+	const SETFIELD_GAMMA = "gamma";
+	const E_ALBERT = "albert";
+	const E_BERTHA = "bertha";
+	const E_CECIL = "cecil";
 
 	const F_ID = "id";
 	const F_TITLE = "title";
 	const F_BODY = "body";
 	const F_AUTHORID = "authorId";
+	const F_SETFIELD = "setfield";
+	const F_E = "e";
 
 	protected $id;
 	public $title;
@@ -37,6 +44,8 @@ abstract class GhostArticle extends Ghost{
 		$model->addField("title", Field::TYPE_STRING);
 		$model->addField("body", Field::TYPE_STRING);
 		$model->addField("authorId", Field::TYPE_ID);
+		$model->addField("setfield", Field::TYPE_SET);
+		$model->addField("e", Field::TYPE_ENUM);
 		$model->protectField("id");
 		return $model;
 	}

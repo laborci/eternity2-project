@@ -20,7 +20,6 @@ export default class Input extends Brick {
 
 	setOptions(options) {
 		this._options = this.preprocessOptions({...this.getDefaultOptions(), ...options});
-		console.log(this._options)
 		this.setup();
 	}
 

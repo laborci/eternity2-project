@@ -127,9 +127,8 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface{
 
 #region CRUD
 	final public function delete(){
-		if ($this->isExists() && static::model()->isMutable()){
-			if ($this->on(static::EVENT___BEFORE_DELETE) === false)
-				return false;
+		if ($this->isExists()){
+			if ($this->on(static::EVENT___BEFORE_DELETE) === false || !static::model()->isMutable()) return false;
 			static::model()->repository->delete($this->id);
 			$this->deleted = true;
 			$this->on(static::EVENT___AFTER_DELETE);
@@ -146,16 +145,14 @@ abstract class Ghost implements JsonSerializable, AttachmentOwnerInterface{
 	}
 
 	final private function update(){
-		if ($this->on(static::EVENT___BEFORE_UPDATE) === false && static::model()->isMutable())
-			return false;
+		if ($this->on(static::EVENT___BEFORE_UPDATE) === false || !static::model()->isMutable()) return false;
 		static::model()->repository->update($this);
 		$this->on(static::EVENT___AFTER_UPDATE);
-		return true;
+		return $this->id;
 	}
 
 	final private function insert(){
-		if ($this->on(static::EVENT___BEFORE_INSERT) === false && static::model()->isMutable())
-			return false;
+		if ($this->on(static::EVENT___BEFORE_INSERT) === false || !static::model()->isMutable()) return false;
 		$this->id = static::model()->repository->insert($this);
 		$this->on(static::EVENT___AFTER_INSERT);
 		return $this->id;

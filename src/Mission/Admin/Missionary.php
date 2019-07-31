@@ -3,10 +3,12 @@
 use Application\Mission\Admin\Form\UserAdmin;
 use Application\Mission\Admin\Page\Login;
 use Eternity2\Codex\AdminRegistry;
+use Eternity2\Codex\Responder\CodexDeleteFormItem;
 use Eternity2\Codex\Responder\CodexGetForm;
 use Eternity2\Codex\Responder\CodexGetFormItem;
 use Eternity2\Codex\Responder\CodexGetList;
 use Eternity2\Codex\Responder\CodexInfo;
+use Eternity2\Codex\Responder\CodexSaveFormItem;
 use Eternity2\WebApplication\Action\Forbidden;
 use Eternity2\WebApplication\Action\NotAuthorized;
 use Eternity2\WebApplication\Application;
@@ -43,8 +45,10 @@ class Missionary extends Application{
 		// API
 		$router->get('/{form}/codexinfo', CodexInfo::class)();
 		$router->post('/{form}/get-list/{page}', CodexGetList::class)();
-		$router->post('/{form}/get-form-item/{id}', CodexGetFormItem::class)();
+		$router->get('/{form}/get-form-item/{id}', CodexGetFormItem::class)();
 		$router->get('/{form}/get-form', CodexGetForm::class)();
+		$router->post('/{form}/save-item', CodexSaveFormItem::class)();
+		$router->get('/{form}/delete-item/{id}', CodexDeleteFormItem::class)();
 
 //		$router->get('/menu', Action\GetMenu::class)();
 //		$router->get('/', Page\Index::class)();
