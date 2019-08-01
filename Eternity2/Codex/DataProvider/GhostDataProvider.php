@@ -1,10 +1,9 @@
 <?php namespace Eternity2\Codex\DataProvider;
 
-use Eternity2\Codex\DataProvider\DataProviderInterface;
-use Eternity2\Codex\FilterCreatorInterface;
-use Eternity2\Codex\ItemConverterInterface;
+use Eternity2\Codex\ItemDataImporterInterface;
 use Eternity2\Ghost\Ghost;
-class GhostDataProvider implements DataProviderInterface, ItemConverterInterface, FilterCreatorInterface{
+
+class GhostDataProvider implements DataProviderInterface{
 
 	protected $ghost;
 	/** @var \Eternity2\Ghost\Model model */
@@ -12,7 +11,6 @@ class GhostDataProvider implements DataProviderInterface, ItemConverterInterface
 
 	public function __construct($ghost){
 		$this->ghost = $ghost;
-		/** @var \Eternity2\Ghost\Model model */
 		$this->model = $this->ghost::$model;
 	}
 
@@ -23,7 +21,6 @@ class GhostDataProvider implements DataProviderInterface, ItemConverterInterface
 
 	public function convertItem($item): array{
 		/** @var Ghost $item */
-		$item = ($item);
 		return $item->export();
 	}
 
@@ -31,23 +28,28 @@ class GhostDataProvider implements DataProviderInterface, ItemConverterInterface
 
 	public function getItem($id): ?Ghost{ return $this->model->repository->pick($id); }
 
-	public function getNewItem(): Ghost{
-		return $this->model->createGhost();
-	}
+	public function getNewItem(): Ghost{ return $this->model->createGhost(); }
 
 	public function deleteItem($id){ return $this->model->repository->delete($id); }
 
-	public function updateItem($id, array $data){
+	public function updateItem($id, array $data, ItemDataImporterInterface $itemDataImporter){
+		/** @var Ghost $item */
 		$item = $this->getItem($id);
-		$item->import($data);
+		$item = $itemDataImporter->importItemData($item, $data);
 		return $item->save();
 	}
 
-	public function createItem(array $data){
-		$item=$this->getNewItem();
-		$item->import($data);
+	public function createItem(array $data, ItemDataImporterInterface $itemDataImporter){
+		/** @var Ghost $item */
+		$item = $this->getNewItem();
+		$item = $itemDataImporter->importItemData($item, $data);
 		return $item->save();
 	}
 
+	public function importItemData($item, $data){
+		/** @var Ghost $item */
+		$item->import($data);
+		return $item;
+	}
 }
 

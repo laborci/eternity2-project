@@ -2,7 +2,8 @@
 	&:not(.visible) {
 		display : none;
 	}
-	position:relative;
+
+	position   : relative;
 	height     : 100%;
 	overflow-y : scroll;
 
@@ -54,9 +55,9 @@
 		}
 
 		.buttons {
-			float: right;
-			height: 60px;
-			padding: 10px 0;
+			float   : right;
+			height  : 60px;
+			padding : 10px 0;
 
 			span {
 				border-left : 1px solid #c6dcee;
@@ -71,8 +72,8 @@
 				transition  : all .2s;
 				cursor      : pointer;
 
-				&:not(:hover){
-					color:#73879C !important;
+				&:not(:hover) {
+					color : #73879C !important;
 				}
 
 				&:hover {
@@ -108,6 +109,15 @@
 			min-width        : 400px;
 			margin           : 5px 5px 0 5px;
 
+			header {
+				border-bottom    : 1px solid #ddd;
+				padding          : 5px 10px;
+				color            : #293f54;
+				font-size        : 14px;
+				font-weight      : 700;
+				background-color : #e6e8ea;
+			}
+
 			div.field {
 				display       : flex;
 				border-bottom : 1px solid #ddd;
@@ -135,21 +145,22 @@
 		}
 	}
 
-	div.overlay{
-		&.visible{
-			display: block;
+	div.overlay {
+		&.visible {
+			display : block;
 		}
-		display:none;
-		position: absolute;
-		top:0;left:0;right: 0;bottom:0;
-		background-color: rgba(0,0,0,.6);
-		color:white;
-		text-align: center;
 
-		i{
-			top: ~"calc(50% - 40px)";
-			position: relative;
-			font-size:40px;
+		display          : none;
+		position         : absolute;
+		top              : 0;left : 0;right : 0;bottom : 0;
+		background-color : rgba(0, 0, 0, .6);
+		color            : white;
+		text-align       : center;
+
+		i {
+			top       : ~"calc(50% - 40px)";
+			position  : relative;
+			font-size : 40px;
 		}
 	}
 }

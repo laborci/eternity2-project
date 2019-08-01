@@ -3,6 +3,7 @@
 use Eternity2\Codex\AdminDescriptor;
 use Eternity2\Codex\FormHandler\FormSection;
 use Eternity2\Codex\ItemConverterInterface;
+use Eternity2\Codex\ItemDataImporterInterface;
 use JsonSerializable;
 class FormHandler implements JsonSerializable{
 
@@ -15,23 +16,26 @@ class FormHandler implements JsonSerializable{
 	/** @var ItemConverterInterface */
 	private $itemConverter;
 
+	/** @var \Eternity2\Codex\ItemDataImporterInterface */
+	private $itemDataImporter;
+
 	/** @var \Eternity2\Codex\FormHandler\FormSection[] */
 	protected $sections;
 
 	protected $JSplugins = [];
-//	protected $idField = "id";
 	protected $labelField = null;
 
 	public function __construct(AdminDescriptor $admin){
 		$this->admin = $admin;
 		$this->dataProvider = $admin->getDataProvider();
 		$this->itemConverter = $this->dataProvider;
+		$this->itemDataImporter = $this->dataProvider;
 	}
 
 	public function addJSPlugin($plugin){ $this->JSplugins[] = $plugin; }
-//	public function setIdField($field){ $this->idField = $field; }
 	public function setLabelField($field){ $this->labelField = $field; }
 	public function setItemConverter(ItemConverterInterface $itemConverter){ $this->itemConverter = $itemConverter; }
+	public function setItemDataImporter(ItemDataImporterInterface $itemDataImporter){ $this->itemDataImporter = $itemDataImporter; }
 
 	public function section($label){
 		$section = new FormSection($label, $this->admin);
@@ -50,9 +54,9 @@ class FormHandler implements JsonSerializable{
 	}
 
 	public function get($id = null){
-		if(is_null($id)) $item = $this->dataProvider->getNewItem();
+		if (is_null($id)) $item = $this->dataProvider->getNewItem();
 		else $item = $this->dataProvider->getItem($id);
-		if(is_null($item)) return null;
+		if (is_null($item)) return null;
 		$row = $this->itemConverter->convertItem($item);
 		$data = [];
 		foreach ($this->sections as $section) foreach ($section->getInputs() as $input){
@@ -66,19 +70,15 @@ class FormHandler implements JsonSerializable{
 
 	public function save($id, $data){
 		if (is_numeric($id) && $id > 0){
-			$newid = $this->dataProvider->updateItem($id, $data);
+			$newid = $this->dataProvider->updateItem($id, $data, $this->itemDataImporter);
 		}else{
-			$newid = $this->dataProvider->createItem($data);
+			$newid = $this->dataProvider->createItem($data, $this->itemDataImporter);
 		}
 		return $newid;
 	}
 
-	public function delete($id){
-		$this->dataProvider->deleteItem($id);
-	}
+	public function delete($id){ $this->dataProvider->deleteItem($id); }
 
-	public function getNew(){
-		return $this->get();
-	}
+	public function getNew(){ return $this->get(); }
 
 }

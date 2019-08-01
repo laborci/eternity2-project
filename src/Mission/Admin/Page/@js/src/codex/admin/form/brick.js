@@ -34,6 +34,7 @@ export default class CodexAdminForm extends Brick {
 		this.showOverlay();
 		Ajax.get('/' + this.urlBase + '/get-form-item/' + (this.id===null ? 'new' : this.id))
 			.then(result => {
+				console.log(result)
 				if (result.status !== 200) {
 					this.handlerError(result, () => {this.tab.close();});
 				} else {
@@ -93,7 +94,6 @@ export default class CodexAdminForm extends Brick {
 		;
 	}
 
-
 	delete() {
 		let modal = new Modal();
 		modal.title = "DELETE ITEM";
@@ -121,7 +121,7 @@ export default class CodexAdminForm extends Brick {
 
 	handlerError(result, cb = null) {
 		let message = `Some unknown error occured: ${result.statusText} (${result.status})`;
-		if (typeof result.json.message === "string") message = result.json.message;
+		if (typeof result.json?.message === "string") message = result.json.message;
 		let modal = new Modal();
 		modal.title = "ERROR";
 		modal.body = message;
