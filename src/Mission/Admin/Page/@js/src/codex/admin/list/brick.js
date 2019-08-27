@@ -1,14 +1,13 @@
-import Brick from "zengular-brick";
+import Brick from "zengular/core/brick";
 import twig from "./template.twig";
 import "./style.less";
-import Ajax from "zengular-ajax";
+import Ajax from "zengular/core/ajax";
 import pluginManager from "../../plugin/plugin-manager";
 import ListPreprocessPlugin from "../../plugin/types/ListPreprocessPlugin";
 
 
 @Brick.register('codex-admin-list', twig)
 @Brick.registerSubBricksOnRender()
-@Brick.useAppEventManager()
 @Brick.renderOnConstruct(false)
 export default class CodexAdminList extends Brick {
 

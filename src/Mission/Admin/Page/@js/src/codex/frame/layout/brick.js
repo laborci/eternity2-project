@@ -1,4 +1,4 @@
-import Brick                   from "zengular-brick";
+import Brick                   from "zengular/core/brick";
 import twig                    from "./template.twig";
 import "./style.less";
 import CodexLayoutMenuBrick    from "../menu/brick";
@@ -6,7 +6,6 @@ import CodexLayoutContentBrick from "../content/brick";
 
 @Brick.register('codex-layout', twig)
 @Brick.registerSubBricksOnRender()
-@Brick.useAppEventManager()
 export default class CodexLayoutBrick extends Brick{
 
 

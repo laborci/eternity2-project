@@ -1,10 +1,3 @@
-import Brick           from "zengular-brick";
-import './src/codex/login/brick';
+import LoginApplication from "./src/codex/login-app";
 
-new (class{
-
-	constructor(){
-		Brick.registry.initialize();
-	}
-
-})();
+new (class extends LoginApplication{})();

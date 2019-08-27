@@ -1,10 +1,9 @@
-import Brick from "zengular-brick";
-import twig from "./template.twig";
+import Brick from "zengular/core/brick";
+import twig  from "./template.twig";
 import "./style.less";
-import Ajax from "zengular-ajax";
+import Ajax  from "zengular/core/ajax";
 
 @Brick.register('codex-login', twig)
-@Brick.useAppEventManager()
 export default class Todo extends Brick {
 
 	createViewModel() {
@@ -16,51 +15,53 @@ export default class Todo extends Brick {
 	}
 
 	onRender() {
-		this.listen('button', 'click', event => this.login());
-		this.listen('input', 'keydown', event =>{
-			if(event.key === 'Enter' && !this.find('button').hasAttribute('disabled')) this.login()
+		this.$('button').listen('click', event => this.login());
+		this.$('input').listen( 'keydown', event => {
+			if (event.key === 'Enter' && !this.$('button').node.hasAttribute('disabled')) this.login()
 		});
 	}
 
-	login(){
-		this.find('button').setAttribute('disabled', true);
+	login() {
+		this.$('button').node.setAttribute('disabled', true);
 
 		const animtime = 500;
 		let prewait = 0;
-		if (this.findAll('footer.success.visible, footer.error.visible').length) {
-			this.find('footer.success').classList.remove('visible');
-			this.find('footer.error').classList.remove('visible');
+		if (this.$('footer.success.visible, footer.error.visible').nodes.length) {
+			this.$('footer.success').node.classList.remove('visible');
+			this.$('footer.error').node.classList.remove('visible');
 			prewait = animtime;
 		}
 
 		this.sleep(prewait)
-			.then(() => {
-				this.find('footer.working').classList.add('visible');
-			})
-			.then(() => {
-				return this.sleep(animtime);
-			})
-			.then(() => {
-				return Ajax.request('/login').post({
-					login: this.find('input[name=login]').value,
-					password: this.find('input[name=password]').value
-				}).promise();
-			})
-			.then(response => {
-				this.find('footer.working').classList.remove('visible');
-				return this.sleep(animtime).then(resolve => response)
-			})
-			.then(response => {
-				if (response.status === 200) {
-					this.find('footer.success').classList.add('visible');
-					return this.sleep(animtime).then(() => {
-						document.location.reload();
-					})
-				} else {
-					this.find('footer.error').classList.add('visible');
-					this.find('button').removeAttribute('disabled');
-				}
-			});
+		.then(() => {
+			this.$('footer.working').node.classList.add('visible');
+		})
+		.then(() => {
+			return this.sleep(animtime);
+		})
+		.then(() => {
+			let data = {
+				login: this.$('input[name=login]').node.value,
+				password: this.$('input[name=password]').node.value
+			};
+			console.log(data)
+			return Ajax.post('/login',data);
+		})
+		.then(response => {
+			this.$('footer.working').node.classList.remove('visible');
+			return this.sleep(animtime).then(resolve => response)
+		})
+		.then(response => {
+			if (response.status === 200) {
+				this.$('footer.success').node.classList.add('visible');
+				return this.sleep(animtime).then(() => {
+					document.location.reload();
+				})
+			} else {
+				this.$('footer.error').node.classList.add('visible');
+				this.$('button').node.removeAttribute('disabled');
+			}
+		});
 	}
 
 	sleep(wait) {

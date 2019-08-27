@@ -1,5 +1,5 @@
-let buildConfig = require('zengular-build').ConfigReader.load('./package.json');
-let VersionBump = require('zengular-build').VersionBump;
+let buildConfig = require('z-build').ConfigReader.load('./z-build.json');
+let VersionBump = require('z-build').VersionBump;
 
 let path = require('path');
 
@@ -9,10 +9,7 @@ module.exports = [
 		entry: buildConfig.jsEntries,
 		output: {filename: '[name].js', path: __dirname},
 		resolve: {
-			modules: ['./build/node_modules'],
-			alias:{
-				//zengular: path.resolve('../external/zengular/')
-			}
+			modules: ['./build/node_modules']
 		},
 		plugins: [new VersionBump({file: path.resolve(__dirname, buildConfig.buildVersionFile)})],
 		devtool: 'inline-source-map',

@@ -19,6 +19,7 @@ class AuthAction extends JsonResponder {
 		$method = $this->getArgumentsBag()->get('method');
 		switch ($method) {
 			case 'login':
+				dump($this->getRequestBag()->get('login'));
 				if (!$this->authService->login($this->getRequestBag()->get('login'), $this->getRequestBag()->get('password'), 'admin')) {
 					$this->getResponse()->setStatusCode('401');
 				} else {

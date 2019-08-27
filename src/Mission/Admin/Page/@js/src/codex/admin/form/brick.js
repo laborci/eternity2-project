@@ -1,14 +1,13 @@
-import Brick from "zengular-brick";
+import Brick from "zengular/core/brick";
 import twig from "./template.twig";
 import "./style.less";
-import Ajax from "zengular-ajax";
+import Ajax from "zengular/core/ajax";
 import pluginManager from "../../plugin/plugin-manager";
 import FormButtonPlugin from "../../plugin/types/FormButtonPlugin";
-import Modal from "zengular-modal/src/modal";
+import Modal from "z-ui/modal/modal";
 
 @Brick.register('codex-admin-form', twig)
 @Brick.registerSubBricksOnRender()
-@Brick.useAppEventManager()
 export default class CodexAdminForm extends Brick {
 
 	onInitialize() {

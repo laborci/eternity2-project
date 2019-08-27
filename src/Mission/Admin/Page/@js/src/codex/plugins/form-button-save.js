@@ -1,6 +1,6 @@
 import FormButtonPlugin from "../plugin/types/FormButtonPlugin";
 import CodexAdminForm from "../admin/form/brick";
-import Ajax from "zengular-ajax";
+import Ajax from "zengular/core/ajax";
 
 /**
  * @property {CodexAdminForm} form

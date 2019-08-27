@@ -1,6 +1,6 @@
 import FormButtonPlugin from "../plugin/types/FormButtonPlugin";
-import Modal            from "zengular-modal/src/modal";
-import Ajax             from "zengular-ajax";
+import Modal            from "z-ui/modal/modal";
+import Ajax             from "zengular/core/ajax";
 
 @FormButtonPlugin.register()
 export default class FormButtonDelete extends FormButtonPlugin {

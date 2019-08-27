@@ -1,0 +1,50 @@
+{
+	"buildVersionFile": "./build-version",
+	"googlefonts": {
+		"src": [
+			"../src/Mission/Web/Page/@css/google-fonts.json",
+			"../src/Mission/Admin/Page/@css/google-fonts.json"
+		],
+		"dest": "../public/fonts/",
+		"path": "/fonts/"
+	},
+	"copy": [
+		{
+			"src": "./node_modules/@fortawesome/fontawesome-pro/webfonts/",
+			"pattern": "*",
+			"dest": "../public/fonts/fontawesome/"
+		},
+		{
+			"src": "../assets/",
+			"pattern": "**",
+			"dest": "../public/",
+			"watch": true
+		},
+		{
+			"src": "../src/",
+			"pattern": "index.php",
+			"dest": "../public/",
+			"watch": true
+		}
+	],
+	"css": [
+		{
+			"src": "../src/Mission/Web/Page/@css/",
+			"dest": "../public/web/css/"
+		},
+		{
+			"src": "../src/Mission/Admin/Page/@css/",
+			"dest": "../public/admin/css/"
+		}
+	],
+	"js": [
+		{
+			"src": "../src/Mission/Web/Page/@js/",
+			"dest": "../public/web/js/"
+		},
+		{
+			"src": "../src/Mission/Admin/Page/@js/",
+			"dest": "../public/admin/js/"
+		}
+	]
+}

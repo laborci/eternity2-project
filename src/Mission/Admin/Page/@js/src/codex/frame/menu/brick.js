@@ -1,10 +1,9 @@
-import Brick from "zengular-brick";
+import Brick from "zengular/core/brick";
 import twig from "./template.twig";
 import "./style.less";
-import Ajax from "zengular-ajax";
+import Ajax from "zengular/core/ajax";
 
 @Brick.register('codex-layout-menu', twig)
-@Brick.useAppEventManager()
 export default class CodexLayoutMenuBrick extends Brick {
 
 	createViewModel() {

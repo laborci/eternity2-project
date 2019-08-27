@@ -1,4 +1,4 @@
-import Brick from "zengular-brick";
+import Brick from "zengular/core/brick";
 
 export default class Input extends Brick {
 

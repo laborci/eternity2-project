@@ -1,4 +1,4 @@
-import Brick    from "zengular-brick";
+import Brick    from "zengular/core/brick";
 import twig     from "./template.twig";
 import "./style.less";
 

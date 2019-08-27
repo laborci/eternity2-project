@@ -1,14 +1,10 @@
 {
+	"author": "Gergely Laborci",
 	"name": "zengular-app",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
 	"scripts": {
 		"build": "webpack --progress --colors --mode production",
 		"work": "webpack --progress --colors --watch  --mode development"
 	},
-	"author": "Gergely Laborci",
-	"license": "ISC",
 	"dependencies": {
 		"@fortawesome/fontawesome-pro": "^5.9.0",
 		"@babel/core": "^7.5.5",
@@ -41,59 +37,11 @@
 		"twig-loader": "^0.4.1",
 		"watchify": "^3.9.0",
 		"webpack": "^4.38.0",
-		"zengular": "file:./../external/zengular"
+		"zengular": "file:./../external/zengular",
+		"z-build": "file:./../external/z-build",
+		"z-ui": "file:./../external/z-ui"
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.3.6"
-	},
-	"zengular-build": {
-		"buildVersionFile": "./build-version",
-		"googlefonts": {
-			"src": [
-				"../src/Mission/Web/Page/@css/google-fonts.json",
-				"../src/Mission/Admin/Page/@css/google-fonts.json"
-			],
-			"dest": "../public/fonts/",
-			"path": "/fonts/"
-		},
-		"copy": [
-			{
-				"src": "./node_modules/@fortawesome/fontawesome-pro/webfonts/",
-				"pattern": "*",
-				"dest": "../public/fonts/fontawesome/"
-			},
-			{
-				"src": "../assets/",
-				"pattern": "**",
-				"dest": "../public/",
-				"watch": true
-			},
-			{
-				"src": "../src/",
-				"pattern": "index.php",
-				"dest": "../public/",
-				"watch": true
-			}
-		],
-		"css": [
-			{
-				"src": "../src/Mission/Web/Page/@css/",
-				"dest": "../public/web/css/"
-			},
-			{
-				"src": "../src/Mission/Admin/Page/@css/",
-				"dest": "../public/admin/css/"
-			}
-		],
-		"js": [
-			{
-				"src": "../src/Mission/Web/Page/@js/",
-				"dest": "../public/web/js/"
-			},
-			{
-				"src": "../src/Mission/Admin/Page/@js/",
-				"dest": "../public/admin/js/"
-			}
-		]
 	}
 }

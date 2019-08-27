@@ -1,7 +1,7 @@
 let {series, parallel, watch, src, dest} = require('gulp');
 
-let buildConfig = require('zengular-build').ConfigReader.load('./package.json');
-let VersionBump = require('zengular-build').VersionBump;
+let buildConfig = require('z-build').ConfigReader.load('./z-build.json');
+let VersionBump = require('z-build').VersionBump;
 
 let prefixer = require('gulp-autoprefixer');
 let less = require('gulp-less');

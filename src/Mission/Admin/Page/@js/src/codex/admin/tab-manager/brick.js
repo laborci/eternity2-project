@@ -1,14 +1,13 @@
-import Brick from "zengular-brick";
-import twig from "./template.twig";
+import Brick          from "zengular/core/brick";
+import twig           from "./template.twig";
 import "./style.less";
 import "../tab/brick";
-import CodexAdminTab from "../tab/brick";
+import CodexAdminTab  from "../tab/brick";
 import CodexAdminForm from "../form/brick";
 
 
 @Brick.register('codex-admin-tab-manager', twig)
 @Brick.registerSubBricksOnRender()
-@Brick.useAppEventManager()
 export default class CodexAdminTabManager extends Brick {
 
 	onInitialize() {
@@ -16,12 +15,11 @@ export default class CodexAdminTabManager extends Brick {
 		this.appEventManager.listen('TAB-CLOSED', event => { this.removeTab(event.source);});
 	}
 
-	onRender() {
-	}
+	onRender() {}
 
 	open(urlBase, id) {
-		let tab = this.find(CodexAdminTab.selector+`[data-id="${id}"][data-type="${urlBase}"]`);
-		if(tab === null){
+		let tab = this.find(CodexAdminTab.selector + `[data-id="${id}"][data-type="${urlBase}"]`);
+		if (tab === null) {
 			tab = CodexAdminTab.create('div', true);
 			tab.dataset.id = id;
 			tab.dataset.type = urlBase;
@@ -43,12 +41,12 @@ export default class CodexAdminTabManager extends Brick {
 	selectTab(tab) {
 		this.$(CodexAdminTab.selector).filter('[data-selected=yes]', tab => tab.dataset.selected = 'no');
 		tab.root.dataset.selected = 'yes';
-		this.$(CodexAdminForm.selector).filter('.visible', element=>element.classList.remove('visible'));
+		this.$(CodexAdminForm.selector).filter('.visible', element => element.classList.remove('visible'));
 		tab.form.root.classList.add('visible');
 	}
 
-	removeTab(tab){
-		if(tab.root.dataset.selected === 'yes') {
+	removeTab(tab) {
+		if (tab.root.dataset.selected === 'yes') {
 			if (tab.root.nextElementSibling !== null) {
 				this.selectTab(tab.root.nextElementSibling.controller);
 			} else if (tab.root.previousElementSibling !== null) {

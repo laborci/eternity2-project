@@ -1,7 +1,7 @@
-import Brick from "zengular-brick";
+import Brick from "zengular/core/brick";
 import twig from "./template.twig";
 import "./style.less";
-import Ajax from "zengular-ajax";
+import Ajax from "zengular/core/ajax";
 import CodexAdminList from "../list/brick";
 import "../tab-manager/brick";
 import CodexAdminTabManager from "../tab-manager/brick";
@@ -10,7 +10,6 @@ import ListButtonPlugin from "../../plugin/types/ListButtonPlugin";
 
 @Brick.register('codex-admin-frame', twig)
 @Brick.registerSubBricksOnRender()
-@Brick.useAppEventManager()
 export default class CodexAdminFrame extends Brick {
 
 
