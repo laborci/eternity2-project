@@ -2,9 +2,9 @@
 vendor
 var/**
 data/**
-build/node_modules
+node_modules
 etc/vhost/virtualhost.*conf
 etc/ini/*.local.yml
 etc/ene/*
 public/*
-build/build-version
+build-version

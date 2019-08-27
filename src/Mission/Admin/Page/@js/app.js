@@ -1,4 +1,10 @@
-import AdminApplication from "./src/codex/admin-app";
-import "./src/plugins/loader";
+import AdminApplication from "z-codex/admin-app";
+import menu             from "./src/menu";
+import "./src/plugin-loader";
 
-new (class extends AdminApplication{})();
+new (class extends AdminApplication {
+	initialize() {
+		super.initialize();
+		this.menu = menu;
+	}
+})();

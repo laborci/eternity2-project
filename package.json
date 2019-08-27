@@ -13,6 +13,7 @@
 		"@babel/plugin-proposal-object-rest-spread": "^7.5.5",
 		"@babel/plugin-proposal-optional-chaining": "^7.0.0",
 		"@babel/preset-env": "^7.5.5",
+		"babel-polyfill": "^6.26.0",
 		"babel-loader": "^8.0.4",
 		"copy": "^0.3.0",
 		"css-loader": "^0.28.4",
@@ -37,9 +38,10 @@
 		"twig-loader": "^0.4.1",
 		"watchify": "^3.9.0",
 		"webpack": "^4.38.0",
-		"zengular": "file:./../external/zengular",
-		"z-build": "file:./../external/z-build",
-		"z-ui": "file:./../external/z-ui"
+		"zengular": "file:external/zengular",
+		"z-build": "file:external/z-build",
+		"z-ui": "file:external/z-ui",
+		"z-codex": "file:external/z-codex"
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.3.6"
