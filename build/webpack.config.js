@@ -8,7 +8,12 @@ module.exports = [
 		name: 'Transpiler',
 		entry: buildConfig.jsEntries,
 		output: {filename: '[name].js', path: __dirname},
-		resolve: {modules: ['./build/node_modules']},
+		resolve: {
+			modules: ['./build/node_modules'],
+			alias:{
+				//zengular: path.resolve('../external/zengular/')
+			}
+		},
 		plugins: [new VersionBump({file: path.resolve(__dirname, buildConfig.buildVersionFile)})],
 		devtool: 'inline-source-map',
 		module: {
