@@ -19,8 +19,8 @@ export default class CodexLayoutBrick extends Brick{
 	}
 
 	onRender(){
-		this.appEventManager.fire('rendered');
-		this.menu = this.$(CodexLayoutMenuBrick.selector).get().controller;
-		this.content = this.$(CodexLayoutContentBrick.selector).get().controller;
+		this.menu = this.$(CodexLayoutMenuBrick.selector).node.controller;
+		this.content = this.$(CodexLayoutContentBrick.selector).node.controller;
+		this.fire('rendered');
 	}
 }
