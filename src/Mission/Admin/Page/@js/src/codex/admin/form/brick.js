@@ -34,7 +34,6 @@ export default class CodexAdminForm extends Brick {
 		this.showOverlay();
 		Ajax.get('/' + this.urlBase + '/get-form-item/' + (this.id===null ? 'new' : this.id))
 			.then(result => {
-				console.log(result)
 				if (result.status !== 200) {
 					this.handlerError(result, () => {this.tab.close();});
 				} else {
@@ -73,52 +72,6 @@ export default class CodexAdminForm extends Brick {
 		});
 	}
 
-	save() {
-		let data = {
-			id: this.id,
-			fields: this.collectFieldData()
-		}
-		this.showOverlay();
-		Ajax.json.post('/' + this.urlBase + '/save-item', data)
-			.then(result => {
-				if (result.status !== 200) {
-					this.handlerError(result);
-				}else{
-					this.load(parseInt(result.json.id));
-				}
-			})
-			.finally(() => {
-				this.hideOverlay();
-				this.reloadList();
-			})
-		;
-	}
-
-	delete() {
-		let modal = new Modal();
-		modal.title = "DELETE ITEM";
-		modal.body = `<i class="${this.icon}"></i> <b>${this.label}</b><br>Do you really want to delete this item?`;
-		modal.addButton('Delete', () => {
-			this.showOverlay();
-			modal.close();
-			Ajax.get('/' + this.urlBase + '/delete-item/' + this.id)
-				.then((result) => {
-					if (result.status !== 200) {
-						this.handlerError(result);
-					} else {
-						this.tab.close();
-					}
-				})
-				.finally(() => {
-					this.hideOverlay();
-					this.reloadList();
-				})
-			;
-		}, 'danger');
-		modal.addButton('Cancel', false);
-		modal.show();
-	}
-
 	handlerError(result, cb = null) {
 		let message = `Some unknown error occured: ${result.statusText} (${result.status})`;
 		if (typeof result.json?.message === "string") message = result.json.message;
@@ -136,12 +89,9 @@ export default class CodexAdminForm extends Brick {
 		return data;
 	}
 
-	showOverlay() { this.$$('overlay').node.classList.add('visible');}
-
-	hideOverlay() { this.$$('overlay').node.classList.remove('visible');}
-
-	reload() {this.load();}
-
 	reloadList() { this.appEventManager.fire('RELOAD-LIST', {urlBase: this.urlBase});}
+
+	showOverlay() { this.$$('overlay').node.classList.add('visible');}
+	hideOverlay() { this.$$('overlay').node.classList.remove('visible');}
 }
 
