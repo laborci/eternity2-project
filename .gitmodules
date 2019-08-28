@@ -4,6 +4,3 @@
 [submodule "external/zengular"]
 	path = external/zengular
 	url = https://github.com/laborci/zengular.git
-[submodule "external/z-codex"]
-	path = external/z-codex
-	url = https://github.com/laborci/z-codex.git
