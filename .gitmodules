@@ -1,3 +1,6 @@
 [submodule "external/zengular"]
 	path = external/zengular
 	url = https://github.com/laborci/zengular.git
+[submodule "external/z-build"]
+	path = external/z-build
+	url = https://github.com/laborci/z-build.git
