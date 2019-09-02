@@ -25,11 +25,17 @@ class FormHandler implements JsonSerializable{
 	protected $JSplugins = [];
 	protected $labelField = null;
 
+	protected $attachmentCategories = [];
+
 	public function __construct(AdminDescriptor $admin){
 		$this->admin = $admin;
 		$this->dataProvider = $admin->getDataProvider();
 		$this->itemConverter = $this->dataProvider;
 		$this->itemDataImporter = $this->dataProvider;
+	}
+
+	public function addAttachmentCategory($category, $label){
+		$this->attachmentCategories[$category] = $label;
 	}
 
 	public function addJSPlugin($plugin){ $this->JSplugins[] = $plugin; }
@@ -45,11 +51,12 @@ class FormHandler implements JsonSerializable{
 
 	public function jsonSerialize(){
 		return [
-			'sections'   => $this->sections,
-			'plugins'    => $this->JSplugins,
-			'labelField' => $this->labelField,
-			'tabIcon'    => $this->admin->getTabIcon(),
-			'formIcon'   => $this->admin->getFormIcon(),
+			'sections'             => $this->sections,
+			'plugins'              => $this->JSplugins,
+			'labelField'           => $this->labelField,
+			'tabIcon'              => $this->admin->getTabIcon(),
+			'formIcon'             => $this->admin->getFormIcon(),
+			'attachmentCategories' => $this->attachmentCategories,
 		];
 	}
 

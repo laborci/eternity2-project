@@ -24,7 +24,6 @@ abstract class AdminDescriptor implements SharedService{
 	protected $urlBase = null;
 	/** @var DataProviderInterface */
 	protected $dataProvider;
-	protected $attachmentCategories = false;
 
 	public function __construct(){
 		if (is_null($this->urlBase)) $this->urlBase = (new \ReflectionClass($this))->getShortName();
@@ -40,7 +39,6 @@ abstract class AdminDescriptor implements SharedService{
 	public function getHeader(){ return ['icon' => $this->headerIcon, 'title' => $this->headerTitle]; }
 	public function getFormIcon(){ return $this->formIcon; }
 	public function getTabIcon(){ return $this->tabIcon; }
-	public function getAttachmentCategories(){ return $this->attachmentCategories; }
 
 	public function getFieldLabel($name){ return array_key_exists($name, $this->fields) ? $this->fields[$name] : $name; }
 
