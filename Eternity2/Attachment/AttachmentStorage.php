@@ -17,7 +17,7 @@ class AttachmentStorage{
 	private $storage;
 	private $basePath;
 	private $baseUrl;
-	/** @var \Eternity2\Attachment\Thumbnail\Config */
+	/** @var \Eternity2\Thumbnail\Config */
 	private $thumbnailConfig;
 
 	public function __construct($storage, Config $config){

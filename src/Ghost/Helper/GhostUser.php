@@ -29,13 +29,18 @@ abstract class GhostUser extends Ghost{
 	const F_NAME = "name";
 	const F_EMAIL = "email";
 	const F_PASSWORD = "password";
+	const F_CREATED = "created";
 	const F_ROLES = "roles";
 	const F_STATUS = "status";
+
+	const A_AVATAR = "avatar";
+	const A_GALLERY = "gallery";
 
 	protected $id;
 	public $name;
 	public $email;
 	protected $password;
+	public $created;
 	public $roles;
 	public $status;
 
@@ -47,6 +52,7 @@ abstract class GhostUser extends Ghost{
 		$model->addField("name", Field::TYPE_STRING);
 		$model->addField("email", Field::TYPE_STRING);
 		$model->addField("password", Field::TYPE_STRING);
+		$model->addField("created", Field::TYPE_DATETIME);
 		$model->addField("roles", Field::TYPE_SET);
 		$model->addField("status", Field::TYPE_ENUM);
 		$model->protectField("id");

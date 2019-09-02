@@ -13,7 +13,7 @@ abstract class AdminDescriptor implements SharedService{
 	const PERMISSION = 'permission';
 
 	protected $permissions = [
-		self::PERMISSION => 'admin'
+		self::PERMISSION => 'admin',
 	];
 
 	protected $headerIcon = 'fal fa-infinite';
@@ -24,12 +24,13 @@ abstract class AdminDescriptor implements SharedService{
 	protected $urlBase = null;
 	/** @var DataProviderInterface */
 	protected $dataProvider;
+	protected $attachmentCategories = false;
 
 	public function __construct(){
 		if (is_null($this->urlBase)) $this->urlBase = (new \ReflectionClass($this))->getShortName();
 		$this->dataProvider = $this->createDataProvider();
-		if(is_null($this->formIcon)) $this->formIcon = $this->headerIcon;
-		if(is_null($this->tabIcon)) $this->tabIcon = $this->formIcon;
+		if (is_null($this->formIcon)) $this->formIcon = $this->headerIcon;
+		if (is_null($this->tabIcon)) $this->tabIcon = $this->formIcon;
 	}
 
 	abstract protected function createDataProvider(): DataProviderInterface;
@@ -37,8 +38,9 @@ abstract class AdminDescriptor implements SharedService{
 	public function getPermission($type){ return $this->permissions[$type]; }
 	public function getUrlBase(){ return $this->urlBase; }
 	public function getHeader(){ return ['icon' => $this->headerIcon, 'title' => $this->headerTitle]; }
-	public function getFormIcon(){return $this->formIcon;}
-	public function getTabIcon(){return $this->tabIcon;}
+	public function getFormIcon(){ return $this->formIcon; }
+	public function getTabIcon(){ return $this->tabIcon; }
+	public function getAttachmentCategories(){ return $this->attachmentCategories; }
 
 	public function getFieldLabel($name){ return array_key_exists($name, $this->fields) ? $this->fields[$name] : $name; }
 

@@ -18,6 +18,11 @@ class UserAdmin extends AdminDescriptor{
 	protected $headerTitle = 'Felhasználók';
 	protected $formIcon = 'fal fa-user';
 	protected $tabIcon = 'fas fa-user';
+	protected $attachmentCategories = [
+		User::A_AVATAR => 'Avatar',
+		User::A_GALLERY => 'Galéria'
+	];
+
 	protected $fields = [
 		User::F_ID    => 'id',
 		User::F_NAME  => 'név',

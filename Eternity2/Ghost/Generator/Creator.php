@@ -144,6 +144,7 @@ class Creator{
 		$annotations = [];
 		$properties = [];
 		$getterSetter = [];
+		$attachmentConstants = [];
 
 		foreach ($model->fields as $field){
 			$properties[] = "\t" . ($field->protected ? 'protected' : 'public') . " \${$field->name};";
@@ -161,12 +162,13 @@ class Creator{
 
 				if (is_string($field->setter))
 					$getterSetter[] = "\t" . 'abstract protected function ' . $field->setter . '($value);';
-
 			}
 		}
 
 		foreach ($model->getAttachmentStorage()->getCategories() as $category){
 			$annotations[] = ' * @property-read AttachmentCategoryManager $' . $category->getName();
+			$attachmentConstants[] = "\tconst A_".strtoupper($category->getName()).' = "'.$category->getName().'";';
+
 		}
 
 		foreach ($model->relations as $relation){
@@ -185,6 +187,7 @@ class Creator{
 		$template = str_replace('/*ghost-generator-properties*/', join("\n", $properties), $template);
 		$template = str_replace(' * ghost-generator-annotations', join("\n", $annotations), $template);
 		$template = str_replace('/*ghost-generator-getters-setters*/', join("\n", $getterSetter), $template);
+		$template = str_replace('/*attachment-constants*/', join("\n", $attachmentConstants), $template);
 
 		$this->style->write("- {$file}");
 		file_put_contents($file, $template);
