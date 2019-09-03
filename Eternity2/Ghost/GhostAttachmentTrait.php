@@ -25,4 +25,11 @@ trait GhostAttachmentTrait {
 		return static::$model->getAttachmentStorage()->getCategory($categoryName)->getCategoryManager($this);
 	}
 
+	/** @return \Eternity2\Attachment\AttachmentCategory[] */
+	public function getAttachmentCategories():array{
+		/** @var \Eternity2\Ghost\Model $model */
+		$model = static::$model;
+		return $model->getAttachmentStorage()->getCategories();
+	}
+
 }

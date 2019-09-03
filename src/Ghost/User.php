@@ -4,10 +4,11 @@ use Eternity2\Codex\CodexUserInterface;
 use Eternity2\DBAccess\Filter\Filter;
 use Eternity2\Zuul\AuthenticableInterface;
 
-class User extends Helper\GhostUser implements AuthenticableInterface{
+class User extends Helper\GhostUser implements AuthenticableInterface, CodexUserInterface{
 
 	protected function setPassword($value){ $this->password = password_hash($value, PASSWORD_BCRYPT); }
 
+// region AuthenticableInterface
 	public function getId(): int{ return $this->id; }
 	public function checkPassword($password): bool{ return password_verify($password, $this->password); }
 	public function checkPermission($permission = null): bool{
@@ -15,6 +16,7 @@ class User extends Helper\GhostUser implements AuthenticableInterface{
 			$this->status === self::STATUS_ACTIVE &&
 			(is_null($permission) || in_array($permission, $this->getPermissions()));
 	}
+// endregion
 
 	protected function getPermissions(){ return $this->roles; }
 

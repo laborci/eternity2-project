@@ -84,8 +84,9 @@ class FormHandler implements JsonSerializable{
 		return $newid;
 	}
 
-	public function delete($id){ $this->dataProvider->deleteItem($id); }
-
+	public function uploadAttachment($id, $category, $file){ return $this->dataProvider->uploadAttachment($id, $category, $file); }
+	public function getAttachments($id){ return $this->dataProvider->getAttachments($id); }
+	public function delete($id){ return $this->dataProvider->deleteItem($id); }
 	public function getNew(){ return $this->get(); }
 
 }

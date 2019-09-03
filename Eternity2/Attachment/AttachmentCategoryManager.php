@@ -49,8 +49,7 @@ class AttachmentCategoryManager {
 			throw new FileNotAcceptable();
 		}
 
-		if (!is_dir($this->path))
-			mkdir($this->path, 0777, true);
+		if (!is_dir($this->path)) mkdir($this->path, 0777, true);
 
 		if ($file instanceof UploadedFile) {
 			$file = $file->move($this->path, $file->getClientOriginalName());

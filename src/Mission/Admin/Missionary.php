@@ -3,6 +3,8 @@
 use Application\Mission\Admin\Form\UserAdmin;
 use Application\Mission\Admin\Page\Login;
 use Eternity2\Codex\AdminRegistry;
+use Eternity2\Codex\Responder\CodexAttachmentGet;
+use Eternity2\Codex\Responder\CodexAttachmentUpload;
 use Eternity2\Codex\Responder\CodexDeleteFormItem;
 use Eternity2\Codex\Responder\CodexGetForm;
 use Eternity2\Codex\Responder\CodexGetFormItem;
@@ -49,6 +51,8 @@ class Missionary extends Application{
 		$router->get('/{form}/get-form', CodexGetForm::class)();
 		$router->post('/{form}/save-item', CodexSaveFormItem::class)();
 		$router->get('/{form}/delete-item/{id}', CodexDeleteFormItem::class)();
+		$router->post('/{form}/attachment/upload/{id}', CodexAttachmentUpload::class)();
+		$router->get('/{form}/attachment/get/{id}', CodexAttachmentGet::class)();
 
 //		$router->get('/menu', Action\GetMenu::class)();
 //		$router->get('/', Page\Index::class)();

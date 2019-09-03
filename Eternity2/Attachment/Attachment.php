@@ -1,6 +1,8 @@
 <?php namespace Eternity2\Attachment;
 
 use Eternity2\Thumbnail\Thumbnail;
+use JsonSerializable;
+use name;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -9,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @property-read           $category
  * @property-read Thumbnail $thumbnail
  */
-class Attachment extends File{
+class Attachment extends File implements JsonSerializable{
 
 	/** @var AttachmentCategoryManager */
 	private $categoryManager;
@@ -50,16 +52,31 @@ class Attachment extends File{
 	public function getRecord(){
 		return [
 			'path'        => $this->categoryManager->getOwner()->getPath(),
+			'url'         => $this->url,
 			'file'        => $this->getFilename(),
 			'size'        => $this->getSize(),
 			'meta'        => $this->meta,
 			'description' => $this->description,
 			'ordinal'     => $this->ordinal,
 			'category'    => $this->categoryManager->getCategory()->getName(),
+			'extension'   => $this->getExtension(),
+			'mime'        => $this->getMimeType(),
+			'mime-base'   => explode('/', $this->getMimeType())[0],
+			'mime-detail' => explode('/', $this->getMimeType())[1],
 		];
 	}
 
 	public function store(){ $this->categoryManager->store($this); }
 	public function remove(){ $this->categoryManager->remove($this); }
 
+	/**
+	 * Specify data which should be serialized to JSON
+	 * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
+	 * @return mixed data which can be serialized by <b>json_encode</b>,
+	 * which is a value of any type other than a resource.
+	 * @since 5.4.0
+	 */
+	public function jsonSerialize(){
+		return $this->getRecord();
+	}
 }
