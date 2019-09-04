@@ -69,13 +69,23 @@ class GhostDataProvider implements DataProviderInterface{
 			$collection[$category->getName()] = [];
 			foreach ($attachments as $attachment){
 				$record = $attachment->getRecord();
-				if ($record['mime-base'] === 'image'){
-					$record['thumbnail'] = in_array($record['mime-detail'], ['png', 'gif', 'jpg', 'jpeg']) ? $attachment->thumbnail->crop(100, 100)->png : $attachment->url;
+				if (substr($record['mime-type'],0,6) === 'image/'){
+					$record['thumbnail'] = in_array($record['extension'], ['png', 'gif', 'jpg', 'jpeg']) ? $attachment->thumbnail->crop(100, 100)->png : $attachment->url;
 				}
 				$collection[$category->getName()][] = $record;
 			}
 		}
 		return $collection;
+	}
+
+	public function copyAttachment($id, $file, $source, $target){
+		$item = $this->getItem($id);
+		$item->getAttachmentCategoryManager($target)->addFile($item->getAttachmentCategoryManager($source)->get($file));
+	}
+	public function moveAttachment($id, $file, $source, $target){
+		$item = $this->getItem($id);
+		$item->getAttachmentCategoryManager($target)->addFile($item->getAttachmentCategoryManager($source)->get($file));
+		$item->getAttachmentCategoryManager($source)->get($file)->remove();
 	}
 }
 

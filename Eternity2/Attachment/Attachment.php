@@ -59,10 +59,8 @@ class Attachment extends File implements JsonSerializable{
 			'description' => $this->description,
 			'ordinal'     => $this->ordinal,
 			'category'    => $this->categoryManager->getCategory()->getName(),
-			'extension'   => $this->getExtension(),
-			'mime'        => $this->getMimeType(),
-			'mime-base'   => explode('/', $this->getMimeType())[0],
-			'mime-detail' => explode('/', $this->getMimeType())[1],
+			'extension'   => strtolower($this->getExtension()),
+			'mime-type'   => $this->getMimeType(),
 		];
 	}
 

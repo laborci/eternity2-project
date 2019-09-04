@@ -6,18 +6,19 @@
 		"work": "webpack --progress --colors --watch  --mode development"
 	},
 	"dependencies": {
-		"@fortawesome/fontawesome-pro": "^5.9.0",
 		"@babel/core": "^7.5.5",
 		"@babel/plugin-proposal-class-properties": "^7.5.5",
 		"@babel/plugin-proposal-decorators": "^7.1.2",
 		"@babel/plugin-proposal-object-rest-spread": "^7.5.5",
 		"@babel/plugin-proposal-optional-chaining": "^7.0.0",
 		"@babel/preset-env": "^7.5.5",
-		"babel-polyfill": "^6.26.0",
+		"@fortawesome/fontawesome-pro": "^5.9.0",
 		"babel-loader": "^8.0.4",
+		"babel-polyfill": "^6.26.0",
 		"copy": "^0.3.0",
 		"css-loader": "^0.28.4",
 		"file-loader": "^0.11.2",
+		"font-awesome-filetypes": "^2.1.0",
 		"get-google-fonts": "^1.2.0",
 		"glob": "^7.1.2",
 		"gulp": "^4.0.2",
@@ -38,10 +39,10 @@
 		"twig-loader": "^0.4.1",
 		"watchify": "^3.9.0",
 		"webpack": "^4.38.0",
-		"zengular": "file:external/zengular",
 		"z-build": "file:external/z-build",
+		"z-codex": "file:external/z-codex",
 		"z-ui": "file:external/z-ui",
-		"z-codex": "file:external/z-codex"
+		"zengular": "file:external/zengular"
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.3.6"
