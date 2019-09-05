@@ -1,6 +1,6 @@
 <?php namespace Ghost;
 
-use Eternity2\Codex\CodexUserInterface;
+use Eternity2\Module\Codex\Codex\CodexUserInterface;
 use Eternity2\DBAccess\Filter\Filter;
 use Eternity2\Zuul\AuthenticableInterface;
 

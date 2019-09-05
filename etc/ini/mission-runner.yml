@@ -7,5 +7,10 @@ missions:
     handler: \Application\Mission\API\Missionary
   - pattern: admin.{domain}
     handler: \Application\Mission\Admin\Missionary
+    modules:
+      - \Eternity2\Module\Codex\Module
+      - \Eternity2\Module\Auth\Module:
+          login-page: \Eternity2\Module\Codex\Page\Login
+          permission: admin
   - pattern: "*"
     reroute: www.{domain}
