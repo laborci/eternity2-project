@@ -2,7 +2,7 @@
 
 
 use Application\Service\Auth\WhoAmI;
-use Eternity2\WebApplication\Responder\SmartPageResponder;
+use Eternity2\Module\SmartPageResponder\Responder\SmartPageResponder;
 
 /**
  * @css /admin/css/style.css

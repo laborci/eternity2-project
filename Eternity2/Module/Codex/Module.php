@@ -1,6 +1,5 @@
 <?php namespace Eternity2\Module\Codex;
 
-use Eternity2\Module\Codex\Codex\AdminRegistry;
 use Eternity2\Module\Codex\Action\CodexAttachmentCopy;
 use Eternity2\Module\Codex\Action\CodexAttachmentDelete;
 use Eternity2\Module\Codex\Action\CodexAttachmentGet;
@@ -11,43 +10,39 @@ use Eternity2\Module\Codex\Action\CodexGetForm;
 use Eternity2\Module\Codex\Action\CodexGetFormItem;
 use Eternity2\Module\Codex\Action\CodexGetList;
 use Eternity2\Module\Codex\Action\CodexInfo;
+use Eternity2\Module\Codex\Action\CodexMenu;
 use Eternity2\Module\Codex\Action\CodexSaveFormItem;
-use Eternity2\Module\Codex\Page\Login;
+use Eternity2\Module\Codex\Codex\AdminRegistry;
+use Eternity2\Module\SmartPageResponder\Twigger\Twigger;
 use Eternity2\System\Event\EventManager;
 use Eternity2\System\Module\ModuleInterface;
-use Eternity2\System\Module\ModuleLoader;
-use Eternity2\WebApplication\Action\Forbidden;
-use Eternity2\WebApplication\Action\NotAuthorized;
-use Eternity2\WebApplication\Application;
-use Eternity2\WebApplication\Middleware\AuthCheck;
-use Eternity2\WebApplication\Middleware\PermissionCheck;
-use Eternity2\WebApplication\Responder\TwigPageResponder;
-use Eternity2\WebApplication\Routing\Router;
-use Twig\Environment;
+use Eternity2\Mission\Web\Application;
+use Eternity2\Mission\Web\Routing\Router;
+use Eternity2\Thumbnail\ThumbnailResponder;
 
 class Module implements ModuleInterface{
 
 	/** @var \Eternity2\Module\Codex\Codex\AdminRegistry */
 	private $adminRegistry;
 
-
-
 	public function __construct(AdminRegistry $adminRegistry){
 		$this->adminRegistry = $adminRegistry;
 	}
 
-	public function __invoke($config){
+	protected $menu;
+	public function getMenu(){ return $this->menu; }
+
+	public function __invoke($env){
+		if (array_key_exists('menu', $env)) $this->menu = $env['menu'];
 		EventManager::listen(Application::EVENT_ROUTING_FINISHED, [$this, 'route']);
-		EventManager::listen(TwigPageResponder::EVENT_TWIG_ENVIRONMENT_CREATED, function (Environment $twigEnvironment){
-			/** @var \Twig\Loader\FilesystemLoader $loader */
-			$loader = $twigEnvironment->getLoader();
-			$loader->addPath(__DIR__ . '/Page/@template/', 'codex');
+		EventManager::listen(Twigger::EVENT_TWIG_ENVIRONMENT_CREATED, function (){
+			Twigger::Service()->addPath(__DIR__ . '/Page/@template/', 'codex');
 		});
 	}
 
 	public function route(Router $router){
 		// PAGES
-		$router->get("/thumbnail/*", \GhostThumbnailResponder::class)();
+		$router->get("/thumbnail/*", ThumbnailResponder::class)();
 		$router->get("/", Page\Index::class)();
 
 		$router->clearPipeline();
@@ -55,8 +50,8 @@ class Module implements ModuleInterface{
 //		$router->pipe(AuthCheck::class, ["responder" => NotAuthorized::class]);
 //		$router->pipe(PermissionCheck::class, ["responder" => Forbidden::class, "permission" => "admin"]);
 
-
 		// API
+		$router->get('/menu', CodexMenu::class)();
 		$router->get('/{form}/codexinfo', CodexInfo::class)();
 		$router->post('/{form}/get-list/{page}', CodexGetList::class)();
 		$router->get('/{form}/get-form-item/{id}', CodexGetFormItem::class)();

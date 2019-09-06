@@ -5,7 +5,7 @@ use Minime\Annotations\Parser;
 use Minime\Annotations\Reader;
 
 class AnnotationReader extends Reader {
-	public function __construct(Config $config) {
-		parent::__construct(new Parser(), new FileCache($config->cache()));
+	public function __construct() {
+		parent::__construct(new Parser(), new FileCache(env('annotation-reader.cache')));
 	}
 }

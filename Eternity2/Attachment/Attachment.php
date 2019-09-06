@@ -44,7 +44,7 @@ class Attachment extends File implements JsonSerializable{
 			case 'category':
 				return $this->getCategory()->getName();
 			case 'thumbnail':
-				return new Thumbnail($this, $this->getCategory()->getAttachmentStorage()->getThumbnailConfig());
+				return new Thumbnail($this);
 		}
 		return null;
 	}

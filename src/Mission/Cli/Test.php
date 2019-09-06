@@ -1,6 +1,7 @@
 <?php namespace Application\Mission\Cli;
 
 use Eternity2\DBAccess\Filter\Filter;
+use Eternity2\System\Env\EnvLoader;
 use Ghost\Article;
 use Ghost\User;
 use Symfony\Component\Console\Command\Command;
@@ -8,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Yaml\Yaml;
 
 class Test extends Command{
 
@@ -20,52 +22,12 @@ class Test extends Command{
 		$time = microtime(true);
 
 
-		for($i=0;$i<310;$i++){
-			$user = new User();
-			$user->name = 'dummy '.$i;
-			$user->email = 'dummy'.$i."@dummy.hu";
-			$user->password = "password";
-			$user->status = User::STATUS_ACTIVE;
-			$user->save();
-		}
+		$el = new EnvLoader();
+		$config = $el->load();
 
-//
-//		$article->setfield = Article::SETFIELD_BETA;
-/*
-		$user = User::pick(5);
-		$user->password = 'galaga';
-		$user->save();
-
-		$style->writeln($user->name);
-
-		$article = Article::pick(1);
-		$style->writeln($article->title);
-*/
-
-		//		$user->save();
-
-//
-//		$user->avatar->addFile(new File(env('root').'assets/web/img/0.jpg'));
-//		$user->gallery->addFile($user->avatar->first);
-//
-//		$user->avatar->get('0.jpg');
-//		$user->avatar->first->store();
-
-//		$user->avatar->first->remove();
-//		$user->gallery->first->remove();
-
-//		echo "\n";
-//		print_r($user->avatar->first->url);
-//		echo "\n";
-//		print_r($user->avatar->get('0.jpg')->thumbnail->box(320,320)->jpg);
-//		echo "\n";
-//
-//		$user->avatar->get('0.jpg')->thumbnail->purge();
-//
-//		echo $user->name;
-//
-
-		$style->success('runtime: '. (microtime(true) - $time));
+		echo json_encode($config, JSON_PRETTY_PRINT);
+		echo "\n\n";
+		$style->success('runtime: ' . (microtime(true) - $time));
 
 	}
 

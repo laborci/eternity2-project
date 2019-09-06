@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\File\File;
  * @property string $url
  */
 class Thumbnail{
+	protected $urlBase;
+	protected $path;
+	protected $sourcePath;
 
 	/** @var File */
 	protected $file;
@@ -20,20 +23,20 @@ class Thumbnail{
 	const CROP_MIDDLE = 0;
 	const CROP_START = -1;
 	const CROP_END = 1;
-	/** @var \Eternity2\Thumbnail\Config */
-	private $config;
 
-	public function __construct(File $file, Config $config){
+	public function __construct(File $file){
 		$this->file = $file;
-		$this->config = $config;
-		if (strpos($file->getPath(), $config->sourcePath()) !== 0){
-			throw new SourceFileNotFound();
-		}
-		$this->pathId = str_replace('/', '-', substr(trim($file->getPath(), '/'), strlen($config->sourcePath())));
+		$this->sourcePath = env('thumbnail.source-path');
+		$this->urlBase = env('thumbnail.url');
+		$this->path = env('thumbnail.path');
+		$this->secret = env('thumbnail.secret');
+
+		if (strpos($file->getPath(), $this->sourcePath) !== 0) throw new SourceFileNotFound();
+		$this->pathId = str_replace('/', '-', substr(trim($file->getPath(), '/'), strlen($this->sourcePath)));
 	}
 
 	public function purge(){
-		$files = glob($this->config->path().'/'. $this->file->getFilename() . '.*.' . $this->pathId . '.*');
+		$files = glob($this->path . '/' . $this->file->getFilename() . '.*.' . $this->pathId . '.*');
 		foreach ($files as $file)
 			unlink($file);
 	}
@@ -156,7 +159,7 @@ class Thumbnail{
 		}
 
 		$url = $this->file->getFilename() . '.' . $op . '.' . $this->pathId;
-		$url = $this->config->url() . '/' . $url . '.' . base_convert(crc32($url . '.' . $ext . $this->config->secret()), 10, 32) . '.' . $ext;
+		$url = $this->urlBase . '/' . $url . '.' . base_convert(crc32($url . '.' . $ext . $this->secret), 10, 32) . '.' . $ext;
 
 		return $url;
 	}

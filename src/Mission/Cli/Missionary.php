@@ -1,6 +1,6 @@
 <?php namespace Application\Mission\Cli;
 
-use Eternity2\CliApplication\Application;
+use Eternity2\Mission\Cli\Application;
 
 class Missionary extends Application {
 

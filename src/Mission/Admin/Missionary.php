@@ -4,7 +4,7 @@ use Application\Codex\UserCodex;
 
 use Eternity2\Module\Codex\Module;
 use Eternity2\System\Module\ModuleLoader;
-use Eternity2\WebApplication\Application;
+use Eternity2\Mission\Web\Application;
 
 class Missionary extends Application{
 	public function __construct(){

@@ -2,11 +2,12 @@
 
 use Eternity2\RemoteLog\RemoteLog;
 use Eternity2\System\Env\Env;
+use Eternity2\System\Env\EnvLoader;
 use Eternity2\System\ServiceManager\ServiceContainer;
 
 class StartupSequence {
 
-	public function __construct($root, $ini_path = "etc/ini/", $ini_file = 'env', $env_path = "var/env/", $env_build_file = '!env.php') {
+	public function __construct($root, $ini_path = "etc/ini/", $ini_file = 'env', $env_path = "var/", $env_build_file = 'env.php') {
 
 		putenv('root=' . realpath($root) . '/');
 		putenv('env-path=' . getenv('root') . $env_path);
@@ -18,7 +19,7 @@ class StartupSequence {
 		if (getenv('LOAD_ENV_CACHE') === 'yes') {
 			Env::Service()->store(include getenv('env-path') . getenv('env-build-file'));
 		} else {
-			Env::Service()->storeFile(getenv('ini-file'));
+			Env::Service()->store(EnvLoader::load());
 		}
 
 		setenv('root', getenv('root'));
@@ -29,7 +30,7 @@ class StartupSequence {
 		if(getenv('context') === 'WEB') session_start();
 
 		foreach (env('boot-sequence') as $sequence) {
-			(function(BootSequnece $sequnece){$sequnece->run();})(ServiceContainer::get($sequence));
+			(function(BootSequnece $sequence){$sequence->run();})(ServiceContainer::get($sequence));
 		}
 	}
 }

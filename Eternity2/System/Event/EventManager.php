@@ -31,7 +31,7 @@ class EventManager implements SharedService{
 		if (array_key_exists($event, $this->firstListener)) $this->firstListener[$event]($data);
 		if (array_key_exists($event, $this->listeners)){
 			foreach ($this->listeners[$event] as $handler){
-				if (!$handler($data)) break;
+				if ($handler($data) === false) break;
 			}
 		}
 		if (array_key_exists($event, $this->finalListener)) $this->finalListener[$event]($data);

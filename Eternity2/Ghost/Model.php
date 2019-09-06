@@ -73,14 +73,8 @@ class Model {
 	}
 
 	public function getAttachmentStorage() {
-		/** @var Config $config */
-
 		if ($this->attachmentStorage === null) {
-			$config = ServiceContainer::get(Config::class);
-			$this->attachmentStorage = new AttachmentStorage(
-				$this->table,
-				ServiceContainer::get($config->attachmentConfig())
-			);
+			$this->attachmentStorage = new AttachmentStorage($this->table);
 		}
 		return $this->attachmentStorage;
 	}

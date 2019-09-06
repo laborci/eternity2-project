@@ -1,8 +1,0 @@
-client-version: /build/build-version
-output-cache: /var/output-cache/
-twig:
-  cache: /var/template-cache/
-  debug: true
-  sources:
-    web: /src/Mission/Web/Page/@template/
-    admin: /src/Mission/Admin/Page/@template/

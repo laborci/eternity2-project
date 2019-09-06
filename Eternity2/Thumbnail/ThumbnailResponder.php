@@ -1,6 +1,6 @@
 <?php namespace Eternity2\Thumbnail;
 
-use Eternity2\WebApplication\Responder\PageResponder;
+use Eternity2\Mission\Web\Responder\PageResponder;
 
 class ThumbnailResponder extends PageResponder {
 
@@ -10,13 +10,6 @@ class ThumbnailResponder extends PageResponder {
 	protected $originalHeight;
 	protected $originalWidth;
 	protected $ext;
-
-	/** @var Config */
-	protected $config;
-
-	public function __construct(Config $config) {
-		$this->config = $config;
-	}
 
 	protected function prepare(): bool {
 		$uri = explode('/', $this->getRequest()->getRequestUri());
@@ -32,13 +25,13 @@ class ThumbnailResponder extends PageResponder {
 		}
 		$op = array_pop($parts);
 		$file = join('.', $parts);
-		$path = $this->config->sourcePath() . '/' . preg_replace("/-/", '/', $pathId) . '/' . $file;
+		$path = env('thumbnail.source-path') . '/' . preg_replace("/-/", '/', $pathId) . '/' . $file;
 
 		$url = $file . '.' . $op . (($jpegquality) ? ('.' . $jpegquality) : ('')) . '.' . $pathId . '.' . $ext;
-		$newHash = base_convert(crc32($url . $this->config->secret()), 10, 32);
+		$newHash = base_convert(crc32($url . env('thumbnail.secret')), 10, 32);
 
-		if (!is_dir($this->config->path())) mkdir($this->config->path());
-		$this->target = $this->config->path() . '/' . $uri;
+		if (!is_dir(env('thumbnail.path'))) mkdir(env('thumbnail.path'));
+		$this->target = env('thumbnail.path') . '/' . $uri;
 		$this->source = $path;
 		$this->ext = $ext;
 

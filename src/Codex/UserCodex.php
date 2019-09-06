@@ -50,8 +50,8 @@ class UserCodex extends AdminDescriptor{
 
 		$list->addJSPlugin('ListPreprocessUser');
 		$list->addJSPlugin('ListButtonAddNew');
-		$list->addJSPlugin('ListButtonReload');
-		$list->addJSPlugin('ListButtonSearch');
+//		$list->addJSPlugin('ListButtonReload');
+//		$list->addJSPlugin('ListButtonSearch');
 
 		return $list;
 	}

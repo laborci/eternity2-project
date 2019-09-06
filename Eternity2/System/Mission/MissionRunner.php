@@ -7,14 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class MissionRunner implements BootSequnece {
 
-	protected $config;
-
-	public function __construct(Config $config) {
-		$this->config = $config;
-	}
-
 	function run() {
-		$missions = $this->config->missions();
+		$missions = env('missions');
 
 		$host = Request::createFromGlobals()->getHttpHost();
 
@@ -27,9 +21,10 @@ class MissionRunner implements BootSequnece {
 						die(header('location:' . Request::createFromGlobals()->getScheme() . '://' . str_replace('{domain}', env('domain'), $mission['reroute'])));
 					}
 					if(array_key_exists('modules', $mission)) ModuleLoader::Service()->loadModules($mission['modules']);
-					/** @var Mission $missionHandler */
-					$missionHandler = ServiceContainer::get($mission['handler']);
-					$missionHandler->run();
+					/** @var Mission $missionary */
+					$missionary = ServiceContainer::get($mission['mission']);
+					$env = array_key_exists('config', $mission) ? $mission['config'] : null;
+					$missionary->run($env);
 					die();
 				}
 			}

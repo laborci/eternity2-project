@@ -13,8 +13,8 @@ class RemoteLog implements SharedService{
 	protected $request;
 	protected $guid;
 
-	public function __construct(Request $request, Config $config){
-		$this->host = $config->host() . '/';
+	public function __construct(Request $request){
+		$this->host = env('remote-log.host') . '/';
 		$this->guid = uniqid();
 		$this->request = $request;
 	}

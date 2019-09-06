@@ -20,15 +20,13 @@
     "autoload": {
         "psr-4": {
             "Application\\": "src/",
-            "Entity\\": "src/Entity",
             "Ghost\\": "src/Ghost",
             "Eternity2\\Thumbnail\\": "Eternity2/Thumbnail/",
             "Eternity2\\Attachment\\": "Eternity2/Attachment/",
             "Eternity2\\System\\": "Eternity2/System/",
             "Eternity2\\RemoteLog\\": "Eternity2/RemoteLog/",
-            "Eternity2\\WebApplication\\": "Eternity2/WebApplication/",
             "Eternity2\\CliApplication\\": "Eternity2/CliApplication/",
-            "Eternity2\\RedFox\\": "Eternity2/RedFox/",
+            "Eternity2\\Mission\\": "Eternity2/Mission/",
             "Eternity2\\DBAccess\\": "Eternity2/DBAccess/",
             "Eternity2\\Gmark\\": "Eternity2/Gmark/",
             "Eternity2\\Zuul\\": "Eternity2/Zuul/",

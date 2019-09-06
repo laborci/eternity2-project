@@ -9,31 +9,16 @@ class ModuleLoader implements SharedService{
 
 	protected $modules = [];
 
-	/**
-	 * @param $modules
-	 */
-	public function loadModules(array $modules){
-		foreach ($modules as $module){
-			if(is_string($module)) $this->loadModule($module, []);
-			else foreach ($module as $moduleName=>$config){
-				$this->loadModule($moduleName, $config);
-				break;
-			}
-		}
-	}
+	public function loadModules(array $modules){ foreach ($modules as $module => $config) $this->loadModule($module, $config); }
 
-	public function loadModule(string $module, $config){
-		$moduleInstance = ServiceContainer::get($module);
-		$key = get_class($moduleInstance);
-		if(array_key_exists($key, $this->modules)) throw new \Exception('Module already loaded: '.$key);
-
+	public function loadModule(string $module, $env){
 		/** @var \Eternity2\System\Module\ModuleInterface $moduleInstance */
 		$moduleInstance = ServiceContainer::get($module);
+		$key = get_class($moduleInstance);
+		if (array_key_exists($key, $this->modules)) throw new \Exception('Module already loaded: ' . $key);
 		$this->modules[$key] = $moduleInstance;
-		$moduleInstance($config);
+		$moduleInstance($env);
 	}
 
-	public function get($module): ModuleInterface{
-		return $this->modules[$module];
-	}
+	public function get($module): ModuleInterface{ return $this->modules[$module]; }
 }

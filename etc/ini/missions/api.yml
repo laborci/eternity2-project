@@ -1,0 +1,2 @@
+pattern: api.{domain}
+mission: \Application\Mission\API\Missionary

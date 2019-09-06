@@ -1,7 +1,7 @@
 <?php namespace Eternity2\Module\Codex\Action;
 
 use Eternity2\Module\Codex\Codex\AdminRegistry;
-use Eternity2\WebApplication\Responder\JsonResponder;
+use Eternity2\Mission\Web\Responder\JsonResponder;
 use Eternity2\Zuul\AuthServiceInterface;
 use Symfony\Component\HttpFoundation\Response;
 abstract class Responder extends JsonResponder{

@@ -7,10 +7,10 @@ use PDO;
 
 class ConnectionFactory{
 
-	static function factory($config): PDOConnectionInterface{
-		switch ($config['scheme']){
+	static function factory($env): PDOConnectionInterface{
+		switch ($env['scheme']){
 			case 'mysql':
-				$connection = static::mysql($config);
+				$connection = static::mysql($env);
 				break;
 			default:
 				$connection = null;
@@ -22,14 +22,14 @@ class ConnectionFactory{
 		return $connection;
 	}
 
-	static function mysql($config): PDOConnectionInterface{
+	static function mysql($env): PDOConnectionInterface{
 
-		$host = $config['host'];
-		$database = $config['database'];
-		$user = $config['user'];
-		$password = $config['password'];
-		$port = $config['port'];
-		$charset = $config['charset'];
+		$host = $env['host'];
+		$database = $env['database'];
+		$user = $env['user'];
+		$password = $env['password'];
+		$port = $env['port'];
+		$charset = $env['charset'];
 
 		$dsn = 'mysql:host=' . $host . ';dbname=' . $database . ';port=' . $port . ';charset=' . $charset;
 

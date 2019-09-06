@@ -1,7 +1,7 @@
 <?php namespace Application\Mission\Web\Page;
 
 use Eternity2\System\ServiceManager\ServiceContainer;
-use Eternity2\WebApplication\Responder\SmartPageResponder;
+use Eternity2\Mission\Web\Responder\SmartPageResponder;
 
 /**
  * @template "@web/Index.twig"

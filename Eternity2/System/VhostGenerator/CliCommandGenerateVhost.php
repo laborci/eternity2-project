@@ -11,7 +11,7 @@ class CliCommandGenerateVhost extends Command {
 		$this
 			->setName('generate-vhost')
 			->setAliases(['vhost'])
-			->setDescription('Generates vhost config file from the template');
+			->setDescription('Generates vhost file from the template');
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output) {

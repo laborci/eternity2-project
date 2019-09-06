@@ -1,0 +1,6 @@
+pattern: www.{domain}
+mission: \Application\Mission\Web\Missionary
+modules:
+  \Eternity2\Module\SmartPageResponder\Module:
+    twig-sources:
+      ~web: /src/Mission/Web/Page/@template/

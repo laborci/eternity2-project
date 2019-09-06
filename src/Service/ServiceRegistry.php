@@ -11,12 +11,11 @@ class ServiceRegistry implements BootSequnece{
 
 		//database
 		class_alias(AbstractPDOConnection::class, \DefaultDBConnection::class);
-		ServiceContainer::shared(\DefaultDBConnection::class)->factory(function (){ return ConnectionFactory::factory(env('database')['default']); });
+		ServiceContainer::shared(\DefaultDBConnection::class)->factory(function (){ return ConnectionFactory::factory(env('database.default')); });
 
 		// request
 		ServiceContainer::shared(Request::class)->factoryStatic([Request::class, 'createFromGlobals']);
 
-		include 'ServiceRegistry/config.php';
 		include 'ServiceRegistry/ghost.php';
 		include 'ServiceRegistry/auth.php';
 

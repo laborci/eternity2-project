@@ -1,0 +1,8 @@
+default:
+  scheme: mysql
+  host: host.docker.internal
+  port: 3306
+  user: root
+  password:
+  database: eternity2
+  charset: utf8

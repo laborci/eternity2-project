@@ -1,7 +1,6 @@
 <?php namespace Eternity2\Module\Codex\Page;
 
-
-use Eternity2\WebApplication\Responder\SmartPageResponder;
+use Eternity2\Module\SmartPageResponder\Responder\SmartPageResponder;
 
 /**
  * @css /admin/css/style.css

@@ -1,7 +1,7 @@
 <?php namespace Eternity2\Module\Auth;
 
 use Application\Service\Auth\UserLogger;
-use Eternity2\WebApplication\Responder\JsonResponder;
+use Eternity2\Mission\Web\Responder\JsonResponder;
 use Eternity2\Zuul\AuthServiceInterface;
 
 class AuthAction extends JsonResponder {

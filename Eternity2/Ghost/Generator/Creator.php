@@ -2,7 +2,6 @@
 
 use CaseHelper\CaseHelperFactory;
 use Eternity2\DBAccess\PDOConnection\AbstractPDOConnection;
-use Eternity2\Ghost\Config;
 use Eternity2\Ghost\Model;
 use Eternity2\Ghost\Relation;
 use Eternity2\System\ServiceManager\Service;
@@ -15,9 +14,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class Creator{
 
 	use Service;
+	protected $ghostPath;
+	protected $ghostNamespace;
 
-	/** @var \Eternity2\Ghost\Config */
-	protected $config;
 	/** @var SymfonyStyle */
 	protected $style;
 	/** @var InputInterface */
@@ -27,8 +26,9 @@ class Creator{
 	/** @var Application */
 	protected $application;
 
-	public function __construct(Config $config){
-		$this->config = $config;
+	public function __construct(){
+		$this->ghostPath = env('ghost.generator.ghost-path');
+		$this->ghostNamespace = env('ghost.generator.ghost-namespace');
 	}
 
 	const ACTION_CANCEL = 0;
@@ -50,12 +50,12 @@ class Creator{
 		$database = $input->getArgument('database');
 		$name = ucfirst($name);
 		$table = is_null($table) ? CaseHelperFactory::make(CaseHelperFactory::INPUT_TYPE_CAMEL_CASE)->toSnakeCase($name) : $table;
-		$database = is_null($database) ? $this->config->defaultDatabase() : $database;
+		$database = is_null($database) ? env('ghost.default-database') : $database;
 
 		if ($name){
 			$filesExists = false;
 			$this->style->writeln('Check existing files');
-			foreach (["{$this->config->ghostPath()}/{$name}.php", "{$this->config->ghostPath()}/Helper/Ghost{$name}.php"] as $file){
+			foreach (["{$this->ghostPath}/{$name}.php", "{$this->ghostPath}/Helper/Ghost{$name}.php"] as $file){
 				$this->style->write(" - {$file}");
 				if (is_file($file)){
 					$filesExists = true;
@@ -103,12 +103,12 @@ class Creator{
 
 	protected function updateAll(){
 		$cwd = getcwd();
-		chdir($this->config->ghostPath());
+		chdir($this->ghostPath);
 		$files = glob('*.php');
 		chdir($cwd);
 		foreach ($files as $file){
 			$name = substr($file, 0, -4);
-			$ghostClass = $this->config->ghostNamespace() . '\\' . $name;
+			$ghostClass = $this->ghostNamespace . '\\' . $name;
 			/** @var Model $model */
 			$model = $ghostClass::$model;
 			$this->update($name, $model->table, $model->connectionName);
@@ -118,8 +118,8 @@ class Creator{
 	protected function purge($name){
 		$this->style->writeln("Remove existing files");
 		foreach ([
-			         "{$this->config->ghostPath()}/Helper/Ghost{$name}.php",
-			         "{$this->config->ghostPath()}/{$name}.php",
+			         "{$this->ghostPath}/Helper/Ghost{$name}.php",
+			         "{$this->ghostPath}/{$name}.php",
 		         ] as $file){
 			if (file_exists($file)){
 				$this->style->write("- {$file}");
@@ -131,11 +131,11 @@ class Creator{
 
 	protected function updateGhostHelper($name){
 
-		$file = "{$this->config->ghostPath()}/Helper/Ghost{$name}.php";
+		$file = "{$this->ghostPath}/Helper/Ghost{$name}.php";
 
 		$this->style->writeln("Update Helper");
 		$this->style->write("- Open Ghost ({$name}) model");
-		$ghostClass = $this->config->ghostNamespace() . '\\' . $name;
+		$ghostClass = $this->ghostNamespace . '\\' . $name;
 		$this->style->writeln(" - [OK]");
 
 		/** @var Model $model */
@@ -196,7 +196,7 @@ class Creator{
 
 	protected function generateGhostHelperFromDatabase($name, $table, $database){
 
-		$file = "{$this->config->ghostPath()}/Helper/Ghost{$name}.php";
+		$file = "{$this->ghostPath}/Helper/Ghost{$name}.php";
 
 		$this->style->writeln("Connecting to database");
 		$this->style->write("- ${database}");
@@ -230,7 +230,7 @@ class Creator{
 		$template = str_replace('{{name}}', $name, $template);
 		$template = str_replace('{{table}}', $table, $template);
 		$template = str_replace('{{connectionName}}', $database, $template);
-		$template = str_replace('{{namespace}}', $this->config->ghostNamespace(), $template);
+		$template = str_replace('{{namespace}}', $this->ghostNamespace, $template);
 		$template = str_replace('{{add-fields}}', join("\n", $addFields), $template);
 		$template = str_replace('{{constants}}', join("\n", $constants), $template);
 		$template = str_replace('{{fieldConstants}}', join("\n", $fieldConstants), $template);
@@ -243,14 +243,14 @@ class Creator{
 
 	protected function generateGhost($name, $table, $database){
 		$this->style->writeln("Generate Ghost");
-		$file = "{$this->config->ghostPath()}/{$name}.php";
+		$file = "{$this->ghostPath}/{$name}.php";
 		$this->style->write("- {$file}");
 
 		if (file_exists($file)){
 			$this->style->writeln(" - [ALREADY EXISTS]");
 		}else{
 			$template = file_get_contents(__DIR__ . '/ghost.txt');
-			$template = str_replace('{{namespace}}', $this->config->ghostNamespace(), $template);
+			$template = str_replace('{{namespace}}', $this->ghostNamespace, $template);
 			$template = str_replace('{{name}}', $name, $template);
 			$template = str_replace('{{table}}', $table, $template);
 			file_put_contents($file, $template);
