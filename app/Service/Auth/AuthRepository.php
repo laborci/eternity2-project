@@ -7,7 +7,7 @@ use Ghost\User;
 class AuthRepository implements AuthenticableRepositoryInterface{
 
 
-	public function authLookup($id): AuthenticableInterface{ return User::authLookup($id); }
+	public function authLookup($id): ?AuthenticableInterface{ return User::authLookup($id); }
 	public function authLoginLookup($login): ?AuthenticableInterface{ return User::authLoginLookup($login); }
 
 }
