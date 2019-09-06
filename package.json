@@ -39,10 +39,10 @@
 		"twig-loader": "^0.4.1",
 		"watchify": "^3.9.0",
 		"webpack": "^4.38.0",
-		"z-build": "file:external/z-build",
-		"z-codex": "file:external/z-codex",
-		"z-ui": "file:external/z-ui",
-		"zengular": "file:external/zengular"
+		"z-build": "file:node_external/z-build",
+		"z-codex": "file:node_external/z-codex",
+		"z-ui": "file:node_external/z-ui",
+		"zengular": "file:node_external/zengular"
 	},
 	"devDependencies": {
 		"webpack-cli": "^3.3.6"

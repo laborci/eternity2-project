@@ -1,8 +1,0 @@
-{
-	"fonts": {
-		"Oswald": [500],
-		"Roboto": [500]
-	},
-	"family": ["latin-ext"],
-	"css": "./src/google-fonts.less"
-}

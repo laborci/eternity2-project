@@ -3,17 +3,13 @@ mission: \Application\Mission\Admin\Missionary
 modules:
   \Eternity2\Module\SmartPageResponder\Module:
     twig-sources:
-      ~admin: /src/Mission/Admin/Page/@template/
+      ~admin: app/Mission/Admin/Page/@template/
   \Eternity2\Module\Codex\Module:
     menu:
       - label: Felhasználók
         icon: fas fa-user
         event: SHOW-FORM
         data.name: UserCodex
-      - label: Wiki
-        icon: fas fa-book
-        event: SHOW-FORM
-        data.name: WikiCodex
   \Eternity2\Module\Auth\Module:
     login-page: \Eternity2\Module\Codex\Page\Login
     permission: admin

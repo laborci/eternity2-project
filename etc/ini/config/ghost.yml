@@ -1,4 +1,4 @@
 default-database: DefaultDBConnection
 generator:
-  ~ghost-path: src/Ghost
+  ~ghost-path: app/Ghost
   ghost-namespace: Ghost

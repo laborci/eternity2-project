@@ -1,2 +1,2 @@
 pattern: api.{domain}
-mission: \Application\Mission\API\Missionary
+mission: \Application\Mission\Api\Missionary

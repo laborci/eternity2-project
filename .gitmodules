@@ -1,12 +1,12 @@
-[submodule "external/zengular"]
-	path = external/zengular
+[submodule "node_external/zengular"]
+	path = node_external/zengular
 	url = https://github.com/laborci/zengular.git
-[submodule "external/z-build"]
-	path = external/z-build
-	url = https://github.com/laborci/z-build.git
-[submodule "external/z-ui"]
-	path = external/z-ui
+[submodule "node_external/z-build"]
+	path = node_external/z-build
+	url = /Users/elvis/dev/htdocs/Eternity2/node_external/z-build
+[submodule "node_external/z-ui"]
+	path = node_external/z-ui
 	url = https://github.com/laborci/z-ui.git
-[submodule "external/z-codex"]
-	path = external/z-codex
+[submodule "node_external/z-codex"]
+	path = node_external/z-codex
 	url = https://github.com/laborci/z-codex.git

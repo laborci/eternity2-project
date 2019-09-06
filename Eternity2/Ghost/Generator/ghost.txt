@@ -1,6 +1,0 @@
-<?php namespace {{namespace}};
-
-class {{name}} extends Helper\Ghost{{name}} {
-}
-
-{{name}}::init();

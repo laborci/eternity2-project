@@ -2,8 +2,7 @@
 	"buildVersionFile": "./build-version",
 	"googlefonts": {
 		"src": [
-			"./src/Mission/Web/Page/@css/google-fonts.json",
-			"./src/Mission/Admin/Page/@css/google-fonts.json"
+			"./app/Mission/Admin/Page/@css/google-fonts.json"
 		],
 		"dest": "./public/fonts/",
 		"path": "/fonts/"
@@ -21,7 +20,7 @@
 			"watch": true
 		},
 		{
-			"src": "./src/",
+			"src": "./app/",
 			"pattern": "index.php",
 			"dest": "./public/",
 			"watch": true
@@ -29,21 +28,21 @@
 	],
 	"css": [
 		{
-			"src": "./src/Mission/Web/Page/@css/",
+			"src": "./app/Mission/Web/Page/@css/",
 			"dest": "./public/web/css/"
 		},
 		{
-			"src": "./src/Mission/Admin/Page/@css/",
+			"src": "./app/Mission/Admin/Page/@css/",
 			"dest": "./public/admin/css/"
 		}
 	],
 	"js": [
 		{
-			"src": "./src/Mission/Web/Page/@js/",
+			"src": "./app/Mission/Web/Page/@js/",
 			"dest": "./public/web/js/"
 		},
 		{
-			"src": "./src/Mission/Admin/Page/@js/",
+			"src": "./app/Mission/Admin/Page/@js/",
 			"dest": "./public/admin/js/"
 		}
 	]

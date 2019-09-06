@@ -7,31 +7,12 @@
         }
     ],
     "require": {
-        "symfony/http-foundation": "^3.3",
-        "nabil1337/case-helper": "^0.1.0",
-        "twig/twig":"^2.0",
-        "minime/annotations": "~3.0",
-        "symfony/yaml": "^4.2",
-        "symfony/console": "^3.4.28",
-        "riimu/kit-phpencoder": "^2.3",
-        "laborci/valentine-date": "^1.0",
-        "redant/console": "^1.0"
+        "laborci/eternity2": "1.0.0"
     },
     "autoload": {
         "psr-4": {
-            "Application\\": "src/",
-            "Ghost\\": "src/Ghost",
-            "Eternity2\\Thumbnail\\": "Eternity2/Thumbnail/",
-            "Eternity2\\Attachment\\": "Eternity2/Attachment/",
-            "Eternity2\\System\\": "Eternity2/System/",
-            "Eternity2\\RemoteLog\\": "Eternity2/RemoteLog/",
-            "Eternity2\\CliApplication\\": "Eternity2/CliApplication/",
-            "Eternity2\\Mission\\": "Eternity2/Mission/",
-            "Eternity2\\DBAccess\\": "Eternity2/DBAccess/",
-            "Eternity2\\Gmark\\": "Eternity2/Gmark/",
-            "Eternity2\\Zuul\\": "Eternity2/Zuul/",
-            "Eternity2\\Ghost\\": "Eternity2/Ghost/",
-            "Eternity2\\Module\\": "Eternity2/Module/"
+            "Application\\": "app/",
+            "Ghost\\": "app/Ghost"
         }
     }
 }

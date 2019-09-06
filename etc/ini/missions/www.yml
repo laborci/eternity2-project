@@ -3,4 +3,4 @@ mission: \Application\Mission\Web\Missionary
 modules:
   \Eternity2\Module\SmartPageResponder\Module:
     twig-sources:
-      ~web: /src/Mission/Web/Page/@template/
+      ~web: /app/Mission/Web/Page/@template/
