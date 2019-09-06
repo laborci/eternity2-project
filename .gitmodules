@@ -3,7 +3,7 @@
 	url = https://github.com/laborci/zengular.git
 [submodule "node_external/z-build"]
 	path = node_external/z-build
-	url = /Users/elvis/dev/htdocs/Eternity2/node_external/z-build
+	url = https://github.com/laborci/z-build.git
 [submodule "node_external/z-ui"]
 	path = node_external/z-ui
 	url = https://github.com/laborci/z-ui.git
