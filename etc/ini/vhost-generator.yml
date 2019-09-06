@@ -1,3 +1,0 @@
-templates:
-  "/etc/vhost/template.dev.conf": "/var/vhost/virtualhost.dev.conf"
-  "/etc/vhost/template.prod.conf": "/var/vhost/virtualhost.prod.conf"

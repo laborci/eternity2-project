@@ -1,7 +1,0 @@
-default-database: DefaultDBConnection
-
-generator:
-    ghost-path: src/Ghost
-    ghost-namespace: Ghost
-
-attachment-config: GhostAttachmentConfig
