@@ -7,7 +7,7 @@
         }
     ],
     "require": {
-        "laborci/eternity2": "1.0.0"
+        "laborci/eternity2": "~1.0.1"
     },
     "autoload": {
         "psr-4": {

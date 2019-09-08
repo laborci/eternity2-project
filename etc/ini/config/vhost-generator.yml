@@ -1,7 +1,7 @@
 templates:
   -
-    ~source: "/etc/vhost/template.dev.conf"
-    ~target: "/var/vhost/virtualhost.dev.conf"
+    ~source: etc/vhost/template.dev.conf
+    ~target: var/vhost/virtualhost.dev.conf
   -
-    ~source: "/etc/vhost/template.prod.conf"
-    ~target: "/var/vhost/virtualhost.prod.conf"
+    ~source: etc/vhost/template.prod.conf
+    ~target: var/vhost/virtualhost.prod.conf

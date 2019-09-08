@@ -1,2 +1,2 @@
-~cache: /var/template-cache/
+~cache: var/template-cache/
 debug: true

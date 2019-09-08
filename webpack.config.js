@@ -1,4 +1,4 @@
-let buildConfig = require('z-build').ConfigReader.load('./z-build.json');
+let buildConfig = require('z-build').ConfigReader.load('./etc/z-build.json');
 let VersionBump = require('z-build').VersionBump;
 
 let path = require('path');

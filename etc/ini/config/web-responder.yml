@@ -1,2 +1,2 @@
-~client-version: /build/build-version
-~output-cache: /var/output-cache/
+~client-version: build/build-version
+~output-cache: var/output-cache/

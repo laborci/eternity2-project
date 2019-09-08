@@ -3,8 +3,6 @@ vendor
 var/**
 data/**
 node_modules
-etc/vhost/virtualhost.*conf
-etc/ini/*.local.yml
-etc/ene/*
+etc/ini/**/*.local.yml
 public/*
 build-version

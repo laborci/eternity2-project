@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e16fa5bbddef1f31cfc36d526426bc7",
+    "content-hash": "7cfa44fa39631e612ca7aaf6c7550970",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -63,16 +63,16 @@
         },
         {
             "name": "laborci/eternity2",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laborci/eternity2.git",
-                "reference": "90d8ecb4e2d218ff768e6bcd995e8ee71573d66c"
+                "reference": "2ad92bd609ad5e5c3454a4da78f88c72914dff67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laborci/eternity2/zipball/90d8ecb4e2d218ff768e6bcd995e8ee71573d66c",
-                "reference": "90d8ecb4e2d218ff768e6bcd995e8ee71573d66c",
+                "url": "https://api.github.com/repos/laborci/eternity2/zipball/2ad92bd609ad5e5c3454a4da78f88c72914dff67",
+                "reference": "2ad92bd609ad5e5c3454a4da78f88c72914dff67",
                 "shasum": ""
             },
             "require": {
@@ -103,7 +103,7 @@
                 }
             ],
             "description": "Eternity Framework 2",
-            "time": "2019-09-06T11:49:18+00:00"
+            "time": "2019-09-06T13:12:11+00:00"
         },
         {
             "name": "laborci/valentine-date",
@@ -1005,19 +1005,19 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "role": "Lead Developer",
                     "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org"
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Armin Ronacher",
-                    "role": "Project Founder",
-                    "email": "armin.ronacher@active-4.com"
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
                 },
                 {
                     "name": "Twig Team",
-                    "role": "Contributors",
-                    "homepage": "https://twig.symfony.com/contributors"
+                    "homepage": "https://twig.symfony.com/contributors",
+                    "role": "Contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",

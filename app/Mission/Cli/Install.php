@@ -40,13 +40,12 @@ class Install extends Command{
 
 		$user = new User();
 		$user->password = "vegas";
-		$user->email = "elvis@elvis.hu";
+		$user->email = "elvis@eternity";
 		$user->name = "elvis";
 		$user->roles = [USER::ROLES_ADMIN];
 		$user->status = User::STATUS_ACTIVE;
 
 		$user->save();
-
 	}
 
 }
