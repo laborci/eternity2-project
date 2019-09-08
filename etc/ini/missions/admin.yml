@@ -5,6 +5,10 @@ modules:
     twig-sources:
       ~admin: app/Mission/Admin/Page/@template/
   \Eternity2\Module\Codex\Module:
+    admin:
+      icon: fas fa-infinity
+      title: Eternity2
+      login-placeholder: e-mail
     menu:
       - label: Felhasználók
         icon: fas fa-user
