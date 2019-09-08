@@ -1,0 +1,10 @@
+rm -rf node_external/zengular
+rm -rf node_external/z-build
+rm -rf node_external/z-ui
+rm -rf node_external/z-codex
+git submodule add https://github.com/laborci/zengular.git node_external/zengular
+git submodule add https://github.com/laborci/z-build.git node_external/z-build
+git submodule add https://github.com/laborci/z-ui.git node_external/z-ui
+git submodule add https://github.com/laborci/z-codex.git node_external/z-codex
+git submodule init
+git submodule update
