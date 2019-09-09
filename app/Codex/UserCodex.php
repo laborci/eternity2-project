@@ -1,9 +1,11 @@
 <?php namespace Application\Codex;
 
+use Eternity2\DBAccess\Filter\Filter;
 use Eternity2\Module\Codex\Codex\AdminDescriptor;
 use Eternity2\Module\Codex\Codex\DataProvider\DataProviderInterface;
 use Eternity2\Module\Codex\Codex\DataProvider\GhostDataProvider;
 use Eternity2\Module\Codex\Codex\Dictionary\Dictionary;
+use Eternity2\Module\Codex\Codex\FilterCreatorInterface;
 use Eternity2\Module\Codex\Codex\FormHandler\FormHandler;
 use Eternity2\Module\Codex\Codex\ItemDataImporterInterface;
 use Eternity2\Module\Codex\Codex\ListHandler\ListHandler;
@@ -46,7 +48,6 @@ class UserCodex extends AdminDescriptor{
 		$list->add(User::F_STATUS)->dictionary(new Dictionary($this->dict[User::F_STATUS]));
 		$list->add(User::F_ROLES)->dictionary(new Dictionary($this->dict[User::F_ROLES]));
 		$list->add('userType', '<i class="fas fa-user"></i>')->clientOnly()->sortable(false);
-
 		$list->addJSPlugin('ListPreprocessUser');
 		$list->addJSPlugin('ListButtonAddNew');
 

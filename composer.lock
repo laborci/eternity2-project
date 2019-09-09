@@ -63,16 +63,16 @@
         },
         {
             "name": "laborci/eternity2",
-            "version": "1.0.3",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laborci/eternity2.git",
-                "reference": "0829c8c9564591455a0812d74e7d7debc720a3d5"
+                "reference": "9dc5c7ada090f2122f3bd9c53332579e99f294e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laborci/eternity2/zipball/0829c8c9564591455a0812d74e7d7debc720a3d5",
-                "reference": "0829c8c9564591455a0812d74e7d7debc720a3d5",
+                "url": "https://api.github.com/repos/laborci/eternity2/zipball/9dc5c7ada090f2122f3bd9c53332579e99f294e7",
+                "reference": "9dc5c7ada090f2122f3bd9c53332579e99f294e7",
                 "shasum": ""
             },
             "require": {
@@ -103,7 +103,7 @@
                 }
             ],
             "description": "Eternity Framework 2",
-            "time": "2019-09-08T17:55:32+00:00"
+            "time": "2019-09-09T09:36:30+00:00"
         },
         {
             "name": "laborci/valentine-date",
