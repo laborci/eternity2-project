@@ -27,7 +27,7 @@ class Install extends Command{
   `roles` set('admin','super') DEFAULT NULL,
   `status` enum('active','inactive') DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=341 DEFAULT CHARSET=utf8;");
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 		$db->query("CREATE TABLE `user_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -36,7 +36,7 @@ class Install extends Command{
   `event` varchar(32) COLLATE utf8_hungarian_ci DEFAULT NULL,
   `details` text COLLATE utf8_hungarian_ci COMMENT 'json',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;");
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;");
 
 		$user = new User();
 		$user->password = "vegas";
