@@ -6,6 +6,8 @@ use Eternity2\Zuul\AuthenticableInterface;
 
 class User extends Helper\GhostUser implements AuthenticableInterface, CodexUserInterface{
 
+	public $status = 'inactive';
+
 	protected function setPassword($value){ $this->password = password_hash($value, PASSWORD_BCRYPT); }
 
 // region AuthenticableInterface

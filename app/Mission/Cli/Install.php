@@ -25,8 +25,8 @@ class Install extends Command{
   `password` varchar(60) DEFAULT NULL COMMENT 'password',
   `created` datetime DEFAULT NULL,
   `roles` set('admin','super') DEFAULT NULL,
-  `status` enum('active','inactive') DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `status` enum('active','inactive') NOT NULL DEFAULT 'inactive',
+    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 		$db->query("CREATE TABLE `user_log` (

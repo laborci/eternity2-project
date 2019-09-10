@@ -47,8 +47,6 @@ class UserCodex extends AdminDescriptor{
 		$list->add(User::F_ROLES)->visible(false);
 		$list->add(User::F_STATUS)->dictionary(new Dictionary($this->dict[User::F_STATUS]));
 		$list->add(User::F_ROLES)->dictionary(new Dictionary($this->dict[User::F_ROLES]));
-		$list->add('userType', '<i class="fas fa-user"></i>')->clientOnly()->sortable(false);
-		$list->addJSPlugin('ListPreprocessUser');
 		$list->addJSPlugin('ListButtonAddNew');
 
 		return $list;
@@ -79,7 +77,7 @@ class UserCodex extends AdminDescriptor{
 		$main->input('string', 'newpassword', 'új jelszó');
 		$main->input('radio', User::F_STATUS)
 		('options', $this->dict[User::F_STATUS]);
-		$main->input('radio', User::F_ROLES)
+		$main->input('checkboxes', User::F_ROLES)
 		('options', $this->dict[User::F_ROLES]);
 
 		return $form;
