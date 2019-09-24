@@ -1,1 +1,1 @@
-~cache: var/annotations-cache/
+~(path.var)cache: annotations-cache/

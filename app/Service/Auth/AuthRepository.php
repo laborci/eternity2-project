@@ -1,10 +1,9 @@
 <?php namespace Application\Service\Auth;
 
-use Eternity2\Zuul\AuthenticableInterface;
-use Eternity2\Zuul\AuthenticableRepositoryInterface;
+use Eternity2\Module\Zuul\Interfaces\AuthenticableInterface;
 use Ghost\User;
 
-class AuthRepository implements AuthenticableRepositoryInterface{
+class AuthRepository implements \Eternity2\Module\Zuul\Interfaces\AuthRepositoryInterface{
 
 
 	public function authLookup($id): ?AuthenticableInterface{ return User::authLookup($id); }

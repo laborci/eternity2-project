@@ -1,2 +1,2 @@
-~cache: var/template-cache/
+~(path.var)cache: template-cache/
 debug: true

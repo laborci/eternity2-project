@@ -1,19 +1,24 @@
 pattern: admin.{domain}
 mission: \Application\Mission\Admin\Missionary
 modules:
-  \Eternity2\Module\SmartPageResponder\Module:
-    twig-sources:
-      ~admin: app/Mission/Admin/Page/@template/
-  \Eternity2\Module\Codex\Module:
+  Zuul:
+    services:
+      AuthRepository: \Application\Service\Auth\AuthRepository
+      Authenticable: \Ghost\User
+  SmartPageResponder:
+    twig-sources.~(path.src)admin: Mission/Admin/Page/@template/
+  Codex:
+    services:
+      WhoAmI: \Application\Service\Auth\CodexWhoAmI
     admin:
-      icon: fas fa-infinity
-      title: Eternity2
+      icon: fab fa-wikipedia-w
+      title: Wiki
       login-placeholder: e-mail
     menu:
-      - label: Felhasználók
+      - label: Users
         icon: fas fa-user
         event: SHOW-FORM
         data.name: UserCodex
-  \Eternity2\Module\Auth\Module:
+  CodexAuth:
     login-page: \Eternity2\Module\Codex\Page\Login
     permission: admin

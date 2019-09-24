@@ -4,14 +4,14 @@
 		"src": [
 			"./app/Mission/Admin/Page/@css/google-fonts.json"
 		],
-		"dest": "./public/fonts/",
-		"path": "/fonts/"
+		"dest": "./public/~fonts/",
+		"path": "/~fonts/"
 	},
 	"copy": [
 		{
 			"src": "./node_modules/@fortawesome/fontawesome-pro/webfonts/",
 			"pattern": "*",
-			"dest": "./public/fonts/fontawesome/"
+			"dest": "./public/~fonts/fontawesome/"
 		},
 		{
 			"src": "./assets/",
@@ -29,21 +29,21 @@
 	"css": [
 		{
 			"src": "./app/Mission/Web/Page/@css/",
-			"dest": "./public/web/css/"
+			"dest": "./public/~web/css/"
 		},
 		{
 			"src": "./app/Mission/Admin/Page/@css/",
-			"dest": "./public/admin/css/"
+			"dest": "./public/~admin/css/"
 		}
 	],
 	"js": [
 		{
 			"src": "./app/Mission/Web/Page/@js/",
-			"dest": "./public/web/js/"
+			"dest": "./public/~web/js/"
 		},
 		{
 			"src": "./app/Mission/Admin/Page/@js/",
-			"dest": "./public/admin/js/"
+			"dest": "./public/~admin/js/"
 		}
 	]
 }
