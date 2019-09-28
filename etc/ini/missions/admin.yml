@@ -1,24 +1,8 @@
 pattern: admin.{domain}
 mission: \Application\Mission\Admin\Missionary
+:modules.Codex: modules/codex
+:modules.Zuul: modules/zuul
+:modules.CodexAuth: modules/codex-auth
 modules:
-  Zuul:
-    services:
-      AuthRepository: \Application\Service\Auth\AuthRepository
-      Authenticable: \Ghost\User
-  SmartPageResponder:
-    twig-sources.~(path.src)admin: Mission/Admin/Page/@template/
-  Codex:
-    services:
-      WhoAmI: \Application\Service\Auth\CodexWhoAmI
-    admin:
-      icon: fab fa-wikipedia-w
-      title: Wiki
-      login-placeholder: e-mail
-    menu:
-      - label: Users
-        icon: fas fa-user
-        event: SHOW-FORM
-        data.name: UserCodex
-  CodexAuth:
-    login-page: \Eternity2\Module\Codex\Page\Login
-    permission: admin
+  SmartPageResponder.twig-sources.~(path.src)admin: Mission/Admin/Page/@template/
+

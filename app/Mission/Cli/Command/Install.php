@@ -1,4 +1,4 @@
-<?php namespace Application\Mission\Cli;
+<?php namespace Application\Mission\Cli\Command;
 
 use DefaultDBConnection;
 use Eternity2\System\ServiceManager\ServiceContainer;
@@ -15,7 +15,6 @@ class Install extends Command{
 		$this->setName('install');
 		$this->addOption("tables", "t", InputOption::VALUE_NONE, "Creates user and user_log tables");
 		$this->addOption("add-user", "u", InputOption::VALUE_NONE, "Adds a user");
-		$this->addOption("create-dirs", "d", InputOption::VALUE_NONE, "Creates working directories");
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output){
@@ -49,20 +48,6 @@ class Install extends Command{
 			$user->save();
 		}
 
-		if($input->getOption('create-dirs') !== false){
-			foreach ([
-				         env('annotation-reader.cache'),
-				         env('web-responder.output-cache'),
-				         env('twig.cache'),
-				         env('thumbnail.path'),
-				         env('vhost-generator.output-path'),
-				         env('attachment.path'),
-				         env('attachment.meta-db-path'),
-			         ] as $dir){
-				$style->writeln("Creating directory: " . $dir);
-				if (!is_dir($dir)) mkdir($dir, 0777, true);
-			}
-		}
 	}
 
 }

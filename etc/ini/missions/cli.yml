@@ -2,6 +2,3 @@ pattern: ":"
 mission: \Application\Mission\Cli\Missionary
 config:
   commands:
-    - \Eternity2\System\VhostGenerator\CliCommandGenerateVhost
-    - \Eternity2\System\Env\CliCommandGenerateEnv
-    - \Eternity2\Ghost\Generator\CliCommand

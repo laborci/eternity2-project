@@ -1,9 +1,2 @@
-~templates-path: etc/vhost/
-~output-path: var/vhost/
-templates:
-  -
-    ~(vhost-generator.templates-path)source: template.dev.conf
-    ~(vhost-generator.output-path)target: virtualhost.dev.conf
-  -
-    ~(vhost-generator.templates-path)source: template.prod.conf
-    ~(vhost-generator.output-path)target: virtualhost.prod.conf
+~template: etc/vhost/virtualhost.conf
+~output: var/vhost/virtualhost.conf
