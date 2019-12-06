@@ -1,3 +1,0 @@
-services:
-  AuthRepository: \Application\Service\Auth\AuthRepository
-  Authenticable: \Ghost\User

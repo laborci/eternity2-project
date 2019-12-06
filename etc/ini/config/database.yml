@@ -1,8 +1,8 @@
 default:
   scheme: mysql
-  host: localhost
   port: 3306
+  host: localhost
+  database: eternity
   user: root
   password: root
-  database: eternity
   charset: utf8

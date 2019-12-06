@@ -1,50 +1,73 @@
 {
 	"author": "Gergely Laborci",
-	"name": "zengular-app",
+	"name": "your-app",
 	"scripts": {
 		"build": "webpack --progress --colors --mode production",
-		"work": "webpack --progress --colors --watch  --mode development"
+		"work": "webpack --progress --colors --watch  --mode development",
+		"runmac": "../@nwjs/nwjs.app/Contents/MacOS/nwjs .",
+		"ggf": "node ./node_modules/zengular-build/src/zengular-ggf.js"
+	},
+	"postcss": {
+		"plugins": {
+			"autoprefixer": {}
+		}
+	},
+	"browserslist": [
+		"last 2 version",
+		"iOS >= 9"
+	],
+	"google-fonts": {
+		"location": "assets/~fonts/",
+		"css": "app@web/style/src/google-fonts.scss",
+		"url-font-path": "#{$font-path}",
+		"fonts": {
+			"Oswald": [
+				200,
+				400
+			],
+			"Rajdhani": [
+				300,
+				400,
+				500,
+				600,
+				700
+			],
+			"Roboto": [
+				300,
+				400,
+				500,
+				600,
+				700
+			]
+		}
+	},
+	"z-build": {
+		"copy": {
+			"assets//**/*": "public",
+			"node_modules/@fortawesome/fontawesome-pro/webfonts/*": "public/~fonts/fontawesome",
+			"app/index.php": "public"
+		},
+		"entries": {
+			"app@web/app/app.js": "public/~web/app",
+			"app@admin/app/app.js": "public/~admin/app",
+			"app@admin/app/login.js": "public/~admin/login"
+		},
+		"verbump": "build-number",
+		"devtool": false
 	},
 	"dependencies": {
-		"@babel/core": "^7.6.2",
-		"@babel/plugin-proposal-class-properties": "^7.5.5",
-		"@babel/plugin-proposal-decorators": "^7.6.0",
-		"@babel/plugin-proposal-object-rest-spread": "^7.6.2",
-		"@babel/plugin-proposal-optional-chaining": "^7.6.0",
-		"@babel/preset-env": "^7.6.2",
 		"@fortawesome/fontawesome-pro": "^5.11.2",
-		"babel-loader": "^8.0.4",
-		"babel-polyfill": "^6.26.0",
-		"copy": "^0.3.0",
-		"css-loader": "^0.28.4",
-		"file-loader": "^0.11.2",
 		"font-awesome-filetypes": "^2.1.0",
-		"get-google-fonts": "^1.2.0",
-		"glob": "^7.1.2",
-		"gulp": "^4.0.2",
-		"gulp-autoprefixer": "^3.1.0",
-		"gulp-browserify": "^0.5.1",
-		"gulp-concat": "^2.6.1",
-		"gulp-google-webfonts": "^2.0.0",
-		"gulp-less": "^3.0.5",
-		"gulp-sourcemaps": "^1.9.1",
-		"gulp-uglifycss": "^1.1.0",
-		"gulp-watch": "^4.3.5",
-		"html-loader": "^0.5.5",
-		"less": "^2.7.2",
-		"less-loader": "^4.0.5",
-		"load-css-file": "^1.0.0",
-		"load-js": "^1.2.0",
-		"style-loader": "^0.18.2",
-		"twig-loader": "^0.4.1",
-		"watchify": "^3.9.0",
-		"webpack": "^4.41.0",
-		"zengular": "^2.0.1",
-		"zengular-build": "^2.0.0",
-		"zengular-codex": "^1.0.5",
-		"zengular-ui": "^1.0.1"
+		"markdown-it": "^10.0.0",
+		"webpack": "^4.41.2",
+		"zengular": "^3.0.7",
+		"zengular-codex": "^2.0.1",
+		"zengular-router": "^1.1.0",
+		"zengular-ui": "^2.0.7",
+		"zengular-util": "^1.0.4"
 	},
 	"devDependencies": {
-		"webpack-cli": "^3.3.9"
+		"webpack-cli": "^3.3.10",
+		"zengular-build": "^3.1.5"
 	}
 }

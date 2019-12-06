@@ -7,13 +7,17 @@
         }
     ],
     "require": {
-        "laborci/eternity2": "~1.0.1",
+        "laborci/eternity2": "^1.1.2",
         "rah/danpu": "^2.7"
     },
     "autoload": {
         "psr-4": {
-            "Application\\": "app/",
-            "Ghost\\": "app/Ghost"
+            "Application\\": "app",
+            "Ghost\\": "app.ghost",
+            "Application\\AdminCodex\\": "app@admin/codex",
+            "Application\\Mission\\Api\\": "app@api",
+            "Application\\Cli\\": "app@cli",
+            "Application\\Mission\\Web\\": "app@web/mission"
         }
     }
 }

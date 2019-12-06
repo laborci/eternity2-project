@@ -1,12 +1,19 @@
 #!/bin/bash
-if [ $1 = "wp" ]
+if [ $1 = "dirs" ]
 then
-  npm run work
-elif [ $1 = "gulp" ]
-then
-  gulp
+  mkdir var
+  mkdir var/annotations-cache
+  mkdir var/output-cache
+  mkdir var/template-cache
+  mkdir var/tmp
+  mkdir var/thumbnail
+  mkdir data
+  mkdir dev
+  mkdir dev/dump
+  mkdir data/attachment
+  mkdir data/attachment-meta
+  mkdir public
 else
     echo 'PHLEXCLI'
     php app/index.php $*
 fi
-

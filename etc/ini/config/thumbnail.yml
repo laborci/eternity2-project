@@ -1,4 +1,4 @@
 ~(path.var)path: thumbnail/
+~(attachment.path)source-path: ""
 secret: ferengi
 url: /~thumbnail
-~(attachment.path)source-path: ""

@@ -1,4 +1,6 @@
 pattern: ":"
-mission: \Application\Mission\Cli\Missionary
+mission: \Eternity2\Mission\Cli\Application
 config:
   commands:
+    - \Application\Cli\Install
+    - \Application\Cli\Test

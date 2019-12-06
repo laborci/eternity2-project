@@ -1,2 +1,2 @@
 ~template: etc/vhost/virtualhost.conf
-~output: var/vhost/virtualhost.conf
+~output: var/virtualhost.conf
