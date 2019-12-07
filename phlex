@@ -13,6 +13,7 @@ then
   mkdir data/attachment
   mkdir data/attachment-meta
   mkdir public
+  echo "done."
 else
     echo 'PHLEXCLI'
     php app/index.php $*
