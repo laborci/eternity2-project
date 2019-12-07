@@ -18,7 +18,7 @@
 	],
 	"google-fonts": {
 		"location": "assets/~fonts/",
-		"css": "app@web/style/src/google-fonts.scss",
+		"css": "app.mission/web/style/src/google-fonts.scss",
 		"url-font-path": "#{$font-path}",
 		"fonts": {
 			"Oswald": [
@@ -48,9 +48,9 @@
 			"app/index.php": "public"
 		},
 		"entries": {
-			"app@web/app/app.js": "public/~web/app",
-			"app@admin/app/app.js": "public/~admin/app",
-			"app@admin/app/login.js": "public/~admin/login"
+			"app.mission/web/app/app.js": "public/~web/app",
+			"app.mission/admin/app/app.js": "public/~admin/app",
+			"app.mission/admin/app/login.js": "public/~admin/login"
 		},
 		"verbump": "build-number",
 		"devtool": false

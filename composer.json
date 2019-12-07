@@ -14,10 +14,10 @@
         "psr-4": {
             "Application\\": "app",
             "Ghost\\": "app.ghost",
-            "Application\\AdminCodex\\": "app@admin/codex",
-            "Application\\Mission\\Api\\": "app@api",
-            "Application\\Cli\\": "app@cli",
-            "Application\\Mission\\Web\\": "app@web/mission"
+            "Application\\AdminCodex\\": "app.mission/admin/codex",
+            "Application\\Mission\\Api\\": "app.mission/api",
+            "Application\\Cli\\": "app.mission/cli",
+            "Application\\Mission\\Web\\": "app.mission/web/mission"
         }
     }
 }

@@ -1,6 +1,16 @@
-# Install
+
+# Install Eternity2 project
+
+## Előfeltételek
+
+- php 7.2
+- php sqlite3
+- php gd
+
+## Telepítés
 
 - edit: `composer create-project laborci/eternity2project YOUR-PROJECT`
+- run: `cd YOUR-PROJECT`
 - run: `./phlex dirs` - létrehozza a még nem létező mappákat
 - edit: `etc/ini/env.yml` - Az alső sorban állítsd be a kívánt root domain-t
 - edit: `etc/ini/config/database.yml` - Állítsd be az adatbázisod hozzáférést
@@ -12,6 +22,7 @@
 - run `./phlex install -tu` - létrehozza az user táblát és egy alap felhasználót
 - run: `npm install`
 - run: `npm run work`
+- run: `npm install -g rlogtail`
 - test: próbáld ki a beállított domaint, azt várjuk: it works!
 - test: próbáld ki az admint (`admin.YOURDOMAIN`). User: elvis@eternity Pass: vegas
 
@@ -37,12 +48,12 @@ Az alkalmazásod központi fájljai
 - `Service` - központi szervizek
 - `index.php` - bootstrap file
 
-## Missionök
+## app.mission
 
-Az `app@...` folderek a Missionök rootjai. Általános szerkezetként a telepített
-példából az `app@web` tekinthető, a többi három bizonyos szempontból egyedi.
+Ebben a mappában vannak az alkalmazásod missionjei. Általános szerkezetként a telepített
+példából az `web` tekinthető, a többi három bizonyos szempontból egyedi.
 
-### app@admin
+### app.mission/admin
 
 Az admin felülethez tartozó állományok
 - `app` - az alkalmazásod frontend rootja
@@ -53,7 +64,7 @@ Az admin felülethez tartozó állományok
 > mivel az admin alkalmazás nagy része npm és composer csomagokban van, és az
 > egész modulként kerül betöltésre, itt már csak annak kiegészítései szerepelnek.
 
-### app@api
+### app.mission/api
 
 > namespace: `\Application\Mission\Api` 
 
@@ -62,7 +73,7 @@ Az alkalmazásod API ágának Mission-je.
 > mivel itt nincs front-end, ezért maga a folder a mission root.
 
 
-### app@cli
+### app.mission/cli
 
 > namespace: `\Application\Cli` 
 
@@ -71,7 +82,7 @@ A saját cli parancsaid helye.
 > a cli megvalósítása teljesen az *eternity* feladata, ezért itt csak a saját
 > parancsaidat kell felsorolnod.
 
-### app@web
+### app.mission/web
 
 - `app` - az alkalmazásod frontend rootja
 - `mission` - a web alkalmazás missionje

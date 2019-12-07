@@ -3,4 +3,4 @@ pattern:
   - "{domain}"
 mission: \Application\Mission\Web\Missionary
 modules:
-  SmartPageResponder.twig-sources.~web: "app@web/templates"
+  SmartPageResponder.twig-sources.~web: "app.mission/web/templates"
