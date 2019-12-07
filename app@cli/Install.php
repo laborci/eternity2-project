@@ -49,7 +49,7 @@ class Install extends Command{
 			$user->status = User::STATUS_ACTIVE;
 			$user->save();
 		}
-
+/*
 		if($input->getOption('create-dirs') !== false){
 			foreach ([
 				         env('annotation-reader.cache'),
@@ -64,6 +64,7 @@ class Install extends Command{
 				if (!is_dir($dir)) mkdir($dir, 0777, true);
 			}
 		}
+*/
 	}
 
 }

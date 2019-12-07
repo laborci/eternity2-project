@@ -1,4 +1,6 @@
-pattern: "*.{domain}"
+pattern:
+  - "*.{domain}"
+  - "{domain}"
 mission: \Application\Mission\Web\Missionary
 modules:
   SmartPageResponder.twig-sources.~web: "app@web/templates"

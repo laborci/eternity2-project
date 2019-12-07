@@ -1,18 +1,27 @@
-let buildConfig = require('zengular-build').ConfigReader.load('./etc/z-build.json');
-let VersionBump = require('zengular-build').VersionBump;
+const zBuild = new (require('zengular-build'))();
+const packagejson = require('./package');
+const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-let path = require('path');
+module.exports = (env, options) => {
 
-module.exports = [
-	{
+	let dev = options.mode === 'development';
+	let prod = options.mode === 'production';
+
+	return {
 		name: 'Transpiler',
-		entry: buildConfig.jsEntries,
+		entry: zBuild.entries,
 		output: {filename: '[name].js', path: __dirname},
 		resolve: {
-			modules: ['node_modules']
+			modules: ['node_modules', '/'],
+			alias: packagejson["z-build"]["resolve-alias"]
 		},
-		plugins: [new VersionBump({file: path.resolve(__dirname, buildConfig.buildVersionFile)})],
-		devtool: 'inline-source-map',
+		plugins: [
+			zBuild.verbump,
+			new CopyPlugin(zBuild.copy),
+			new MiniCssExtractPlugin({filename: '[name].css'}),
+		],
+		devtool: dev ? zBuild.devtool : false,
 		module: {
 			rules: [
 				{
@@ -39,18 +48,31 @@ module.exports = [
 					use: "twig-loader"
 				},
 				{
-					test: /@\.less$/, // loads @*.less as a string
-					use: ["html-loader", "less-loader"]
+					test: /\.less$/,
+					use: [
+						{loader: MiniCssExtractPlugin.loader, options: {}},
+						{loader: "css-loader", options: {url: false, minimize: true}},
+						{loader: "postcss-loader"},
+						{loader: "less-loader", options: {relativeUrls: false}}
+					]
 				},
 				{
-					test: /[^@]\.less$/,
-					use: ["style-loader", "css-loader", "less-loader"]
+					test: /\.scss/,
+					use: [
+						{loader: MiniCssExtractPlugin.loader, options: {}},
+						{loader: "css-loader", options: {url: false, minimize: true}},
+						{loader: "postcss-loader"},
+						{loader: "sass-loader", options: {}}
+					]
 				},
 				{
 					test: /\.css$/,
-					use: ["style-loader", "css-loader"]
+					use: [
+						{loader: MiniCssExtractPlugin.loader, options: {}},
+						{loader: "css-loader", options: {url: false, minimize: true}}
+					]
 				}
 			]
 		}
 	}
-];
+};
