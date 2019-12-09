@@ -7,8 +7,7 @@
         }
     ],
     "require": {
-        "laborci/eternity2": "^1.1.2",
-        "rah/danpu": "^2.7"
+        "laborci/eternity2": "^1.1.2"
     },
     "autoload": {
         "psr-4": {

@@ -1,9 +1,12 @@
+# Eternity 2 Project
 
-# Install Eternity2 project
+# Install
 
 ## Előfeltételek
 
-- php 7.2
+- apache 2.4
+- mysql 5.6
+- php 7.2 (mod, fpm)
 - php sqlite3
 - php gd
 
@@ -34,6 +37,44 @@ keretek között. Az útvonalakra hivatkozások az alábbi fájlokban találhat�
 - `composer.json` `autoload/psr-4` 
 - `package.json`
 - `etc/ini`
+ 
+```
+Your project
+|- app
+|  |- Module 
+|  |- Service
+|  `- index.php
+|- app.ghost
+|- app.mission
+|  |- admin
+|  |  |- app
+|  |  |- codex
+|  |  `- style
+|  |- api
+|  |- cli
+|  `- web
+|     |- app
+|     |- mission
+|     |- style
+|     `- templates
+|- assets
+|- data
+|  |- attachment
+|  `- attachment-meta
+|- dev
+|  `- dump
+|- etc
+|  |- ini
+|  `- vhost
+|- public
+|- var
+|- build-number
+|- composer.json
+|- package.json
+|- phlex
+`- weboack.config.json
+``` 
+ 
  
 ## app.ghost
 
