@@ -43,7 +43,9 @@
 	},
 	"z-build": {
 		"copy": {
-			"assets//**/*": "public",
+			"assets/*": "public",
+			"var/.user.ini": "public",
+			"var/.htaccess": "public",
 			"node_modules/@fortawesome/fontawesome-pro/webfonts/*": "public/~fonts/fontawesome",
 			"app/index.php": "public"
 		},

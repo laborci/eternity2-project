@@ -1,2 +1,9 @@
-~template: etc/vhost/virtualhost.conf
-~output: var/virtualhost.conf
+vhost:
+  ~template: etc/vhost/virtualhost.fpm.conf
+  ~output: var/virtualhost.conf
+htaccess:
+  ~template: etc/vhost/htaccess
+  ~output: var/.htaccess
+user-ini:
+  ~template: etc/vhost/user.ini
+  ~output: var/.user.ini
